@@ -1,0 +1,52 @@
+
+{
+  "entities": {
+    "CatechismEntry": {
+      "title": "CatechismEntry",
+      "description": "A single question and answer entry in the Heidelberg Catechism.",
+      "type": "object",
+      "properties": {
+        "lord_day_number": {
+          "type": "number",
+          "description": "The number of the Lord's Day this entry belongs to."
+        },
+        "question_number": {
+          "type": "number",
+          "description": "The sequential number of the question."
+        },
+        "question_te": {
+          "type": "string",
+          "description": "The question text in Telugu."
+        },
+        "answer_te": {
+          "type": "string",
+          "description": "The answer text in Telugu."
+        },
+        "explanation_te": {
+          "type": "string",
+          "description": "Optional explanation or commentary in Telugu."
+        },
+        "scripture_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "text": { "type": "string" }
+            }
+          }
+        }
+      },
+      "required": ["lord_day_number", "question_number", "question_te", "answer_te"]
+    }
+  },
+  "auth": {
+    "providers": ["google.com"]
+  },
+  "firestore": {
+    "/catechism/{entryId}": {
+      "schema": "CatechismEntry",
+      "description": "Collection of all catechism entries."
+    }
+  }
+}

@@ -1,22 +1,23 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 217 33% 96%; /* #EEF1F6-ish */
+    --background: 217 33% 96%;
     --foreground: 212 40% 15%;
     --card: 0 0% 100%;
     --card-foreground: 212 40% 15%;
     --popover: 0 0% 100%;
     --popover-foreground: 212 40% 15%;
-    --primary: 212 40% 55%; /* #5E89BB */
+    --primary: 212 40% 55%;
     --primary-foreground: 0 0% 100%;
     --secondary: 190 60% 90%;
     --secondary-foreground: 212 40% 25%;
     --muted: 212 20% 90%;
     --muted-foreground: 212 20% 40%;
-    --accent: 190 60% 75%; /* #99D9E6 */
+    --accent: 190 60% 75%;
     --accent-foreground: 212 40% 15%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -55,19 +56,18 @@
   }
   body {
     @apply bg-background text-foreground;
-    line-height: 1.6;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-headline;
   }
 }
 
-.telugu-content {
-  line-height: 1.8;
-  word-spacing: 0.1em;
+/* Telugu Specific Typography */
+.telugu-text {
+  font-family: 'Gidugu', serif;
+  line-height: 1.6;
+  @apply text-foreground/90;
 }
 
-.reading-mode-active {
-  max-width: 800px;
-  margin: 0 auto;
+.telugu-heading {
+  font-family: 'Gidugu', serif;
+  line-height: 1.2;
+  @apply font-bold text-primary;
 }
