@@ -15,7 +15,7 @@ export function LordsDayList({ data, selectedNumber, onSelect }: LordsDayListPro
   return (
     <div className="flex flex-col h-full">
       <div className="p-4 border-b">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">ప్రభువు దినములు (Lord's Days)</h2>
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground telugu-text">ప్రభువు దినములు (Lord's Days)</h2>
       </div>
       <ScrollArea className="flex-1">
         <div className="p-2 space-y-1">
@@ -31,7 +31,7 @@ export function LordsDayList({ data, selectedNumber, onSelect }: LordsDayListPro
               )}
             >
               <div className="flex items-center justify-between">
-                <span className="font-headline text-lg">{day.title}</span>
+                <span className="telugu-heading text-lg">{day.title}</span>
                 {selectedNumber === day.number && (
                   <div className="w-1.5 h-1.5 rounded-full bg-white" />
                 )}

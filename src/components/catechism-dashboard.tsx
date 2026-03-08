@@ -1,4 +1,3 @@
-
 "use client"
 
 import * as React from "react"
@@ -22,7 +21,6 @@ export function CatechismDashboard() {
   const handleSelectDay = (num: number) => {
     setSelectedDayNumber(num)
     setIsMobileMenuOpen(false)
-    // Scroll to top on selection for mobile users
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -30,7 +28,6 @@ export function CatechismDashboard() {
 
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-background">
-      {/* Header - Fixed on mobile */}
       <header className="flex items-center justify-between px-4 md:px-6 py-3 border-b bg-card shadow-sm z-40 shrink-0">
         <div className="flex items-center gap-2">
           <Button 
@@ -42,7 +39,7 @@ export function CatechismDashboard() {
           >
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
-          <h1 className="text-xl md:text-2xl font-headline text-primary font-bold tracking-tight">జ్ఞాన బోధ</h1>
+          <h1 className="text-xl md:text-2xl telugu-heading font-bold tracking-tight">జ్ఞాన బోధ</h1>
         </div>
         
         <div className="flex items-center gap-1 md:gap-2">
@@ -60,7 +57,6 @@ export function CatechismDashboard() {
       </header>
 
       <div className="flex flex-1 overflow-hidden relative">
-        {/* Navigation Drawer for Mobile / Sidebar for Desktop */}
         <aside className={cn(
           "fixed inset-y-0 left-0 w-[280px] md:w-80 border-r bg-card transition-transform duration-300 ease-in-out z-50 md:relative md:translate-x-0 shrink-0",
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full",
@@ -73,7 +69,6 @@ export function CatechismDashboard() {
           />
         </aside>
 
-        {/* Backdrop for mobile drawer */}
         {isMobileMenuOpen && (
           <div 
             className="fixed inset-0 bg-black/40 backdrop-blur-sm z-45 md:hidden" 
@@ -81,7 +76,6 @@ export function CatechismDashboard() {
           />
         )}
 
-        {/* Main Content Area */}
         <main className={cn(
           "flex-1 overflow-y-auto transition-all duration-300 touch-pan-y",
           isReadingMode ? "bg-card" : "bg-background"

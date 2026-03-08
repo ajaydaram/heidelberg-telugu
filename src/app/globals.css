@@ -5,7 +5,7 @@
 @layer base {
   :root {
     --background: 217 33% 96%;
-    --foreground: 212 40% 10%; /* Darker foreground for better contrast (#1a1a1a equivalent) */
+    --foreground: 212 40% 10%;
     --card: 0 0% 100%;
     --card-foreground: 212 40% 10%;
     --popover: 0 0% 100%;
@@ -64,20 +64,25 @@
 /* Telugu Specific Typography */
 .telugu-text {
   font-family: 'Mandali', sans-serif;
-  line-height: 1.8; /* Strictly 1.8 for long-form reading */
-  @apply text-foreground antialiased;
+  line-height: 1.8; /* Strictly 1.8 for readability */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  @apply text-foreground;
 }
 
 .telugu-heading {
-  font-family: 'Gidugu', serif;
-  line-height: 1.5; /* Room for subscripts */
-  letter-spacing: 0.05em; /* Breathing room for 'vattulu' */
-  @apply font-bold text-primary antialiased;
+  font-family: 'Mandali', sans-serif; /* Mandali handles 'లార్డ్స్' better than Gidugu */
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  @apply text-primary;
 }
 
-/* Optimized for Mobile Touch */
+/* Mobile specific font tweaks */
 @media (max-width: 768px) {
   .telugu-text {
-    line-height: 1.85; /* Slightly more room on mobile */
+    line-height: 1.85;
   }
 }

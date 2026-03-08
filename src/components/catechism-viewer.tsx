@@ -53,7 +53,7 @@ export function CatechismViewer({ day, isReadingMode }: CatechismViewerProps) {
               </div>
               
               <div className={cn(
-                "telugu-text pl-5 whitespace-pre-wrap text-foreground",
+                "telugu-text pl-5 whitespace-pre-wrap text-[#1a1a1a] dark:text-foreground",
                 isReadingMode ? "text-2xl md:text-3xl" : "text-xl md:text-2xl"
               )}>
                 <span className="telugu-heading font-bold block mb-3 opacity-90 text-primary">జవాబు:</span>
@@ -75,7 +75,7 @@ export function CatechismViewer({ day, isReadingMode }: CatechismViewerProps) {
                   "mt-8 pl-5 pt-8 border-t border-accent/20",
                   isReadingMode ? "max-w-2xl" : ""
                 )}>
-                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4 opacity-70">లేఖన ఆధారాలు (Scripture Footnotes)</h4>
+                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4 opacity-70 telugu-text">లేఖన ఆధారాలు (Scripture Footnotes)</h4>
                   <ul className="space-y-4">
                     {entry.scriptureReferences.map((ref) => (
                       <li key={ref.id} className="text-base md:text-lg text-muted-foreground telugu-text flex gap-3 leading-relaxed">
