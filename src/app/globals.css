@@ -59,15 +59,22 @@
   }
 }
 
-/* Telugu Specific Typography */
+/* Telugu Specific Typography with Safe Line Height */
 .telugu-text {
   font-family: 'Gidugu', serif;
   line-height: 1.6;
-  @apply text-foreground/90;
+  @apply text-foreground/90 antialiased;
 }
 
 .telugu-heading {
   font-family: 'Gidugu', serif;
-  line-height: 1.2;
-  @apply font-bold text-primary;
+  line-height: 1.4;
+  @apply font-bold text-primary antialiased;
+}
+
+/* Optimized for Mobile Touch */
+@media (max-width: 768px) {
+  .telugu-text {
+    line-height: 1.7;
+  }
 }
