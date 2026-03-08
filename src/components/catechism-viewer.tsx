@@ -1,6 +1,6 @@
 
 import * as React from "react"
-import { LordsDay } from "@/app/lib/data/catechism-data"
+import { LordsDay, CatechismEntry } from "@/app/lib/data/catechism-data"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -16,6 +16,48 @@ interface CatechismViewerProps {
 }
 
 export function CatechismViewer({ day, isReadingMode, isCompleted, onToggleComplete, onNavigate }: CatechismViewerProps) {
+  
+  const scrollToFootnote = (entryId: number, refId: string) => {
+    const element = document.getElementById(`ref-${entryId}-${refId}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      element.classList.add('bg-primary/20');
+      setTimeout(() => {
+        element.classList.remove('bg-primary/20');
+      }, 2000);
+    }
+  };
+
+  const renderAnswer = (entry: CatechismEntry) => {
+    const parts = entry.answer.split(/(\[\d+\])/g);
+    
+    return (
+      <div className={cn(
+        "telugu-text pl-5 whitespace-pre-wrap text-[#1a1a1a] dark:text-foreground",
+        isReadingMode ? "text-2xl md:text-3xl" : "text-xl md:text-2xl"
+      )}>
+        <span className="telugu-heading font-bold block mb-3 opacity-90 text-primary">జవాబు:</span>
+        {parts.map((part, index) => {
+          const match = part.match(/\[(\d+)\]/);
+          if (match) {
+            const refId = match[1];
+            return (
+              <button
+                key={index}
+                onClick={() => scrollToFootnote(entry.id, refId)}
+                className="inline-flex items-center justify-center w-6 h-6 -translate-y-2 text-xs font-bold text-primary hover:text-primary-foreground hover:bg-primary rounded-full transition-colors mx-0.5 border border-primary/30"
+                title={`See scripture reference ${refId}`}
+              >
+                {refId}
+              </button>
+            );
+          }
+          return <span key={index}>{part}</span>;
+        })}
+      </div>
+    );
+  };
+
   return (
     <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 pb-20">
       <div className="mb-8 text-center relative">
@@ -79,13 +121,7 @@ export function CatechismViewer({ day, isReadingMode, isCompleted, onToggleCompl
                 </h3>
               </div>
               
-              <div className={cn(
-                "telugu-text pl-5 whitespace-pre-wrap text-[#1a1a1a] dark:text-foreground",
-                isReadingMode ? "text-2xl md:text-3xl" : "text-xl md:text-2xl"
-              )}>
-                <span className="telugu-heading font-bold block mb-3 opacity-90 text-primary">జవాబు:</span>
-                {entry.answer}
-              </div>
+              {renderAnswer(entry)}
 
               {entry.explanation && (
                 <div className={cn(
@@ -105,7 +141,11 @@ export function CatechismViewer({ day, isReadingMode, isCompleted, onToggleCompl
                   <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4 opacity-70 telugu-text">లేఖన ఆధారాలు (Scripture Footnotes)</h4>
                   <ul className="space-y-4">
                     {entry.scriptureReferences.map((ref) => (
-                      <li key={ref.id} className="text-base md:text-lg text-muted-foreground telugu-text flex gap-3 leading-relaxed">
+                      <li 
+                        key={ref.id} 
+                        id={`ref-${entry.id}-${ref.id}`}
+                        className="text-base md:text-lg text-muted-foreground telugu-text flex gap-3 leading-relaxed transition-colors duration-500 rounded p-1"
+                      >
                         <span className="font-bold text-primary/70 shrink-0">[{ref.id}]</span>
                         <span>{ref.text}</span>
                       </li>
