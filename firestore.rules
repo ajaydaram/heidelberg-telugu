@@ -1,0 +1,69 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * CORE PHILOSOPHY:
+     * This ruleset is designed for a static, content-driven application (The Heidelberg Catechism).
+     * The primary goal is to ensure the canonical religious texts are publicly accessible for 
+     * reading while strictly preventing unauthorized modifications. 
+     *
+     * DATA STRUCTURE:
+     * The data is organized hierarchically:
+     * - /lords_days/{lordSDayId}: Contains the 52 Lord's Days.
+     * - /lords_days/{lordSDayId}/catechism_qas/{qaId}: Contains the specific Q&A pairs for a Lord's Day.
+     *
+     * KEY SECURITY DECISIONS:
+     * 1. Public Reading: Since this is an educational/religious resource, all 'get' and 'list' 
+     *    operations are globally allowed (if true).
+     * 2. Locked Writes: The current Intermediate Representation (IR) defines a read-only 
+     *    posture for the general public and does not define an administrative role or 
+     *    ownership fields (e.g., 'authorId') on the content. Consequently, all write 
+     *    operations (create, update, delete) are locked (if false). 
+     * 3. Prototyping Flexibility: While access is strictly controlled, data shape validation 
+     *    is omitted to allow for rapid content iteration.
+     */
+
+    // --- Helper Functions ---
+    // (Removed unused functions 'isSignedIn' and 'docExists' as they were not utilized
+    // and had invalid variable scoping for 'request' and 'resource' within their definitions.)
+
+    // --- Collection Rules ---
+
+    /**
+     * @description Rules for the top-level Lord's Days collection.
+     * @path /lords_days/{lordSDayId}
+     * @allow Public users to view the list of Lord's Days (list) and individual day details (get).
+     * @deny Any user (authenticated or not) from modifying, creating, or deleting Lord's Day records.
+     * @principle Public Read with restricted writes.
+     */
+    match /lords_days/{lordSDayId} {
+      allow get, list: if true;
+      
+      // CRITICAL: Cannot implement owner-only writes. The 'LordSDay' entity is missing an 'ownerId' or 'authorId' field.
+      // Additionally, the IR describes this as a static, read-only application.
+      allow create: if false; // TODO: Implement admin-only creation or add ownership fields to the schema.
+      allow update, delete: if false; // TODO: Implement admin-only modification/deletion.
+      
+      /**
+       * @description Rules for the subcollection of questions and answers.
+       * @path /lords_days/{lordSDayId}/catechism_qas/{qaId}
+       * @allow Public users to read all questions and answers associated with a specific Lord's Day.
+       * @deny Any write operations to ensure content remains canonical and tamper-proof.
+       * @principle Hierarchical public access with strictly locked writes.
+       */
+      match /catechism_qas/{qaId} {
+        allow get, list: if true;
+
+        // CRITICAL: Content is intended to be static. No ownership field present on 'CatechismQuestionAnswer'.
+        allow create: if false; // TODO: Establish administrative write privileges if CMS functionality is required.
+        allow update, delete: if false; // TODO: Add logic to allow only authorized content managers to edit.
+      }
+    }
+    
+    // Default deny for any paths not explicitly matched above.
+    match /{path=**} {
+      allow read, write: if false;
+    }
+  }
+}
