@@ -61,6 +61,16 @@ export function CatechismViewer({ day, isReadingMode }: CatechismViewerProps) {
                 {entry.answer}
               </div>
 
+              {entry.explanation && (
+                <div className={cn(
+                  "mt-4 p-4 bg-muted/50 border-l-2 border-primary/20 rounded-r-lg italic telugu-content ml-5 text-foreground/70",
+                  isReadingMode ? "text-lg md:text-xl" : "text-base md:text-lg"
+                )}>
+                  <span className="font-bold not-italic block mb-1 opacity-60">వివరణ:</span>
+                  {entry.explanation}
+                </div>
+              )}
+
               {entry.scriptureReferences && entry.scriptureReferences.length > 0 && (
                 <div className={cn(
                   "mt-6 pl-5 pt-6 border-t border-accent/20",
