@@ -3,14 +3,16 @@
 
 import * as React from "react"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { Info, History, Sparkles, LayoutGrid, Heart } from "lucide-react"
+import { Info, History, Sparkles, LayoutGrid, Heart, Play } from "lucide-react"
 
 interface CatechismIntroProps {
   isReadingMode: boolean
+  onStart: () => void
 }
 
-export function CatechismIntro({ isReadingMode }: CatechismIntroProps) {
+export function CatechismIntro({ isReadingMode, onStart }: CatechismIntroProps) {
   return (
     <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-12">
       <div className="text-center mb-12">
@@ -67,7 +69,7 @@ export function CatechismIntro({ isReadingMode }: CatechismIntroProps) {
             </li>
             <li className="flex gap-3">
               <span className="text-primary font-bold">•</span>
-              <span><strong>ఎవరు:</strong> ఫ్రెడరిక్ III అనే రాజు కోరిక మేరకు, జకారియాస్ ఉర్సినస్ మరియు కాస్పర్ ఒలేవియానస్ అనే ఇద్దరు యువ దైవజనులు దీనిని రాశారు.</span>
+              <span><strong>ఎవరూ:</strong> ఫ్రెడరిక్ III అనే రాజు కోరిక మేరకు, జకారియాస్ ఉర్సినస్ మరియు కాస్పర్ ఒలేవియానస్ అనే ఇద్దరు యువ దైవజనులు దీనిని రాశారు.</span>
             </li>
             <li className="flex gap-3">
               <span className="text-primary font-bold">•</span>
@@ -129,10 +131,13 @@ export function CatechismIntro({ isReadingMode }: CatechismIntroProps) {
           </div>
         </section>
 
-        <div className="text-center py-8">
+        <div className="text-center py-8 space-y-6">
           <p className="telugu-text text-xl text-muted-foreground italic max-w-2xl mx-auto leading-relaxed">
             ఈ కేటకిజం చదవడం అంటే కేవలం జ్ఞానాన్ని పెంచుకోవడం కాదు, మనల్ని ప్రేమించి ప్రాణమిచ్చిన దేవునిని మరింత ఎక్కువగా ప్రేమించడం.
           </p>
+          <Button size="lg" onClick={onStart} className="telugu-text text-xl h-14 px-10 rounded-full shadow-xl animate-bounce">
+            చదవడం ప్రారంభించండి <Play className="ml-2 h-5 w-5 fill-current" />
+          </Button>
         </div>
       </div>
     </div>

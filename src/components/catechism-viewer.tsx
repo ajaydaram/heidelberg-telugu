@@ -1,19 +1,46 @@
+
 import * as React from "react"
 import { LordsDay } from "@/app/lib/data/catechism-data"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
+import { ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react"
 
 interface CatechismViewerProps {
   day: LordsDay
   isReadingMode: boolean
+  isCompleted: boolean
+  onToggleComplete: () => void
+  onNavigate: (direction: 'next' | 'prev') => void
 }
 
-export function CatechismViewer({ day, isReadingMode }: CatechismViewerProps) {
+export function CatechismViewer({ day, isReadingMode, isCompleted, onToggleComplete, onNavigate }: CatechismViewerProps) {
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-      <div className="mb-8 text-center">
+    <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 pb-20">
+      <div className="mb-8 text-center relative">
+        <div className="flex justify-between items-center mb-4">
+          <Button variant="ghost" size="sm" onClick={() => onNavigate('prev')} className="telugu-text">
+            <ChevronLeft className="h-4 w-4 mr-1" /> మునుపటి
+          </Button>
+          <div className="flex items-center gap-2 bg-muted/50 px-3 py-1.5 rounded-full border">
+            <Checkbox 
+              id="complete-day" 
+              checked={isCompleted} 
+              onCheckedChange={onToggleComplete}
+              className="h-5 w-5 data-[state=checked]:bg-primary border-primary/30"
+            />
+            <label htmlFor="complete-day" className="telugu-text text-sm font-bold cursor-pointer select-none">
+              {isCompleted ? "పూర్తయింది" : "పూర్తి చేయండి"}
+            </label>
+          </div>
+          <Button variant="ghost" size="sm" onClick={() => onNavigate('next')} disabled={day.number === 52} className="telugu-text">
+            తరువాతి <ChevronRight className="h-4 w-4 ml-1" />
+          </Button>
+        </div>
+
         {!isReadingMode && (
-          <Badge variant="outline" className="mb-2 text-primary border-primary/30">
+          <Badge variant="outline" className="mb-2 text-primary border-primary/30 px-4 py-1">
             Heidelberg Catechism
           </Badge>
         )}
@@ -109,6 +136,39 @@ export function CatechismViewer({ day, isReadingMode }: CatechismViewerProps) {
             </ul>
           </div>
         )}
+      </div>
+
+      <div className="mt-20 flex flex-col items-center gap-6 border-t pt-12">
+        {isCompleted ? (
+          <div className="flex flex-col items-center gap-2 animate-in zoom-in duration-300">
+            <div className="bg-primary text-primary-foreground p-3 rounded-full shadow-lg">
+              <CheckCircle2 className="h-10 w-10" />
+            </div>
+            <p className="telugu-heading text-2xl font-bold text-primary">మీరు ఈ దినమును పూర్తి చేశారు!</p>
+          </div>
+        ) : (
+          <Button size="lg" onClick={onToggleComplete} className="telugu-text text-xl h-14 px-8 rounded-full shadow-lg hover:scale-105 transition-transform">
+            నేను దీనిని చదివి పూర్తి చేశాను
+          </Button>
+        )}
+
+        <div className="flex gap-4 w-full max-w-md mt-4">
+          <Button 
+            variant="outline" 
+            className="flex-1 telugu-text text-lg h-12" 
+            onClick={() => onNavigate('prev')}
+          >
+            మునుపటి దినము
+          </Button>
+          <Button 
+            variant="outline" 
+            className="flex-1 telugu-text text-lg h-12" 
+            onClick={() => onNavigate('next')}
+            disabled={day.number === 52}
+          >
+            తరువాతి దినము
+          </Button>
+        </div>
       </div>
     </div>
   )

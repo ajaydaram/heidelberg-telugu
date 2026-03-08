@@ -8,7 +8,7 @@ import { CatechismViewer } from "@/components/catechism-viewer"
 import { CatechismIntro } from "@/components/catechism-intro"
 import { SearchDialog } from "@/components/search-dialog"
 import { Button } from "@/components/ui/button"
-import { Menu, BookOpen, X } from "lucide-react"
+import { Menu, BookOpen, X, CheckCircle2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
 
@@ -16,7 +16,31 @@ export function CatechismDashboard() {
   const [selectedDayNumber, setSelectedDayNumber] = React.useState(0) // 0 for Intro
   const [isReadingMode, setIsReadingMode] = React.useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
+  const [completedDays, setCompletedDays] = React.useState<number[]>([])
   const isMobile = useIsMobile()
+
+  // Load progress from localStorage
+  React.useEffect(() => {
+    const saved = localStorage.getItem('catechism-progress')
+    if (saved) {
+      try {
+        setCompletedDays(JSON.parse(saved))
+      } catch (e) {
+        console.error("Failed to parse progress")
+      }
+    }
+  }, [])
+
+  // Save progress
+  const toggleComplete = (num: number) => {
+    setCompletedDays(prev => {
+      const next = prev.includes(num) 
+        ? prev.filter(d => d !== num) 
+        : [...prev, num]
+      localStorage.setItem('catechism-progress', JSON.stringify(next))
+      return next
+    })
+  }
 
   const selectedDay = CATECHISM_DATA.find(d => d.number === selectedDayNumber)
 
@@ -30,6 +54,14 @@ export function CatechismDashboard() {
       } else {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+    }
+  }
+
+  const navigateDay = (direction: 'next' | 'prev') => {
+    if (direction === 'next') {
+      if (selectedDayNumber < 52) handleSelectDay(selectedDayNumber + 1)
+    } else {
+      if (selectedDayNumber > 0) handleSelectDay(selectedDayNumber - 1)
     }
   }
 
@@ -50,6 +82,10 @@ export function CatechismDashboard() {
         </div>
         
         <div className="flex items-center gap-1 md:gap-2">
+          <div className="hidden sm:flex items-center gap-2 mr-4 px-3 py-1 bg-primary/5 rounded-full border border-primary/10">
+            <CheckCircle2 className="h-4 w-4 text-primary" />
+            <span className="text-xs font-bold text-primary">{completedDays.length} / 52</span>
+          </div>
           <SearchDialog />
           <Button 
             variant={isReadingMode ? "secondary" : "ghost"} 
@@ -72,7 +108,8 @@ export function CatechismDashboard() {
           <LordsDayList 
             data={CATECHISM_DATA} 
             selectedNumber={selectedDayNumber} 
-            onSelect={handleSelectDay} 
+            onSelect={handleSelectDay}
+            completedDays={completedDays}
           />
         </aside>
 
@@ -92,9 +129,15 @@ export function CatechismDashboard() {
             isReadingMode ? "max-w-3xl py-8 px-4 md:px-12" : "max-w-4xl p-4 md:p-8"
           )}>
             {selectedDayNumber === 0 ? (
-              <CatechismIntro isReadingMode={isReadingMode} />
+              <CatechismIntro isReadingMode={isReadingMode} onStart={() => handleSelectDay(1)} />
             ) : selectedDay ? (
-              <CatechismViewer day={selectedDay} isReadingMode={isReadingMode} />
+              <CatechismViewer 
+                day={selectedDay} 
+                isReadingMode={isReadingMode} 
+                isCompleted={completedDays.includes(selectedDay.number)}
+                onToggleComplete={() => toggleComplete(selectedDay.number)}
+                onNavigate={navigateDay}
+              />
             ) : (
               <div className="flex items-center justify-center h-64 text-muted-foreground telugu-text">
                 విషయము కనుగొనబడలేదు.
