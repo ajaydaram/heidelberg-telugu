@@ -293,7 +293,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     ],
     insights: [
       "The \"Hypostatic Union\": యేసుక్రీస్తు సగం దేవుడు, సగం మనిషి కాదు. ఆయన పూర్తిగా దేవుడు (కోపాన్ని భరించడానికి) మరియు పూర్తిగా మనిషి (మన తరపున చనిపోవడానికి).",
-      "The Promise: సువార్త అనేది క్రొత్త నిబంధనలో హఠాత్తుగా వచ్చినది కాదు. ఇది ఆదికాండము నుండే దేవుడు మానవాళికి ఇస్తూ వచ్చిన వాగ్దానము.",
+      "The Promise: సువార్త అనేది క్రైస్తవ మతంలో హఠాత్తుగా వచ్చినది కాదు. ఇది ఆదికాండము నుండే దేవుడు మానవాళికి ఇస్తూ వచ్చిన వాగ్దానము.",
       "The Bridge: ప్రశ్న 18 ఈ కాటేచిజం యొక్క మలుపు. ఇక్కడి నుండి మన దృష్టి మన పాపం నుండి మన రక్షకుడైన క్రీస్తు వైపు మళ్ళుతుంది。"
     ]
   },
@@ -671,7 +671,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         answer: "మన మరణం మన పాపాలకు ప్రాయశ్చిత్తం కాదు. [4] అది కేవలం పాపం నుండి విడిపించబడటానికి and నిత్యజీవంలోకంలోకంలోకి ప్రవేశించడానికి ఒక మార్గము మాత్రమే. [5]",
         scriptureReferences: [
           { id: "4", text: "కీర్తనలు 49:7 – ఏ నరుడూ తన మరణం ద్వారా తనను తాను విమోచించుకోలేడు." },
-          { id: "5", text: "ఫిలిప్పీయులకు 1:23 – \"దేహమును విడిచి క్రీస్తుతో కూడా ఉండవలెని నాకు ఆశ ఉన్నది; అది బహు శ్రేష్ఠము.\"" }
+          { id: "5", text: "ఫิలిప్పీయులకు 1:23 – \"దేహమును విడిచి క్రీస్తుతో కూడా ఉండవలెని నాకు ఆశ ఉన్నది; అది బహు శ్రేష్ఠము.\"" }
         ]
       },
       {
@@ -772,7 +772,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         answer: "1. మొదటిది, పరలోకంలో తండ్రి ఎదుట ఆయన మన పక్షమున విజ్ఞాపన చేసే (intercessor) మధ్యవర్తిగా ఉన్నాడు. [7]\n2. రెండవది, పరలోకంలో మన శరీరం (మన ప్రతినిధియైన క్రీస్తు రూపంలో) ఉంది. ఇది, మన తలయైన క్రీస్తు తన అవయవాలైన మనల్ని కూడా ఒకరోజు తన వద్దకు చేర్చుకుంటాడనే నిశ్చయమైన హామీ. [8]\n3. మూడవది, ఆయన తన శక్తికి నిదర్శనముగా తన పరిశుద్ధాత్మను మనకు పంపిస్తున్నాడు. ఆ ఆత్మ ద్వారా మనం భూసంబంధమైన వాటిని కాకుండా, క్రీస్తు దేవుని కుడిపార్శ్వమున కూర్చుని ఉన్న పరలోక సంబంధమైన వాటినే వెదుకుతాము. [9]",
         scriptureReferences: [
           { id: "7", text: "రోమీయులకు 8:34; 1 యోహాను 2:1 – \"తండ్రి యొద్ద మనకు ఒక ఉత్తరవాది (Advocate) ఉన్నాడు, ఆయనే నీతిమంతుడైన యేసుక్రీస్తు.\"" },
-          { id: "8", text: "యోహాను 14:2; 17:24 – \"నేను మీకు స్థలము సిద్ధపరచ వెళ్లుచున్నాను... నేను ఎక్కడ ఉందునో వారును అక్కడ ఉండవలెనని కోరుచున్నాను.\"" },
+          { id: "8", text: "యోహాను 14:2; 17:24 – \"నేను మీకు స్థలము సిద్ధపరచ వెళ్లుచున్నాను... నేను ఎక్కడ ఉందునో వారును అక్కడ ఉండవలెని కోరుచున్నాను.\"" },
           { id: "9", text: "కొలొస్సయి 3:1 – \"మీరు క్రీస్తుతో కూడా లేపబడిన వారైతే పైన ఉన్నవాటినే వెదకుడి; అక్కడ క్రీస్తు దేవుని కుడిపార్శ్వమున కూర్చుండి యున్నాడు.\"" }
         ]
       }
@@ -880,7 +880,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         answer: "మొదటిది, విశ్వాసులందరూ క్రీస్తులో అవయవాలుగా ఉంటూ, ఆయనలోను మరియు ఆయన సంపదలలోను, వరములలోను పాలుపంచుకుంటున్నారు. [5] రెండవది, ప్రతి విశ్వాసి తనకు కలిగిన వరములను ఇతర అవయవాల క్షేమము కొరకు మరియు రక్షణ కొరకు సిద్ధమనస్సుతో, సంతోషంతో ఉపయోగించవలసిన బాధ్యత కలిగి ఉన్నాడు. [6]",
         scriptureReferences: [
           { id: "5", text: "1 యోహాను 1:3; రోమీయులకు 8:32 – \"మన సహవాసమైతే తండ్రితోను ఆయన కుమారుడైన యేసుక్రీస్తుతోను ఉన్నది.\"" },
-          { id: "6", text: "1 కొరింథీయులకు 12:12-27; 13:5 – ఒక అవయవమునకు కలిగిన ఘనతతో అన్ని అవయవములు సంతోచును." }
+          { id: "6", text: "1 కొరింథీయులకు 12:12-27; 13:5 – ఒక అవయమునకు కలిగిన ఘనతతో అన్ని అవయవములు సంతోచును." }
         ]
       },
       {
@@ -1249,7 +1249,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         scriptureReferences: [
           { id: "4", text: "1 కొరింథీయులకు 10:16 – \"మనం విరుచు రొట్టె క్రీస్తు శరీరములో పాలుపంచుకొనుట (communion) కాదా?\"" },
           { id: "5", text: "యోహాను 6:51-55 – \"నేనిచ్చు రొట్టె లోకమునకు జీవము నిమిత్తము ఇచ్చు నా శరీరమే.\"" },
-          { id: "6", text: "ఎఫెసీయులకు 5:30 – \"మనం ఆయన శరీరమునకు అవయవాలమై ఉన్నాము.\"" }
+          { id: "6", text: "ఎఫెసీయులకు 5:30 – \"మనం ఆయన శరీరమునకు అవยవాలమై ఉన్నాము.\"" }
         ]
       }
     ],
@@ -1401,7 +1401,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 89,
+        id: 90,
         lordsDay: 33,
         questionNumber: 89,
         question: "పాత మనుష్యుడు చనిపోవుట అంటే ఏమిటి?",
@@ -1411,7 +1411,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 90,
+        id: 91,
         lordsDay: 33,
         questionNumber: 90,
         question: "కొత్త మనుష్యుడు బ్రతుకుట అంటే ఏమిటి?",
@@ -1422,7 +1422,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 91,
+        id: 92,
         lordsDay: 33,
         questionNumber: 91,
         question: "సత్క్రియలు అంటే ఏమిటి?",
@@ -1447,14 +1447,14 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "ధర్మశాస్త్రము: మొదటి మరియు రెండవ ఆజ్ఞలు (The Law: 1st and 2nd Commandments)",
     entries: [
       {
-        id: 92,
+        id: 93,
         lordsDay: 34,
         questionNumber: 92,
         question: "యెహోవా నియమించిన ధర్మశాస్త్రము (ధర్మసంహిత) ఏమిటి?",
         answer: "దేవుడు ఈ మాటలన్నీ సెలవిచ్చాడు: \n\n\"నేను నీ దేవుడైన యెహోవాను; నేనే నిన్ను ఐగుప్తు దేశములో నుండి, దాసగృహములో నుండి బయటకు రప్పించినవాడను.\"\n\n1. మొదటి ఆజ్ఞ: నా యెదుట నీకు వేరొక దేవుడు ఉండకూడదు.\n2. రెండవ ఆజ్ఞ: పైన ఆకాశమందేగాని, క్రింద భూమియందేగాని, భూమి క్రింద నీళ్లయందేగాని ఉండు దేని రూపమునైనా నీవు చేసుకొనకూడదు; వాటికి నమస్కరింపకూడదు, వాటిని పూజింపకూడదు...\n(నిర్గమకాండము 20:1-17; ద్వితీయోపదేశకాండము 5:6-21).",
       },
       {
-        id: 93,
+        id: 94,
         lordsDay: 34,
         questionNumber: 93,
         question: "ఈ ఆజ్ఞలు ఎలా విభజించబడ్డాయి?",
@@ -1465,7 +1465,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 94,
+        id: 95,
         lordsDay: 34,
         questionNumber: 94,
         question: "మొదటి ఆజ్ఞలో దేవుడు ఏమి కోరుతున్నాడు?",
@@ -1481,7 +1481,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 95,
+        id: 96,
         lordsDay: 34,
         questionNumber: 95,
         question: "విగ్రహారాధన (Idolatry) అంటే ఏమిటి?",
@@ -1503,7 +1503,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "రెండవ ఆజ్ఞ: ఆరాధన క్రమము (The 2nd Commandment: The Manner of Worship)",
     entries: [
       {
-        id: 96,
+        id: 97,
         lordsDay: 35,
         questionNumber: 96,
         question: "రెండవ ఆజ్ఞలో దేవుడు ఏమి కోరుతున్నాడు?",
@@ -1514,7 +1514,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 97,
+        id: 98,
         lordsDay: 35,
         questionNumber: 97,
         question: "అయితే మనం అసలు ఏ రూపాలను లేదా చిత్రాలను (images) తయారు చేయకూడదా?",
@@ -1524,7 +1524,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 98,
+        id: 99,
         lordsDay: 35,
         questionNumber: 98,
         question: "ప్రజలకు బోధించడానికి చర్చిలలో ఈ చిత్రాలను \"పామరుల పుస్తకాలుగా\" (books for the laity) అనుమతించవచ్చా?",
@@ -1545,7 +1545,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "మూడవ ఆజ్ఞ: దేవుని నామము (The 3rd Commandment: God's Name)",
     entries: [
       {
-        id: 99,
+        id: 100,
         lordsDay: 36,
         questionNumber: 99,
         question: "మూడవ ఆజ్ఞలో దేవుడు ఏమి కోరుతున్నాడు?",
@@ -1568,7 +1568,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "ప్రమాణములు మరియు ఒట్లు (Oaths and Vows)",
     entries: [
       {
-        id: 100,
+        id: 101,
         lordsDay: 37,
         questionNumber: 101,
         question: "దేవుని నామమున మనం భక్తితో ప్రమాణం చేయవచ్చా?",
@@ -1579,7 +1579,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 101,
+        id: 102,
         lordsDay: 37,
         questionNumber: 102,
         question: "పరిశుద్ధులను (Saints) సాక్షులుగా పెట్టుకొని లేదా ఇతర సృష్టి వస్తువుల మీద ప్రమాణం చేయవచ్చా?",
@@ -1597,7 +1597,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "నాల్గవ ఆజ్ఞ: విశ్రాంతి దినము (The 4th Commandment: The Sabbath)",
     entries: [
       {
-        id: 102,
+        id: 103,
         lordsDay: 38,
         questionNumber: 103,
         question: "నాల్గవ ఆజ్ఞలో దేవుడు ఏమి కోరుతున్నాడు?",
@@ -1622,7 +1622,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "అధికారులను గౌరవించుట (The 5th Commandment: Honoring Authority)",
     entries: [
       {
-        id: 103,
+        id: 104,
         lordsDay: 39,
         questionNumber: 104,
         question: "ఐదవ ఆజ్ఞలో దేవుడు ఏమి కోరుతున్నాడు?",
@@ -1645,7 +1645,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "ఆరవ ఆజ్ఞ: జీవమును గౌరవించుట (The 6th Commandment: Respecting Life)",
     entries: [
       {
-        id: 104,
+        id: 105,
         lordsDay: 40,
         questionNumber: 105,
         question: "ఆరవ ఆజ్ఞలో దేవుడు కేవలం \"నరహత్య చేయకూడదు\" అని మాత్రమే కోరుతున్నాడా?",
@@ -1656,7 +1656,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 105,
+        id: 106,
         lordsDay: 40,
         questionNumber: 106,
         question: "మన పొరుగువారిని చంపకపోతే ఈ ఆజ్ఞను పాటించినట్లేనా?",
@@ -1678,7 +1678,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "ఏడవ ఆజ్ఞ: పవిత్రత (The 7th Commandment: Purity)",
     entries: [
       {
-        id: 106,
+        id: 107,
         lordsDay: 41,
         questionNumber: 108,
         question: "ఏడవ ఆజ్ఞలో దేవుడు ఏమి కోరుతున్నాడు?",
@@ -1689,7 +1689,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 107,
+        id: 108,
         lordsDay: 41,
         questionNumber: 109,
         question: "దేవుడు ఈ ఆజ్ఞలో కేవలం వ్యభిచారాన్ని మాత్రమే నిషేధిస్తున్నాడా?",
@@ -1710,7 +1710,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "ఎనిమిదవ ఆజ్ఞ: యథార్థత (The 8th Commandment: Honesty)",
     entries: [
       {
-        id: 108,
+        id: 109,
         lordsDay: 42,
         questionNumber: 110,
         question: "ఎనిమిదవ ఆజ్ఞలో దేవుడు ఏమి నిషేధిస్తున్నాడు?",
@@ -1722,7 +1722,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 109,
+        id: 110,
         lordsDay: 42,
         questionNumber: 111,
         question: "మరి ఈ ఆజ్ఞలో దేవుడు నీ నుండి ఏమి కోరుతున్నాడు?",
@@ -1744,7 +1744,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "సత్యమును పలుకుట (The 9th Commandment: Truthfulness)",
     entries: [
       {
-        id: 110,
+        id: 111,
         lordsDay: 43,
         questionNumber: 112,
         question: "తొమ్మిదవ ఆజ్ఞలో దేవుడు ఏమి కోరుతున్నాడు?",
@@ -1769,7 +1769,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "Contentment (పదవ ఆజ్ఞ: హృదయ శుద్ధి)",
     entries: [
       {
-        id: 111,
+        id: 112,
         lordsDay: 44,
         questionNumber: 113,
         question: "పదవ ఆజ్ఞలో దేవుడు ఏమి కోరుతున్నాడు?",
@@ -1780,7 +1780,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 112,
+        id: 113,
         lordsDay: 44,
         questionNumber: 114,
         question: "దేవుని వైపు తిరిగిన వారు (Converted) ఈ ఆజ్ఞలను సంపూర్ణంగా పాటించగలరా?",
@@ -1791,7 +1791,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 113,
+        id: 114,
         lordsDay: 44,
         questionNumber: 115,
         question: "ఈ జీవితంలో ఎవరూ ధర్మశాస్త్రాన్ని సంపూర్ణంగా పాటించలేనప్పుడు, దేవుడు దానిని అంత కఠినంగా ఎందుకు ప్రకటింపజేస్తున్నాడు?",
@@ -1813,7 +1813,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "ప్రార్థన: కృతజ్ఞతలో ప్రధాన భాగం (Prayer: The Chief Part of Gratitude)",
     entries: [
       {
-        id: 114,
+        id: 115,
         lordsDay: 45,
         questionNumber: 116,
         question: "క్రైస్తవులకు ప్రార్థన ఎందుకు అవసరం?",
@@ -1824,7 +1824,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 115,
+        id: 116,
         lordsDay: 45,
         questionNumber: 117,
         question: "దేవుడు అంగీకరించే మరియు ఆలకించే ప్రార్థనలో ఉండవలసిన లక్షణాలు ఏమిటి?",
@@ -1836,7 +1836,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 116,
+        id: 117,
         lordsDay: 45,
         questionNumber: 118,
         question: "దేవుడు మనల్ని దేని కొరకు ప్రార్థించమని ఆజ్ఞాపించాడు?",
@@ -1846,7 +1846,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 117,
+        id: 118,
         lordsDay: 45,
         questionNumber: 119,
         question: "ఆ ప్రార్థన (ప్రభువు నేర్పిన ప్రార్థన) ఏమిటి?",
@@ -1868,7 +1868,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "పరలోకమందున్న మా తండ్రీ (Our Father in Heaven)",
     entries: [
       {
-        id: 118,
+        id: 119,
         lordsDay: 46,
         questionNumber: 120,
         question: "మన ప్రార్థన ఆరంభంలోనే దేవునిని \"మా తండ్రీ\" అని సంబోధించమని క్రీస్తు ఎందుకు ఆజ్ఞాపించాడు?",
@@ -1879,7 +1879,7 @@ export const CATECHISM_DATA: LordsDay[] = [
         ]
       },
       {
-        id: 119,
+        id: 120,
         lordsDay: 46,
         questionNumber: 121,
         question: "\"పరలోకమందున్న\" (in heaven) అను మాటను ఎందుకు చేర్చారు?",
@@ -1902,7 +1902,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "నీ నామము పరిశుద్ధపరచబడు గాక (Hallowed be Thy Name)",
     entries: [
       {
-        id: 120,
+        id: 121,
         lordsDay: 47,
         questionNumber: 122,
         question: "మొదటి విన్నపము (First Petition) ఏమిటి?",
@@ -1926,7 +1926,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "నీ రాజ్యము వచ్చుగాక (Thy Kingdom Come)",
     entries: [
       {
-        id: 121,
+        id: 122,
         lordsDay: 48,
         questionNumber: 123,
         question: "రెండవ విన్నపము (Second Petition) ఏమిటి?",
@@ -1951,7 +1951,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "నీ చిత్తము నెరవేరు గాక (Thy Will be Done)",
     entries: [
       {
-        id: 124,
+        id: 123,
         lordsDay: 49,
         questionNumber: 124,
         question: "మూడవ విన్నపము (Third Petition) ఏమిటి?",
@@ -1974,7 +1974,7 @@ export const CATECHISM_DATA: LordsDay[] = [
     subtitle: "మా అనుదినాహారము (Our Daily Bread)",
     entries: [
       {
-        id: 125,
+        id: 124,
         lordsDay: 50,
         questionNumber: 125,
         question: "నాలుగవ విన్నపము (Fourth Petition) ఏమిటి?",
@@ -1991,6 +1991,29 @@ export const CATECHISM_DATA: LordsDay[] = [
       "Daily Dependence: \"నేడు\" (this day) మరియు \"అనుదినాహారము\" (daily bread) అనే పదాలు మనకు ప్రతిరోజూ దేవుని సహాయం కావాలని గుర్తుచేస్తాయి. దేవుడు మనకు ఒకేసారి జీవితాంతం సరిపడా ఆహారాన్ని ఇవ్వడు; ఆయన మనల్ని ప్రతిరోజూ తన వైపు చూసేలా చేస్తాడు.",
       "Bread Includes Everything: ఇక్కడ \"రొట్టె\" అంటే కేవలం ఆహారం మాత్రమే కాదు. మనకు కావలసిన ఆరోగ్యం, ఇల్లు, బట్టలు, అనుకూలమైన వాతావరణం మరియు శాంతియుతమైన సమాజం—వీటన్నిటినీ ఇది సూచిస్తుంది.",
       "Against Anxiety: మనకు కావలసినవి దేవునికి తెలుసని, ఆయన వాటిని ఇస్తాడని నమ్మడం ద్వారా మనం అనవసరమైన ఆందోళనల నుండి విడుదల పొందుతాము."
+    ]
+  },
+  {
+    number: 51,
+    title: "లార్డ్స్ డే 51 (Lord's Day 51)",
+    subtitle: "మా అపరాధములను క్షమించుము (Forgive Us Our Debts)",
+    entries: [
+      {
+        id: 125,
+        lordsDay: 51,
+        questionNumber: 126,
+        question: "ఐదవ విన్నపము (Fifth Petition) ఏమిటి?",
+        answer: "\"మా యెడల అపరాధము చేసినవారిని మేము క్షమించియున్న ప్రకారము మా అపరాధములను క్షమించుము.\" దీని అర్థం:\n\nమా పాపములన్నిటిని మరియు మాలో ఇంకా నిలిచి ఉన్న చెడు స్వభావాన్ని బట్టి, మాపై ఉన్న తీర్పును క్రీస్తు రక్తము ద్వారా ఉచితముగా క్షమించుము. [1] మా వంటి దీనుల విన్నపమును నీవు ఆలకిస్తావని మాకు కలిగే సాక్ష్యం ఏమిటంటే—నీ కృప ద్వారా, మా యెడల తప్పు చేసిన వారిని మేము హృదయపూర్వకంగా క్షమించాలని నిశ్చయించుకోవడమే. [2]",
+        scriptureReferences: [
+          { id: "1", text: "కీర్తనలు 51:1; 1 యోహాను 1:7 – \"దేవా, నీ కృప చొప్పున నన్ను కరుణించుము... ఆయన కుమారుడైన యేసు రక్తము ప్రతి పాపము నుండి మనలను పవిత్రులనుగా చేయును.\"" },
+          { id: "2", text: "మత్తయి 6:14-15; 18:35 – \"మనుష్యుల అపరాధములను మీరు క్షమించిన యెడల, మీ పరలోకపు తండ్రియు మీ అపరాధములను క్షమించును.\"" }
+        ]
+      }
+    ],
+    insights: [
+      "Sin as Debt (అప్పుగా పాపం): పాపం అంటే కేవలం తప్పు చేయడం కాదు; అది దేవుని నీతికి మనం చెల్లించలేనంత పెద్ద అప్పు. ఈ అప్పును మనం తీర్చలేము కాబట్టి, దేవుడు దానిని క్రీస్తు ఖాతాలో వేసి మనల్ని \"క్షమించాడు.\"",
+      "The \"As We Forgive\" Clause: మనం ఇతరులను క్షమిస్తేనే దేవుడు మనల్ని క్షమిస్తాడని దీని అర్థం కాదు. కానీ, దేవుని క్షమాపణను నిజంగా రుచి చూసిన హృదయం ఇతరులను క్షమించకుండా ఉండలేదు.",
+      "Daily Cleansing: బాప్తిస్మము ద్వారా మనం ఒకేసారి రక్షించబడినప్పటికీ, మన ప్రయాణంలో ప్రతిరోజూ మన పాదాలకు అంటుకునే మురికిని కడుక్కోవడానికి ఈ ప్రార్థన అవసరం."
     ]
   }
 ];
