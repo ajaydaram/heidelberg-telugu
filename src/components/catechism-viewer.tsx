@@ -24,10 +24,18 @@ export function CatechismViewer({ day, isReadingMode }: CatechismViewerProps) {
         )}>
           {day.title}
         </h2>
+        {day.subtitle && (
+          <p className={cn(
+            "font-headline text-foreground/60 mt-1",
+            isReadingMode ? "text-2xl md:text-3xl" : "text-xl md:text-2xl"
+          )}>
+            {day.subtitle}
+          </p>
+        )}
         <div className="mt-4 w-24 h-1 bg-accent mx-auto rounded-full opacity-60" />
       </div>
 
-      <div className="space-y-8 md:space-y-12">
+      <div className="space-y-12 md:space-y-16">
         {day.entries.map((entry) => (
           <div key={entry.id} className="group">
             <div className="flex flex-col space-y-4">
@@ -46,15 +54,32 @@ export function CatechismViewer({ day, isReadingMode }: CatechismViewerProps) {
               </div>
               
               <div className={cn(
-                "telugu-content text-foreground/80 pl-5",
+                "telugu-content text-foreground/80 pl-5 whitespace-pre-wrap",
                 isReadingMode ? "text-xl md:text-2xl leading-relaxed" : "text-lg md:text-xl"
               )}>
                 <span className="font-headline font-bold text-primary block mb-2 opacity-80">జవాబు:</span>
                 {entry.answer}
               </div>
+
+              {entry.scriptureReferences && entry.scriptureReferences.length > 0 && (
+                <div className={cn(
+                  "mt-6 pl-5 pt-6 border-t border-accent/20",
+                  isReadingMode ? "max-w-2xl" : ""
+                )}>
+                  <h4 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3">లేఖన ఆధారాలు (Scripture Footnotes)</h4>
+                  <ul className="space-y-2">
+                    {entry.scriptureReferences.map((ref) => (
+                      <li key={ref.id} className="text-sm md:text-base text-muted-foreground telugu-content flex gap-2">
+                        <span className="font-bold text-primary/60">[{ref.id}]</span>
+                        <span>{ref.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
             {!isReadingMode && (
-              <div className="mt-8 border-b border-border/50 group-last:border-0" />
+              <div className="mt-12 border-b border-border/30 group-last:border-0" />
             )}
           </div>
         ))}
