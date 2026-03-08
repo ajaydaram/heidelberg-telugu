@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { LordsDay } from "@/app/lib/data/catechism-data"
 import { Badge } from "@/components/ui/badge"
