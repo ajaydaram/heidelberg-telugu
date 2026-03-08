@@ -1,9 +1,11 @@
+
 "use client"
 
 import * as React from "react"
 import { CATECHISM_DATA } from "@/app/lib/data/catechism-data"
 import { LordsDayList } from "@/components/lords-day-list"
 import { CatechismViewer } from "@/components/catechism-viewer"
+import { CatechismIntro } from "@/components/catechism-intro"
 import { SearchDialog } from "@/components/search-dialog"
 import { Button } from "@/components/ui/button"
 import { Menu, BookOpen, X } from "lucide-react"
@@ -11,18 +13,23 @@ import { cn } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 export function CatechismDashboard() {
-  const [selectedDayNumber, setSelectedDayNumber] = React.useState(1)
+  const [selectedDayNumber, setSelectedDayNumber] = React.useState(0) // 0 for Intro
   const [isReadingMode, setIsReadingMode] = React.useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
   const isMobile = useIsMobile()
 
-  const selectedDay = CATECHISM_DATA.find(d => d.number === selectedDayNumber) || CATECHISM_DATA[0]
+  const selectedDay = CATECHISM_DATA.find(d => d.number === selectedDayNumber)
 
   const handleSelectDay = (num: number) => {
     setSelectedDayNumber(num)
     setIsMobileMenuOpen(false)
     if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const scrollTarget = document.getElementById('main-content')
+      if (scrollTarget) {
+        scrollTarget.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
   }
 
@@ -39,7 +46,7 @@ export function CatechismDashboard() {
           >
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
-          <h1 className="text-xl md:text-2xl telugu-heading font-bold tracking-tight">జ్ఞాన బోధ</h1>
+          <h1 className="text-xl md:text-2xl telugu-heading font-bold tracking-tight cursor-pointer" onClick={() => handleSelectDay(0)}>జ్ఞాన బోధ</h1>
         </div>
         
         <div className="flex items-center gap-1 md:gap-2">
@@ -76,15 +83,23 @@ export function CatechismDashboard() {
           />
         )}
 
-        <main className={cn(
-          "flex-1 overflow-y-auto transition-all duration-300 touch-pan-y",
+        <main id="main-content" className={cn(
+          "flex-1 overflow-y-auto transition-all duration-300 touch-pan-y scroll-smooth",
           isReadingMode ? "bg-card" : "bg-background"
         )}>
           <div className={cn(
             "mx-auto w-full",
             isReadingMode ? "max-w-3xl py-8 px-4 md:px-12" : "max-w-4xl p-4 md:p-8"
           )}>
-            <CatechismViewer day={selectedDay} isReadingMode={isReadingMode} />
+            {selectedDayNumber === 0 ? (
+              <CatechismIntro isReadingMode={isReadingMode} />
+            ) : selectedDay ? (
+              <CatechismViewer day={selectedDay} isReadingMode={isReadingMode} />
+            ) : (
+              <div className="flex items-center justify-center h-64 text-muted-foreground telugu-text">
+                విషయము కనుగొనబడలేదు.
+              </div>
+            )}
           </div>
         </main>
       </div>
