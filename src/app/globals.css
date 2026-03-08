@@ -6,11 +6,11 @@
 @layer base {
   :root {
     --background: 217 33% 96%;
-    --foreground: 212 40% 15%;
+    --foreground: 212 40% 10%; /* Darker foreground for better contrast (#1a1a1a equivalent) */
     --card: 0 0% 100%;
-    --card-foreground: 212 40% 15%;
+    --card-foreground: 212 40% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 212 40% 15%;
+    --popover-foreground: 212 40% 10%;
     --primary: 212 40% 55%;
     --primary-foreground: 0 0% 100%;
     --secondary: 190 60% 90%;
@@ -56,25 +56,29 @@
   }
   body {
     @apply bg-background text-foreground;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
-/* Telugu Specific Typography with Safe Line Height */
+/* Telugu Specific Typography */
 .telugu-text {
-  font-family: 'Gidugu', serif;
-  line-height: 1.6;
-  @apply text-foreground/90 antialiased;
+  font-family: 'Mandali', sans-serif;
+  line-height: 1.8; /* Strictly 1.8 for long-form reading */
+  @apply text-foreground antialiased;
 }
 
 .telugu-heading {
   font-family: 'Gidugu', serif;
-  line-height: 1.4;
+  line-height: 1.5; /* Room for subscripts */
+  letter-spacing: 0.05em; /* Breathing room for 'vattulu' */
   @apply font-bold text-primary antialiased;
 }
 
 /* Optimized for Mobile Touch */
 @media (max-width: 768px) {
   .telugu-text {
-    line-height: 1.7;
+    line-height: 1.85; /* Slightly more room on mobile */
   }
 }

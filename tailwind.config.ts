@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -10,7 +11,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Hind', 'sans-serif'],
+        body: ['Mandali', 'Hind', 'sans-serif'],
         headline: ['Gidugu', 'serif'],
         code: ['monospace'],
       },
