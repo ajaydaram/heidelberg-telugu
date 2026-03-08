@@ -92,6 +92,23 @@ export function CatechismViewer({ day, isReadingMode }: CatechismViewerProps) {
             )}
           </div>
         ))}
+
+        {day.insights && day.insights.length > 0 && (
+          <div className="mt-16 p-6 md:p-8 bg-primary/5 rounded-2xl border border-primary/10 shadow-inner">
+            <h3 className="telugu-heading text-2xl mb-6 flex items-center gap-3">
+              <span className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm">💡</span>
+              ముఖ్యమైన అంశాలు (Key Insights)
+            </h3>
+            <ul className="space-y-4">
+              {day.insights.map((insight, idx) => (
+                <li key={idx} className="telugu-text text-lg md:text-xl flex gap-3 leading-relaxed">
+                  <span className="text-primary font-bold shrink-0">•</span>
+                  <span>{insight}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   )
