@@ -13,10 +13,6 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    function isOwner(userId) {
-      return isSignedIn() && request.auth.uid == userId;
-    }
-
     // --- Collection Rules ---
 
     /**
@@ -38,7 +34,7 @@ service cloud.firestore {
      * @allow Users to read and write only their own document.
      */
     match /users/{userId} {
-      allow read, write: if isOwner(userId);
+      allow read, write: if isSignedIn() && request.auth.uid == userId;
     }
     
     // Default deny for any paths not explicitly matched above.
