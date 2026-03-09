@@ -1,4 +1,3 @@
-
 "use client"
 
 import * as React from "react"
@@ -27,12 +26,10 @@ interface DocumentViewerProps {
 
 export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
   
-  // Helper to scroll to a specific reference
   const scrollToReference = (itemId: string, refNum: string) => {
     const element = document.getElementById(`ref-${itemId}-${refNum}`);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      // Temporary highlight
       element.classList.add('bg-primary/20', 'ring-2', 'ring-primary/50');
       setTimeout(() => {
         element.classList.remove('bg-primary/20', 'ring-2', 'ring-primary/50');
@@ -40,15 +37,12 @@ export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
     }
   };
 
-  // Helper to parse content for glossary terms, bold tags, and interactive footnotes
   const renderFormattedText = (text: string, itemId: string) => {
     if (!text) return null;
 
-    // Split text into parts based on tags and [n] patterns
     const parts = text.split(/(<glossary term=".*?">.*?<\/glossary>|<b>.*?<\/b>|\[\d+\])/g);
 
     return parts.map((part, index) => {
-      // Handle Glossary Tooltips
       if (part.startsWith('<glossary')) {
         const termMatch = part.match(/term="(.*?)"/);
         const contentMatch = part.match(/>(.*?)<\/glossary>/);
@@ -76,13 +70,11 @@ export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
         );
       }
 
-      // Handle Bold Tags
       if (part.startsWith('<b>')) {
         const content = part.replace(/<\/?b>/g, '');
         return <strong key={index} className="font-bold text-foreground">{content}</strong>;
       }
 
-      // Handle Interactive Footnotes [1]
       const footnoteMatch = part.match(/^\[(\d+)\]$/);
       if (footnoteMatch) {
         const num = footnoteMatch[1];
@@ -179,7 +171,6 @@ export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
                             <p className="text-[10px] uppercase font-bold text-muted-foreground mb-4 telugu-text tracking-widest opacity-70">లేఖన ఆధారాలు</p>
                             <ul className="grid gap-3">
                               {item.scripture.map((ref, i) => {
-                                // Try to extract reference number from start of string (e.g. "1. Romans")
                                 const refMatch = ref.match(/^(\d+)/);
                                 const refId = refMatch ? refMatch[1] : (i + 1).toString();
                                 
