@@ -3,6 +3,8 @@ import './globals.css';
 import { FirebaseClientProvider } from '@/firebase';
 import { Toaster } from '@/components/ui/toaster';
 import { Mandali, Gidugu } from 'next/font/google';
+import { PWAInstallPrompt } from '@/components/pwa-install-prompt';
+import Script from 'next/script';
 
 const mandali = Mandali({
   weight: '400',
@@ -19,8 +21,13 @@ const gidugu = Gidugu({
 });
 
 export const metadata: Metadata = {
-  title: 'జ్ఞాన నిధి - Christian Creeds & Catechisms Library',
+  title: 'జ్ఞాన నిధి - క్రైస్తవ విశ్వాస ప్రమాణాలు',
   description: 'క్రైస్తవ విశ్వాస ప్రమాణాల గ్రంథాలయం - తెలుగు అనువాదం',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'జ్ఞాన నిధి',
+  },
 };
 
 export const viewport: Viewport = {
@@ -28,6 +35,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
@@ -45,7 +53,26 @@ export default function RootLayout({
         <FirebaseClientProvider>
           {children}
           <Toaster />
+          <PWAInstallPrompt />
         </FirebaseClientProvider>
+        
+        {/* Service Worker Registration */}
+        <Script id="register-sw" strategy="afterInteractive">
+          {`
+            if ('serviceWorker' in navigator) {
+              window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').then(
+                  function(registration) {
+                    console.log('Service Worker registration successful with scope: ', registration.scope);
+                  },
+                  function(err) {
+                    console.log('Service Worker registration failed: ', err);
+                  }
+                );
+              });
+            }
+          `}
+        </Script>
       </body>
     </html>
   );
