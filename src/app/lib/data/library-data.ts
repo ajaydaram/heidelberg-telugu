@@ -1,6 +1,6 @@
 
 export type DocType = 'catechism' | 'confession';
-export type Category = 'Ecumenical' | 'Reformed' | 'Baptist' | 'Lutheran';
+export type Category = 'Ecumenical' | 'Reformed' | 'Lutheran' | 'Anglican' | 'Baptist' | 'Presbyterian' | 'Congregational' | 'Modern';
 
 export interface LibraryItem {
   id: string;
@@ -29,6 +29,71 @@ export interface LibraryDocument {
 }
 
 export const LIBRARY_DATA: LibraryDocument[] = [
+  // --- ECUMENICAL ---
+  {
+    id: "apostles-creed",
+    title_te: "అపోస్తలుల విశ్వాస ప్రమాణము",
+    title_en: "Apostles' Creed",
+    year: 650,
+    category: "Ecumenical",
+    type: "confession",
+    sections: [{
+      id: "ac-1", title: "ప్రమాణము",
+      items: [{ id: "ac-i1", title: "విశ్వాసం", content: "భూమ్యాకాశములను సృజించిన సర్వశక్తిగల తండ్రియైన దేవుని నేను నమ్ముచున్నాను..." }]
+    }]
+  },
+  {
+    id: "nicene-creed",
+    title_te: "నిసియా విశ్వాస ప్రమాణము",
+    title_en: "Nicene Creed",
+    year: 381,
+    category: "Ecumenical",
+    type: "confession",
+    sections: [{
+      id: "nc-1", title: "ప్రమాణము",
+      items: [{ id: "nc-i1", title: "త్రిత్వము", content: "దృశ్యాదృశ్యమైన సమస్తమును సృజించిన సర్వశక్తిగల తండ్రియైన అద్వితీయ దేవుని నమ్ముచున్నాము..." }]
+    }]
+  },
+  {
+    id: "chalcedonian-creed",
+    title_te: "కాల్సిడోనియన్ విశ్వాస ప్రమాణము",
+    title_en: "Chalcedonian Creed",
+    year: 451,
+    category: "Ecumenical",
+    type: "confession",
+    sections: [{ id: "cc-1", title: "క్రీస్తు స్వభావము", items: [{ id: "cc-i1", content: "మనం మన ప్రభువైన యేసుక్రీస్తును ఒక్కరిగాను, పరిపూర్ణ దైవత్వమును, పరిపూర్ణ మానవత్వమును కలిగిన వానిగా ఒప్పుకుంటున్నాము..." }] }]
+  },
+  {
+    id: "athanasian-creed",
+    title_te: "అథనాసియన్ విశ్వాస ప్రమాణము",
+    title_en: "Athanasian Creed",
+    year: 800,
+    category: "Ecumenical",
+    type: "confession",
+    sections: [{ id: "at-1", title: "త్రిత్వ సత్యము", items: [{ id: "at-i1", content: "త్రిత్వమందున్న దేవునిని ఆరాధించడం సార్వత్రిక విశ్వాసం..." }] }]
+  },
+
+  // --- LUTHERAN ---
+  {
+    id: "luther-small-catechism",
+    title_te: "లూథర్ చిన్న కాటెకిజమ్",
+    title_en: "Luther's Small Catechism",
+    year: 1529,
+    category: "Lutheran",
+    type: "catechism",
+    sections: [{ id: "lsc-1", title: "పది ఆజ్ఞలు", items: [{ id: "lsc-q1", number: 1, question: "మొదటి ఆజ్ఞ అంటే ఏమిటి?", answer: "నేనే నీ దేవుడైన యెహోవాను. నా యెదుట నీకు వేరొక దేవుడు ఉండకూడదు." }] }]
+  },
+  {
+    id: "augsburg-confession",
+    title_te: "ఆగ్స్‌బర్గ్ విశ్వాస ప్రమాణము",
+    title_en: "Augsburg Confession",
+    year: 1530,
+    category: "Lutheran",
+    type: "confession",
+    sections: [{ id: "ac-1", title: "దైవత్వము", items: [{ id: "ac-i1", content: "దేవుడు ఒక్కడే అని, ఆయనలో మూడు వ్యక్తులు ఉన్నారని మేము బోధిస్తున్నాము..." }] }]
+  },
+
+  // --- REFORMED ---
   {
     id: "heidelberg",
     title_te: "హీడెల్‌బర్గ్ కాటెకిజమ్",
@@ -36,73 +101,117 @@ export const LIBRARY_DATA: LibraryDocument[] = [
     year: 1563,
     category: "Reformed",
     type: "catechism",
-    sections: [
-      {
-        id: "day-1",
-        title: "లార్డ్స్ డే 1",
-        items: [
-          {
-            id: "q1",
-            number: 1,
-            question: "జీవితంలోను, మరణంలోను నీ ఏకైక ఆదరణ ఏమిటి?",
-            answer: "నేను నా సొంతవాడను కాను, కానీ నా నమ్మకమైన రక్షకుడైన యేసుక్రీస్తుకు చెందినవాడను. ఆయన తన అమూల్యమైన రక్తముతో నా పాపములన్నిటికీ పూర్తి ప్రాయశ్చిత్తము చేసి, నన్ను అపవాది యొక్క అధికారము నుండి విడిపించాడు.",
-            scripture: ["1 కొరింథీయులకు 6:19-20", "రోమీయులకు 14:8"]
-          }
-        ]
-      }
-    ]
+    sections: [{
+      id: "h-1", title: "ఏకైక ఆదరణ",
+      items: [{ id: "h-q1", number: 1, question: "జీవితంలోను, మరణంలోను నీ ఏకైక ఆదరణ ఏమిటి?", answer: "నేను నా సొంతవాడను కాను, కానీ నా నమ్మకమైన రక్షకుడైన యేసుక్రీస్తుకు చెందినవాడను..." }]
+    }]
   },
   {
-    id: "nicene-creed",
-    title_te: "నిసియా విశ్వాస ప్రమాణము",
-    title_en: "Nicene Creed",
-    year: 325,
-    category: "Ecumenical",
+    id: "belgic-confession",
+    title_te: "బెల్జిక్ విశ్వాస ప్రమాణము",
+    title_en: "Belgic Confession",
+    year: 1561,
+    category: "Reformed",
     type: "confession",
-    sections: [
-      {
-        id: "nicene-body",
-        title: "ప్రమాణము",
-        items: [
-          {
-            id: "nicene-1",
-            title: "తండ్రి",
-            content: "దృశ్యాదృశ్యమైన సమస్తమును సృజించిన సర్వశక్తిగల తండ్రియైన అద్వితీయ దేవుని నమ్ముచున్నాము."
-          },
-          {
-            id: "nicene-2",
-            title: "కుమారుడు",
-            content: "దేవుని అద్వితీయ కుమారుడును, సమస్త యుగములకు పూర్వము తండ్రి నుండి జన్మించినవాడును, వెలుగు నుండి వెలుగును, నిజమైన దేవుని నుండి నిజమైన దేవుడునైన అద్వితీయ ప్రభువైన యేసుక్రీస్తును నమ్ముచున్నాము."
-          },
-          {
-            id: "nicene-3",
-            title: "పరిశుద్ధాత్మ",
-            content: "ప్రభువును జీవప్రదాతయునైన పరిశుద్ధాత్మను నమ్ముచున్నాము. ఆయన తండ్రి నుండియు కుమారుని నుండియు బయలువెడలి, తండ్రితోను కుమారునితోను సమానముగా ఆరాధింపబడి మహిమపరచబడుచున్నాడు."
-          }
-        ]
-      }
-    ]
+    sections: [{ id: "bc-1", title: "దేవుని జ్ఞానము", items: [{ id: "bc-i1", content: "దేవుడు ఒక్కడే అని, ఆయన సకల సంపూర్ణతకు మూలమని మేము నమ్ముతున్నాము..." }] }]
   },
   {
-    id: "apostles-creed",
-    title_te: "అపోస్తలుల విశ్వాస ప్రమాణము",
-    title_en: "Apostles' Creed",
-    year: 150,
-    category: "Ecumenical",
+    id: "canons-of-dort",
+    title_te: "డోర్ట్ నియమావళి",
+    title_en: "Canons of Dort",
+    year: 1619,
+    category: "Reformed",
     type: "confession",
-    sections: [
-      {
-        id: "creed-body",
-        title: "ప్రమాణము",
-        items: [
-          {
-            id: "art1",
-            title: "విశ్వాసము",
-            content: "భూమ్యాకాశములను సృజించిన సర్వశక్తిగల తండ్రియైన దేవుని నేను నమ్ముచున్నాను. ఆయన ఏక కుమారుడును మన ప్రభువైన యేసుక్రీస్తును నమ్ముచున్నాను. ఈయన పరిశుద్ధాత్మ వలన గర్భమున ధరింపబడి, కన్యయైన మరియకు పుట్టి..."
-          }
-        ]
-      }
-    ]
+    sections: [{ id: "cd-1", title: "దైవిక ఎన్నిక", items: [{ id: "cd-i1", content: "దేవుడు తన కృప చేత కొందరిని రక్షణకు ఎన్నుకున్నాడు..." }] }]
+  },
+
+  // --- ANGLICAN ---
+  {
+    id: "thirty-nine-articles",
+    title_te: "ముప్పై తొమ్మిది నిబంధనలు",
+    title_en: "Thirty-Nine Articles",
+    year: 1562,
+    category: "Anglican",
+    type: "confession",
+    sections: [{ id: "39a-1", title: "పరిశుద్ధ త్రిత్వము", items: [{ id: "39a-i1", content: "దేవుడు ఒక్కడే, ఆయన జీవము గలవాడు మరియు సత్యవంతుడు..." }] }]
+  },
+  {
+    id: "anglican-catechism",
+    title_te: "ఆంగ్లికన్ కాటెకిజమ్",
+    title_en: "Anglican Catechism",
+    year: 1662,
+    category: "Anglican",
+    type: "catechism",
+    sections: [{ id: "ang-c1", title: "బాప్తిస్మము", items: [{ id: "ang-q1", number: 1, question: "నీ పేరు ఏమిటి?", answer: "నాకు బాప్తిస్మము ఇచ్చినప్పుడు ఈ పేరు పెట్టబడింది." }] }]
+  },
+
+  // --- PRESBYTERIAN (Westminster) ---
+  {
+    id: "westminster-confession",
+    title_te: "వెస్ట్‌మినిస్టర్ విశ్వాస ప్రమాణము",
+    title_en: "Westminster Confession",
+    year: 1647,
+    category: "Presbyterian",
+    type: "confession",
+    sections: [{ id: "wc-1", title: "పరిశుద్ధ లేఖనము", items: [{ id: "wc-i1", content: "ప్రకృతి వెలుగు దేవుని ఉనికిని చాటినప్పటికీ, రక్షణకు లేఖనములు అత్యవసరము..." }] }]
+  },
+  {
+    id: "westminster-shorter-catechism",
+    title_te: "వెస్ట్‌మినిస్టర్ చిన్న కాటెకిజమ్",
+    title_en: "Westminster Shorter Catechism",
+    year: 1648,
+    category: "Presbyterian",
+    type: "catechism",
+    sections: [{ id: "wsc-1", title: "నరుని ముఖ్య ఉద్దేశ్యం", items: [{ id: "wsc-q1", number: 1, question: "నరుని ముఖ్య ఉద్దేశ్యం ఏమిటి?", answer: "దేవునిని మహిమపరచడం మరియు ఆయనను నిరంతరము ఆనందించడం." }] }]
+  },
+
+  // --- BAPTIST ---
+  {
+    id: "london-baptist-confession",
+    title_te: "లండన్ బాప్టిస్ట్ విశ్వాస ప్రమాణము",
+    title_en: "London Baptist Confession",
+    year: 1689,
+    category: "Baptist",
+    type: "confession",
+    sections: [{ id: "lbc-1", title: "లేఖనములు", items: [{ id: "lbc-i1", content: "పరిశుద్ధ లేఖనములే విశ్వాసమునకు మరియు జీవితమునకు ఏకైక నియమము..." }] }]
+  },
+  {
+    id: "keach-catechism",
+    title_te: "కీచ్ కాటెకిజమ్",
+    title_en: "Keach’s Catechism",
+    year: 1693,
+    category: "Baptist",
+    type: "catechism",
+    sections: [{ id: "kc-1", title: "సృష్టి", items: [{ id: "kc-q1", number: 1, question: "దేవుడు మనల్ని ఎందుకు సృష్టించాడు?", answer: "తన మహిమ కొరకు దేవుడు మనల్ని సృష్టించాడు." }] }]
+  },
+
+  // --- MODERN ---
+  {
+    id: "barmen-declaration",
+    title_te: "బార్మెన్ ప్రకటన",
+    title_en: "Barmen Declaration",
+    year: 1934,
+    category: "Modern",
+    type: "confession",
+    sections: [{ id: "bd-1", title: "క్రీస్తు అధికారం", items: [{ id: "bd-i1", content: "యేసుక్రీస్తు మాత్రమే దేవుని యొక్క ఏకైక వాక్యము..." }] }]
+  },
+  {
+    id: "chicago-statement",
+    title_te: "చికాగో ప్రకటన (బైబిలు సత్యము)",
+    title_en: "Chicago Statement",
+    year: 1978,
+    category: "Modern",
+    type: "confession",
+    sections: [{ id: "cs-1", title: "లేఖనాల అధికారం", items: [{ id: "cs-i1", content: "బైబిలు దైవప్రేరణ ద్వారా ఇవ్వబడింది మరియు అది అమోఘమైనది..." }] }]
+  },
+  {
+    id: "nashville-statement",
+    title_te: "నాష్‌విల్ ప్రకటన",
+    title_en: "Nashville Statement",
+    year: 2017,
+    category: "Modern",
+    type: "confession",
+    sections: [{ id: "ns-1", title: "వివాహము మరియు లింగము", items: [{ id: "ns-i1", content: "దేవుడు మనుష్యులను పురుషులుగాను మరియు స్త్రీలుగాను సృష్టించాడు..." }] }]
   }
 ];
 
@@ -110,7 +219,7 @@ export function getLibraryFullText(): string {
   return LIBRARY_DATA.map(doc => {
     const sectionsText = doc.sections.map(s => {
       const itemsText = s.items.map(i => {
-        return `${doc.type === 'catechism' ? 'ప్రశ్న ' + i.number + ': ' + i.question + ' జవాబు: ' + i.answer : i.title + ': ' + i.content}`;
+        return `${doc.type === 'catechism' ? 'ప్రశ్న ' + i.number + ': ' + i.question + ' జవాబు: ' + i.answer : (i.title || 'ఆర్టికల్') + ': ' + i.content}`;
       }).join('\n');
       return `${s.title}:\n${itemsText}`;
     }).join('\n');
