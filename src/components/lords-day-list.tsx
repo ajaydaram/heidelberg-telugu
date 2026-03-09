@@ -1,4 +1,3 @@
-
 "use client"
 
 import * as React from "react"
@@ -45,7 +44,7 @@ export function LordsDayList({ data, selectedNumber, onSelect, completedDays }: 
           </button>
 
           <div className="px-2 py-2 text-xs font-bold text-muted-foreground uppercase tracking-widest telugu-text opacity-50">
-            ప్రభువు దినములు (Lord's Days)
+            ప్రభు దినములు (Lord's Days)
           </div>
 
           {data.map((day) => {

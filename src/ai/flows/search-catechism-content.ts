@@ -20,9 +20,9 @@ const SearchCatechismContentInputSchema = z.object({
   query: z.string().describe('The natural language query in Telugu to search the Catechism text.'),
   catechismText: z.string().describe(
     'The entire Heidelberg Catechism text in Telugu. ' +
-    'It is structured, where each section starts with "ప్రభువు దినము <number>:", ' +
+    'It is structured, where each section starts with "ప్రభు దినము <number>:", ' +
     'followed by "ప్రశ్న <number>:" and "జవాబు <number>:". ' +
-    'Example format: "ప్రభువు దినము 1: ప్రశ్న 1: మీ యొక్క ఏకైక ఊరట ఏమిటి? జవాబు 1: ..."'
+    'Example format: "ప్రభు దినము 1: ప్రశ్న 1: మీ యొక్క ఏకైక ఊరట ఏమిటి? జవాబు 1: ..."'
   ),
 });
 export type SearchCatechismContentInput = z.infer<typeof SearchCatechismContentInputSchema>;
@@ -42,14 +42,14 @@ const searchCatechismContentPrompt = ai.definePrompt({
   input: {schema: SearchCatechismContentInputSchema},
   output: {schema: SearchCatechismContentOutputSchema},
   prompt: `మీరు తెలుగులో హీడెల్‌బర్గ్ కాటెకిజమ్ టెక్స్ట్ ద్వారా శోధించడానికి సహాయపడే ఒక నిపుణులైన శోధన ఇంజిన్.
-మీకు "catechismText" అనే టెక్స్ట్ అందించబడుతుంది, ఇది "ప్రభువు దినము <number>:", "ప్రశ్న <number>:" మరియు "జవాబు <number>:" వంటి శీర్షికలతో నిర్మాణాత్మకంగా ఉంటుంది.
+మీకు "catechismText" అనే టెక్స్ట్ అందించబడుతుంది, ఇది "ప్రభు దినము <number>:", "ప్రశ్న <number>:" మరియు "జవాబు <number>:" వంటి శీర్షికలతో నిర్మాణాత్మకంగా ఉంటుంది.
 
 వినియోగదారు అడిగిన "query" ఆధారంగా "catechismText" నుండి అత్యంత సంబంధిత భాగాలను కనుగొనండి.
 ప్రతి సంబంధిత భాగం కోసం, "lordsDayNumber", "question" మరియు "answer" లను ఖచ్చితంగా సంగ్రహించండి.
 సంబంధిత భాగాలను కనుగొన్న తర్వాత, క్వెరీని అవి ఎలా పరిష్కరిస్తాయో తెలుగులో సంక్షిప్త సారాంశాన్ని "summary" లో అందించండి.
 ఎక్కువ సంబంధిత ఫలితాలు లేకపోతే, ఖాళీ "relevantPassages" శ్రేణిని తిరిగి ఇవ్వండి మరియు అది ఎందుకు జరిగిందో వివరించే సారాంశాన్ని అందించండి.
 
-ఉదాహరణకు, మీరు "ప్రభువు దినము 1:" తర్వాత "ప్రశ్న 1: మీ యొక్క ఏకైక ఊరట ఏమిటి?" మరియు "జవాబు 1: జీవించినా చనిపోయినా నేను నా సొంతం కాను, కానీ నా నమ్మకమైన రక్షకుడైన యేసుక్రీస్తు సొంతం." అనే టెక్స్ట్ ను కనుగొనవచ్చు.
+ఉదాహరణకు, మీరు "ప్రభు దినము 1:" తర్వాత "ప్రశ్న 1: మీ యొక్క ఏకైక ఊరట ఏమిటి?" మరియు "జవాబు 1: జీవించినా చనిపోయినా నేను నా సొంతం కాను, కానీ నా నమ్మకమైన రక్షకుడైన యేసుక్రీస్తు సొంతం." అనే టెక్స్ట్ ను కనుగొనవచ్చు.
 
 మీరు ఈ క్రింది "query" కోసం శోధిస్తున్నారు: "{{{query}}}"
 
