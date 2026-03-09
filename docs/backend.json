@@ -1,90 +1,126 @@
-
 {
   "entities": {
-    "DocumentMetadata": {
+    "LordSDay": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "DocumentMetadata",
+      "title": "LordSDay",
       "type": "object",
-      "description": "Metadata for a creed, confession, or catechism.",
+      "description": "Represents one of the 52 'Lord's Days' from the Heidelberg Catechism, containing its question and answer.",
       "properties": {
-        "id": { "type": "string" },
-        "title_te": { "type": "string", "description": "Telugu title" },
-        "title_en": { "type": "string", "description": "English title" },
-        "year": { "type": "number" },
-        "category": { 
-          "type": "string", 
-          "enum": ["Ecumenical", "Reformed", "Baptist", "Lutheran", "Other"] 
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Lord's Day entity."
         },
-        "type": { 
-          "type": "string", 
-          "enum": ["catechism", "confession"] 
+        "dayNumber": {
+          "type": "number",
+          "description": "The sequential number of the Lord's Day (1 to 52)."
+        },
+        "titleTelugu": {
+          "type": "string",
+          "description": "The title of the Lord's Day in Telugu (e.g., 'ప్రభువు దినము 1')."
+        },
+        "questionTelugu": {
+          "type": "string",
+          "description": "The full text of the Catechism question for this Lord's Day in Telugu."
+        },
+        "answerTelugu": {
+          "type": "string",
+          "description": "The full text of the Catechism answer for this Lord's Day in Telugu."
         }
       },
-      "required": ["id", "title_te", "category", "type"]
+      "required": [
+        "id",
+        "dayNumber",
+        "titleTelugu",
+        "questionTelugu",
+        "answerTelugu"
+      ]
     },
-    "DocumentContent": {
+    "BibleVerseCitation": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "DocumentContent",
+      "title": "BibleVerseCitation",
       "type": "object",
-      "description": "The actual content of a document, organized by sections.",
+      "description": "Represents a specific Bible verse, its text, and associated footnotes from the 1689 Baptist Confession, as it is cited within a Lord's Day's answer.",
       "properties": {
-        "sections": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "title": { "type": "string" },
-              "items": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "number": { "type": "number" },
-                    "title": { "type": "string" },
-                    "question": { "type": "string" },
-                    "answer": { "type": "string" },
-                    "content": { "type": "string" },
-                    "scripture": { "type": "array", "items": { "type": "string" } }
-                  }
-                }
-              }
-            }
-          }
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the BibleVerseCitation entity."
+        },
+        "lordSDayId": {
+          "type": "string",
+          "description": "Reference to the Lord'sDay entity that cites this Bible verse. (Relationship: Lord'sDay 1:N BibleVerseCitation)"
+        },
+        "order": {
+          "type": "number",
+          "description": "The display order of this citation within its Lord's Day's content, if multiple verses are cited."
+        },
+        "referenceTelugu": {
+          "type": "string",
+          "description": "The Bible book, chapter, and verse reference in Telugu (e.g., 'యోహాను 3:16')."
+        },
+        "verseTextTelugu": {
+          "type": "string",
+          "description": "The full text of the Bible verse in Telugu as it appears in the Catechism's context."
+        },
+        "footnoteTextTelugu": {
+          "type": "string",
+          "description": "The text of the footnote from the 1689 Baptist Confession associated with this specific citation in Telugu. If multiple notes exist for one citation, they should be combined into a single string."
         }
-      }
-    },
-    "UserProfile": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "UserProfile",
-      "type": "object",
-      "properties": {
-        "favorites": { "type": "array", "items": { "type": "string" } },
-        "completedSections": { "type": "array", "items": { "type": "string" } },
-        "theme": { "type": "string", "enum": ["light", "dark"] }
-      }
+      },
+      "required": [
+        "id",
+        "lordSDayId",
+        "order",
+        "referenceTelugu",
+        "verseTextTelugu",
+        "footnoteTextTelugu"
+      ]
     }
   },
   "auth": {
-    "providers": ["anonymous"]
+    "providers": [
+      "password",
+      "anonymous"
+    ]
   },
   "firestore": {
     "structure": [
       {
-        "path": "/documents/{docId}",
+        "path": "/lordSDays/{lordSDayId}",
         "definition": {
-          "entityName": "DocumentMetadata",
-          "schema": { "$ref": "#/backend/entities/DocumentMetadata" },
-          "description": "Public creeds and catechisms."
+          "entityName": "LordSDay",
+          "schema": {
+            "$ref": "#/backend/entities/LordSDay"
+          },
+          "description": "Top-level collection for all 52 'Lord's Day' entries of the Heidelberg Catechism. Each document contains the title, question, and answer in Telugu. All documents are publicly readable, facilitating the main list view.",
+          "params": [
+            {
+              "name": "lordSDayId",
+              "description": "The unique identifier for a specific Lord's Day."
+            }
+          ]
         }
       },
       {
-        "path": "/users/{userId}",
+        "path": "/lordSDays/{lordSDayId}/bibleVerseCitations/{bibleVerseCitationId}",
         "definition": {
-          "entityName": "UserProfile",
-          "schema": { "$ref": "#/backend/entities/UserProfile" },
-          "description": "User progress and settings."
+          "entityName": "BibleVerseCitation",
+          "schema": {
+            "$ref": "#/backend/entities/BibleVerseCitation"
+          },
+          "description": "Subcollection storing Bible verse citations and their 1689 Baptist Confession footnotes. These documents are directly nested under their respective 'Lord's Day', providing a hierarchical structure for all related content. All documents are publicly readable. Includes denormalized 'lordSDayId' for explicit parent linkage and query flexibility, even though not strictly needed for public authorization.",
+          "params": [
+            {
+              "name": "lordSDayId",
+              "description": "The unique identifier of the parent Lord's Day."
+            },
+            {
+              "name": "bibleVerseCitationId",
+              "description": "The unique identifier for a specific Bible verse citation within a Lord's Day."
+            }
+          ]
         }
       }
-    ]
+    ],
+    "reasoning": "The recommended Firestore structure prioritizes clarity, performance for public reads, and simple security rules. The core principle applied here is **Structural Segregation** and **Hierarchical Pathing** for read-only content. The `LordSDay` entities are stored in a top-level collection, `/lordSDays`, where each document represents one of the 52 Lord's Days. This allows for efficient retrieval of the list view.\n\nTo address the request for displaying 'bible verses with footnotes' in conjunction with the 'Lord's Days', the `BibleVerseCitation` entities are nested as a subcollection under their respective `LordSDay` documents: `/lordSDays/{lordSDayId}/bibleVerseCitations/{bibleVerseCitationId}`. This design naturally groups citations with their parent Lord's Day, making it straightforward to fetch all relevant citations when a user views a specific Lord's Day's detail page.\n\n**Authorization Independence:** Since all content (Lord's Days and their Bible verse citations) is intended to be publicly readable, there are no complex authorization dependencies. Security rules will simply allow public read access for both collections (`allow read: if true;`). The use of subcollections, while creating a logical parent-child relationship, does not introduce authorization dependencies that would require `get()` calls in rules because the access predicate for both parent and child is identical (public read). The `lordSDayId` field is explicitly included in the `BibleVerseCitation` schema, reinforcing the parent-child link, which can be useful for data integrity checks if write rules were ever to be implemented, without requiring a `get()` to the parent document.\n\n**QAPs (Queries Are Not Filters):**\n1.  **Lord's Day List View:** The `/lordSDays` collection perfectly supports the 'List View showing 52 Lord's Days'. A simple query like `db.collection('lordSDays').orderBy('dayNumber').get()` will retrieve all documents, and all retrieved documents are authorized for read access. There's no need for security rules to filter results, as all documents in this collection share the same public access posture.\n2.  **Catechism Detail View with Bible Verses:** When a user navigates to a specific Lord's Day's detail, retrieving its associated Bible verses is done via a subcollection query: `db.collection('lordSDays').doc(lordSDayId).collection('bibleVerseCitations').orderBy('order').get()`. This query directly fetches all relevant citations for that specific Lord's Day. Again, all documents in this subcollection are authorized for read access, fulfilling the QAP principle by not requiring rules to filter a broader query result set. The `order` field within `BibleVerseCitation` ensures predictable display order."
   }
 }

@@ -3,43 +3,53 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * CORE PHILOSOPHY:
-     * This ruleset protects the canonical Heidelberg Catechism content while 
-     * allowing users to manage their own progress and favorites.
+     * @description Core Philosophy: This ruleset implements a public-read, write-protected model for theological content.
+     * 
+     * Data Structure:
+     * - /lordSDays/{lordSDayId}: Root collection for Heidelberg Catechism entries.
+     * - /lordSDays/{lordSDayId}/bibleVerseCitations/{bibleVerseCitationId}: Nested citations and footnotes.
+     * 
+     * Key Security Decisions:
+     * - Read-Only Public Access: All catechism content and bible verse citations are publicly readable to facilitate 
+     *   unrestricted access to the app's primary educational content.
+     * - Immutable Production Data: Since the IR does not define an administrative role or ownership fields 
+     *   for these entities, all write operations (create, update, delete) are strictly denied to all users. 
+     *   This ensures the integrity of the 1689 Baptist Confession and Heidelberg Catechism data.
+     * 
+     * Denormalization for Authorization: 
+     * - The 'BibleVerseCitation' includes a 'lordSDayId'. While not strictly required for public read access, 
+     *   this reinforces the relationship within the document data itself.
      */
-
-    // --- Helper Functions ---
-    function isSignedIn() {
-      return request.auth != null;
-    }
 
     // --- Collection Rules ---
 
     /**
-     * @description Rules for the Lord's Days content.
-     * @allow Public read. Authenticated write for seeding during development.
+     * @description Rules for the Lord's Day entries of the Heidelberg Catechism.
+     * @path /lordSDays/{lordSDayId}
+     * @allow get, list: if true; (Publicly accessible content)
+     * @deny create, update, delete: if false; (Content is read-only for all users)
+     * @principle Public Read with Restricted Writes: Ensures data integrity for static curriculum content.
      */
-    match /lords_days/{lordSDayId} {
-      allow read: if true;
-      allow write: if isSignedIn(); // Allows seeding from the UI
+    match /lordSDays/{lordSDayId} {
+      allow get, list: if true;
       
-      match /catechism_qas/{qaId} {
-        allow read: if true;
-        allow write: if isSignedIn();
+      // CRITICAL: Cannot implement owner-only writes. The 'LordSDay' entity is missing an 'ownerId' or 'authorId' field.
+      allow create, update, delete: if false; // TODO: Add administrative or owner validation once a management role is defined.
+
+      /**
+       * @description Rules for Bible verse citations and 1689 Baptist Confession footnotes.
+       * @path /lordSDays/{lordSDayId}/bibleVerseCitations/{bibleVerseCitationId}
+       * @allow get, list: if true; (Publicly accessible theological citations)
+       * @deny create, update, delete: if false; (Citations are read-only)
+       * @principle Hierarchical Pathing: Groups citations logically under their parent Lord's Day.
+       */
+      match /bibleVerseCitations/{bibleVerseCitationId} {
+        allow get, list: if true;
+
+        // CRITICAL: Cannot implement owner-only writes. The 'BibleVerseCitation' entity is missing an 'ownerId' or 'authorId' field.
+        allow create, update, delete: if false; // TODO: Secure writes with administrative checks if CMS features are added.
       }
     }
 
-    /**
-     * @description Rules for private user profile data.
-     * @allow Users to read and write only their own document.
-     */
-    match /users/{userId} {
-      allow read, write: if isSignedIn() && request.auth.uid == userId;
-    }
-    
-    // Default deny for any paths not explicitly matched above.
-    match /{path=**} {
-      allow read, write: if false;
-    }
   }
 }
