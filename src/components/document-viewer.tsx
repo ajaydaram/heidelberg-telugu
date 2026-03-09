@@ -5,8 +5,10 @@ import { LibraryDocument, LibraryItem } from "@/app/lib/data/library-data"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
-import { Bookmark, Share2, Info, Lightbulb, ChevronRight, ChevronDown } from "lucide-react"
+import { Bookmark, Share2, Info, Lightbulb, ChevronRight, ChevronDown, ListMusic, BookOpenCheck, Settings2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
 import {
   Tooltip,
   TooltipContent,
@@ -19,23 +21,35 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet"
 
 interface DocumentViewerProps {
   document: LibraryDocument
 }
 
 export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
-  
-  const scrollToReference = (itemId: string, refNum: string) => {
-    const element = document.getElementById(`ref-${itemId}-${refNum}`);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      element.classList.add('bg-primary/20', 'ring-2', 'ring-primary/50');
-      setTimeout(() => {
-        element.classList.remove('bg-primary/20', 'ring-2', 'ring-primary/50');
-      }, 2000);
-    }
-  };
+  const [showAllFootnotes, setShowAllFootnotes] = React.useState(false)
+  const [selectedFootnote, setSelectedFootnote] = React.useState<{ itemId: string, refNum: string, content: string } | null>(null)
+
+  const findFootnoteContent = (itemId: string, refNum: string) => {
+    const item = libDoc.sections.flatMap(s => s.items).find(i => i.id === itemId)
+    if (!item || !item.scripture) return "సమాచారం అందుబాటులో లేదు."
+    
+    // Find scripture string that starts with the reference number (e.g., "1. 2 Timothy...")
+    const ref = item.scripture.find(s => s.trim().startsWith(`${refNum}.`))
+    return ref || item.scripture[parseInt(refNum) - 1] || "లేఖనము కనుగొనబడలేదు."
+  }
+
+  const handleFootnoteClick = (itemId: string, refNum: string) => {
+    const content = findFootnoteContent(itemId, refNum)
+    setSelectedFootnote({ itemId, refNum, content })
+  }
 
   const renderFormattedText = (text: string, itemId: string) => {
     if (!text) return null;
@@ -81,8 +95,8 @@ export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
         return (
           <button
             key={index}
-            onClick={() => scrollToReference(itemId, num)}
-            className="inline-flex items-center justify-center w-6 h-6 -translate-y-2 text-[10px] font-bold text-primary hover:text-primary-foreground hover:bg-primary rounded-full transition-all mx-0.5 border border-primary/30 shadow-sm"
+            onClick={() => handleFootnoteClick(itemId, num)}
+            className="inline-flex items-center justify-center w-7 h-7 -translate-y-2 text-[11px] font-bold text-primary hover:text-primary-foreground hover:bg-primary rounded-full transition-all mx-0.5 border-2 border-primary/30 shadow-sm bg-background"
             title={`రిఫరెన్స్ ${num} చూడండి`}
           >
             {num}
@@ -96,7 +110,19 @@ export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 pb-20">
-      <header className="mb-12 text-center">
+      <header className="mb-12 text-center relative">
+        <div className="absolute top-0 right-0 flex items-center gap-2 bg-muted/30 p-2 rounded-xl border md:flex hidden">
+          <Settings2 className="w-4 h-4 text-muted-foreground" />
+          <div className="flex items-center space-x-2">
+            <Switch 
+              id="show-all-refs" 
+              checked={showAllFootnotes} 
+              onCheckedChange={setShowAllFootnotes}
+            />
+            <Label htmlFor="show-all-refs" className="telugu-text text-xs font-bold cursor-pointer">లేఖనాలను ఎల్లప్పుడూ చూపు</Label>
+          </div>
+        </div>
+
         <Badge variant="outline" className="mb-4 px-4 py-1 text-primary border-primary/30 uppercase tracking-tighter">
           {libDoc.category} • {libDoc.year} AD
         </Badge>
@@ -104,6 +130,19 @@ export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
         <p className="text-xl text-muted-foreground italic">{libDoc.title_en}</p>
         <div className="mt-8 w-24 h-1 bg-accent mx-auto rounded-full" />
       </header>
+
+      {/* Mobile Setting Toggle */}
+      <div className="md:hidden flex items-center justify-center gap-4 mb-8 bg-muted/30 p-4 rounded-2xl border-2">
+        <BookOpenCheck className="w-5 h-5 text-primary" />
+        <div className="flex items-center space-x-2">
+          <Switch 
+            id="show-all-refs-mobile" 
+            checked={showAllFootnotes} 
+            onCheckedChange={setShowAllFootnotes}
+          />
+          <Label htmlFor="show-all-refs-mobile" className="telugu-text text-sm font-bold">లేఖనాలను ఎల్లప్పుడూ చూపు</Label>
+        </div>
+      </div>
 
       <div className="space-y-6">
         <Accordion type="single" collapsible className="w-full space-y-4" defaultValue={libDoc.sections[0]?.id}>
@@ -158,19 +197,25 @@ export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
                               <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground"><Share2 className="h-4 w-4" /></Button>
                             </div>
                           </div>
-                          <div className="telugu-text text-xl md:text-2xl leading-[1.8] text-foreground/90 bg-accent/5 p-6 md:p-8 rounded-2xl border border-accent/10">
+                          <div className="telugu-text text-xl md:text-2xl leading-[1.8] text-foreground/90 bg-accent/5 p-6 md:p-8 rounded-2xl border-2 border-accent/10">
                             {renderFormattedText(item.content || '', item.id)}
                           </div>
                         </div>
                       )}
 
-                      {item.scripture && item.scripture.length > 0 && (
-                        <div className="mt-8 pl-5 space-y-4">
-                          <Separator className="opacity-50" />
-                          <div>
-                            <p className="text-[10px] uppercase font-bold text-muted-foreground mb-4 telugu-text tracking-widest opacity-70">లేఖన ఆధారాలు</p>
-                            <ul className="grid gap-3">
-                              {item.scripture.map((ref, i) => {
+                      {/* Bible Verses Display */}
+                      {(showAllFootnotes || (item.scripture && item.scripture.length > 0)) && (
+                        <div className={cn(
+                          "mt-8 pl-5 space-y-4 transition-all duration-500",
+                          !showAllFootnotes && "hidden"
+                        )}>
+                          <Separator className="opacity-50 h-0.5" />
+                          <div className="animate-in slide-in-from-top-2 duration-300">
+                            <p className="text-[10px] uppercase font-bold text-primary mb-4 telugu-text tracking-widest opacity-70 flex items-center gap-2">
+                              <BookOpenCheck className="w-3 h-3" /> లేఖన ఆధారాలు (Bible Verses)
+                            </p>
+                            <ul className="grid gap-4">
+                              {item.scripture?.map((ref, i) => {
                                 const refMatch = ref.match(/^(\d+)/);
                                 const refId = refMatch ? refMatch[1] : (i + 1).toString();
                                 
@@ -178,9 +223,11 @@ export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
                                   <li 
                                     key={i} 
                                     id={`ref-${item.id}-${refId}`}
-                                    className="telugu-text text-base md:text-lg text-muted-foreground flex gap-3 p-2 rounded-lg transition-all duration-500 hover:bg-muted/30"
+                                    className="telugu-text text-base md:text-lg text-foreground/80 flex gap-3 p-4 rounded-xl transition-all duration-500 border border-border/50 bg-muted/20 hover:border-primary/30"
                                   >
-                                    <span className="font-bold text-primary shrink-0 opacity-70">[{refId}]</span>
+                                    <span className="font-bold text-primary shrink-0 opacity-70 bg-primary/10 w-8 h-8 rounded-full flex items-center justify-center text-xs">
+                                      {refId}
+                                    </span>
                                     <span className="leading-relaxed">{ref}</span>
                                   </li>
                                 );
@@ -193,7 +240,7 @@ export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
                   ))}
 
                   {section.insights && section.insights.length > 0 && (
-                    <div className="mt-12 p-6 bg-primary/5 rounded-2xl border border-primary/10 shadow-inner">
+                    <div className="mt-12 p-6 bg-primary/5 rounded-2xl border-2 border-primary/10 shadow-inner">
                       <h3 className="telugu-heading text-xl mb-4 flex items-center gap-3">
                         <Lightbulb className="w-5 h-5 text-primary" />
                         ముఖ్యమైన అంశాలు
@@ -214,6 +261,35 @@ export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
           ))}
         </Accordion>
       </div>
+
+      {/* Side Panel for Footnotes */}
+      <Sheet open={!!selectedFootnote} onOpenChange={(open) => !open && setSelectedFootnote(null)}>
+        <SheetContent side="right" className="sm:max-w-md bg-card border-l-4 border-primary/20 p-0 overflow-hidden">
+          <div className="flex flex-col h-full">
+            <SheetHeader className="p-6 bg-primary/5 border-b">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
+                  {selectedFootnote?.refNum}
+                </div>
+                <SheetTitle className="telugu-heading text-2xl font-bold text-primary">లేఖన ఆధారము</SheetTitle>
+              </div>
+              <SheetDescription className="telugu-text text-sm">
+                ఈ విభాగం యొక్క బైబిలు రిఫరెన్స్ ఇక్కడ ఉంది.
+              </SheetDescription>
+            </SheetHeader>
+            <div className="flex-1 overflow-y-auto p-8 bg-background">
+              <div className="telugu-text text-xl md:text-2xl leading-relaxed text-foreground/90 italic p-6 rounded-2xl bg-accent/5 border-2 border-dashed border-accent/20">
+                "{selectedFootnote?.content}"
+              </div>
+              <div className="mt-12 text-center">
+                <Button variant="outline" className="telugu-text rounded-full" onClick={() => setSelectedFootnote(null)}>
+                  మూసివేయి (Close)
+                </Button>
+              </div>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   )
 }
