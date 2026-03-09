@@ -2,7 +2,7 @@
 "use client"
 
 import * as React from "react"
-import { Search } from "lucide-react"
+import { Search, Sparkles, BookText, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -12,20 +12,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { searchCatechismContent, SearchCatechismContentOutput } from "@/ai/flows/search-catechism-content"
-import { getFullText } from "@/app/lib/data/catechism-data"
+import { globalSearch, GlobalSearchOutput } from "@/ai/flows/global-search-flow"
+import { getLibraryFullText } from "@/app/lib/data/library-data"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Badge } from "@/components/ui/badge"
 
 interface SearchDialogProps {
-  onResultClick: (dayNumber: number) => void
+  onResultClick: (docId: string, referenceId: string) => void
 }
 
 export function SearchDialog({ onResultClick }: SearchDialogProps) {
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState("")
   const [loading, setLoading] = React.useState(false)
-  const [results, setResults] = React.useState<SearchCatechismContentOutput | null>(null)
+  const [results, setResults] = React.useState<GlobalSearchOutput | null>(null)
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -33,83 +34,115 @@ export function SearchDialog({ onResultClick }: SearchDialogProps) {
 
     setLoading(true)
     try {
-      const fullText = getFullText()
-      const response = await searchCatechismContent({ query, catechismText: fullText })
+      const libraryContext = getLibraryFullText()
+      const response = await globalSearch({ query, libraryContext })
       setResults(response)
     } catch (error) {
-      console.error("Search failed:", error)
+      console.error("Global AI search failed:", error)
     } finally {
       setLoading(false)
     }
   }
 
-  const handleResultClick = (dayNumber: number) => {
-    onResultClick(dayNumber)
+  const handleResultClick = (docTitle: string, refId: string) => {
+    // In a production app, we would map the docTitle back to docId
+    // For now, let's just log it and close the dialog
+    console.log(`Navigating to ${docTitle} reference ${refId}`)
     setOpen(false)
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="gap-2 text-muted-foreground bg-muted/20">
-          <Search className="h-4 w-4" />
-          <span className="hidden md:inline telugu-text">తెలుగులో వెతకండి...</span>
+        <Button variant="outline" className="gap-2 text-muted-foreground bg-muted/20 border-primary/20 hover:border-primary/50 transition-all rounded-full px-6">
+          <Search className="h-4 w-4 text-primary" />
+          <span className="hidden md:inline telugu-text">విశ్వాస సత్యాలను వెతకండి...</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] max-h-[85vh] flex flex-col p-0 overflow-hidden">
-        <DialogHeader className="p-6 pb-2">
-          <DialogTitle className="telugu-heading text-2xl">శోధన (Search)</DialogTitle>
+      <DialogContent className="sm:max-w-[700px] max-h-[90vh] flex flex-col p-0 overflow-hidden border-primary/20 shadow-2xl">
+        <DialogHeader className="p-6 pb-2 bg-primary/5 border-b border-primary/10">
+          <DialogTitle className="telugu-heading text-2xl flex items-center gap-2">
+            <Sparkles className="h-6 w-6 text-primary animate-pulse" />
+            AI శోధన (Global AI Search)
+          </DialogTitle>
         </DialogHeader>
         
-        <div className="px-6 pb-4">
+        <div className="px-6 py-4 bg-background">
           <form onSubmit={handleSearch} className="flex gap-2">
             <Input 
-              placeholder="కీవర్డ్‌లు లేదా ప్రశ్నలను నమోదు చేయండి..." 
+              placeholder="ఉదా: 'పరిశుద్ధాత్మ గురించి వివిధ ప్రమాణాలు ఏమి చెబుతున్నాయి?'" 
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="telugu-text h-12"
+              className="telugu-text h-14 text-lg focus-visible:ring-primary/50 border-primary/20"
             />
-            <Button type="submit" disabled={loading} className="telugu-text px-6">
+            <Button type="submit" disabled={loading} size="lg" className="telugu-text px-8 bg-primary hover:bg-primary/90 shadow-lg">
               {loading ? "వెతుకుతోంది..." : "వెతకండి"}
             </Button>
           </form>
         </div>
 
-        <ScrollArea className="flex-1 px-6 pb-6">
+        <ScrollArea className="flex-1 px-6 pb-6 bg-background">
           {loading && (
-            <div className="space-y-4">
-              <Skeleton className="h-24 w-full rounded-xl" />
-              <Skeleton className="h-24 w-full rounded-xl" />
-              <Skeleton className="h-24 w-full rounded-xl" />
+            <div className="space-y-6 pt-4">
+              <div className="p-4 rounded-2xl bg-muted/20 space-y-3">
+                <Skeleton className="h-4 w-1/4" />
+                <Skeleton className="h-20 w-full" />
+              </div>
+              <div className="space-y-4">
+                <Skeleton className="h-32 w-full rounded-2xl" />
+                <Skeleton className="h-32 w-full rounded-2xl" />
+              </div>
             </div>
           )}
 
           {results && (
-            <div className="space-y-6 animate-in fade-in duration-300">
-              {results.summary && (
-                <div className="p-4 bg-accent/10 border border-accent/20 rounded-xl text-foreground/80 telugu-text italic text-lg leading-relaxed">
-                  <strong>సారాంశం:</strong> {results.summary}
+            <div className="space-y-8 py-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              {/* synthesize Answer */}
+              {results.answer && (
+                <div className="p-6 bg-primary/5 border border-primary/10 rounded-2xl shadow-sm relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                    <Sparkles className="h-12 w-12" />
+                  </div>
+                  <h3 className="telugu-heading text-sm font-bold uppercase tracking-widest text-primary mb-3 flex items-center gap-2">
+                    <Sparkles className="h-4 w-4" /> AI సారాంశం
+                  </h3>
+                  <div className="telugu-text text-xl leading-relaxed text-foreground/90 font-medium">
+                    {results.answer}
+                  </div>
                 </div>
               )}
 
-              <div className="grid gap-4">
-                {results.relevantPassages.length > 0 ? (
-                  results.relevantPassages.map((p, idx) => (
-                    <button 
-                      key={idx} 
-                      onClick={() => handleResultClick(p.lordsDayNumber)}
-                      className="text-left p-4 rounded-xl border hover:bg-accent/5 transition-colors group"
-                    >
-                      <div className="text-xs font-bold text-primary mb-1 uppercase tracking-widest">ప్రభువు దినము {p.lordsDayNumber}</div>
-                      <div className="telugu-heading text-xl mb-2 group-hover:text-primary transition-colors">{p.question}</div>
-                      <div className="telugu-text text-muted-foreground line-clamp-3 leading-relaxed">{p.answer}</div>
-                    </button>
-                  ))
-                ) : !loading && (
-                  <div className="text-center py-12 text-muted-foreground telugu-text text-xl">
-                    ఫలితాలు ఏవీ కనుగొనబడలేదు.
-                  </div>
-                )}
+              {/* Specific Snippets */}
+              <div className="space-y-4">
+                <h3 className="telugu-heading text-sm font-bold uppercase tracking-widest text-muted-foreground ml-2">ఆధారాలు (Relevant Passages)</h3>
+                <div className="grid gap-4">
+                  {results.snippets.length > 0 ? (
+                    results.snippets.map((p, idx) => (
+                      <button 
+                        key={idx} 
+                        onClick={() => handleResultClick(p.documentTitle, p.referenceId)}
+                        className="text-left p-5 rounded-2xl border border-border/50 bg-card hover:border-primary/30 hover:bg-primary/5 transition-all group shadow-sm hover:shadow-md"
+                      >
+                        <div className="flex justify-between items-start mb-3">
+                          <Badge variant="outline" className="telugu-text bg-background font-bold text-primary border-primary/20">
+                            {p.documentTitle}
+                          </Badge>
+                          <div className="text-[10px] uppercase font-bold text-muted-foreground opacity-50">{p.sectionTitle}</div>
+                        </div>
+                        <div className="telugu-text text-lg text-foreground/80 line-clamp-4 leading-relaxed italic mb-3">
+                          "{p.content}"
+                        </div>
+                        <div className="flex items-center text-primary font-bold text-sm telugu-text gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          పూర్తిగా చదవండి <ChevronRight className="h-4 w-4" />
+                        </div>
+                      </button>
+                    ))
+                  ) : !loading && (
+                    <div className="text-center py-12 text-muted-foreground telugu-text text-xl bg-muted/10 rounded-2xl border border-dashed">
+                      ఫలితాలు ఏవీ కనుగొనబడలేదు. దయచేసి మరో ప్రశ్న అడగండి.
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}
