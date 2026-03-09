@@ -8,33 +8,55 @@ import { CatechismViewer } from "@/components/catechism-viewer"
 import { CatechismIntro } from "@/components/catechism-intro"
 import { SearchDialog } from "@/components/search-dialog"
 import { Button } from "@/components/ui/button"
-import { Menu, BookOpen, X, CheckCircle2, Moon, Sun, Heart } from "lucide-react"
+import { Menu, BookOpen, X, CheckCircle2, Moon, Sun, User, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { useUser, useFirestore, useDoc, setDocumentNonBlocking, initiateAnonymousSignIn } from "@/firebase"
+import { doc } from "firebase/firestore"
 
 export function CatechismDashboard() {
-  const [selectedDayNumber, setSelectedDayNumber] = React.useState(0) // 0 for Intro
-  const [isReadingMode, setIsReadingMode] = React.useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
-  const [completedDays, setCompletedDays] = React.useState<number[]>([])
-  const [favorites, setFavorites] = React.useState<number[]>([]) // IDs of favorited questions
-  const [isDarkMode, setIsDarkMode] = React.useState(false)
+  const { user, isUserLoading } = useUser()
+  const db = useFirestore()
   const isMobile = useIsMobile()
 
-  // Load state from localStorage
+  const [selectedDayNumber, setSelectedDayNumber] = React.useState(0)
+  const [isReadingMode, setIsReadingMode] = React.useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
+  const [isDarkMode, setIsDarkMode] = React.useState(false)
+
+  // Memoize the user profile doc reference to avoid infinite loops
+  const userProfileRef = React.useMemo(() => {
+    if (!db || !user) return null
+    return doc(db, "users", user.uid)
+  }, [db, user])
+
+  const { data: userProfile, isLoading: isProfileLoading } = useDoc(userProfileRef)
+
+  // Local state initialized from Firestore or localStorage fallback
+  const [completedDays, setCompletedDays] = React.useState<number[]>([])
+  const [favorites, setFavorites] = React.useState<number[]>([])
+
+  // Load theme from localStorage only on mount
   React.useEffect(() => {
-    const savedProgress = localStorage.getItem('catechism-progress')
-    const savedFavorites = localStorage.getItem('catechism-favorites')
     const savedTheme = localStorage.getItem('theme')
-    
-    if (savedProgress) setCompletedDays(JSON.parse(savedProgress))
-    if (savedFavorites) setFavorites(JSON.parse(savedFavorites))
-    
     if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       setIsDarkMode(true)
       document.documentElement.classList.add('dark')
     }
-  }, [])
+    
+    // Auto sign-in if not authenticated
+    if (!isUserLoading && !user) {
+      initiateAnonymousSignIn(require('firebase/auth').getAuth())
+    }
+  }, [user, isUserLoading])
+
+  // Sync Firestore data to local state when it loads
+  React.useEffect(() => {
+    if (userProfile) {
+      if (userProfile.completedDays) setCompletedDays(userProfile.completedDays)
+      if (userProfile.favorites) setFavorites(userProfile.favorites)
+    }
+  }, [userProfile])
 
   const toggleTheme = () => {
     const next = !isDarkMode
@@ -46,22 +68,28 @@ export function CatechismDashboard() {
       document.documentElement.classList.remove('dark')
       localStorage.setItem('theme', 'light')
     }
+    
+    if (userProfileRef) {
+      setDocumentNonBlocking(userProfileRef, { theme: next ? 'dark' : 'light' }, { merge: true })
+    }
   }
 
   const toggleComplete = (num: number) => {
-    setCompletedDays(prev => {
-      const next = prev.includes(num) ? prev.filter(d => d !== num) : [...prev, num]
-      localStorage.setItem('catechism-progress', JSON.stringify(next))
-      return next
-    })
+    const next = completedDays.includes(num) ? completedDays.filter(d => d !== num) : [...completedDays, num]
+    setCompletedDays(next)
+    
+    if (userProfileRef) {
+      setDocumentNonBlocking(userProfileRef, { completedDays: next }, { merge: true })
+    }
   }
 
   const toggleFavorite = (questionId: number) => {
-    setFavorites(prev => {
-      const next = prev.includes(questionId) ? prev.filter(id => id !== questionId) : [...prev, questionId]
-      localStorage.setItem('catechism-favorites', JSON.stringify(next))
-      return next
-    })
+    const next = favorites.includes(questionId) ? favorites.filter(id => id !== questionId) : [...favorites, questionId]
+    setFavorites(next)
+    
+    if (userProfileRef) {
+      setDocumentNonBlocking(userProfileRef, { favorites: next }, { merge: true })
+    }
   }
 
   const handleSelectDay = (num: number) => {
@@ -100,13 +128,14 @@ export function CatechismDashboard() {
             {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
           
-          <Button 
-            variant={isReadingMode ? "secondary" : "ghost"} 
-            size="icon" 
-            onClick={() => setIsReadingMode(!isReadingMode)}
-            className="hidden xs:inline-flex"
-          >
-            <BookOpen className={cn("h-5 w-5", isReadingMode && "text-primary")} />
+          <div className="w-px h-6 bg-border mx-1" />
+          
+          <Button variant="ghost" size="icon" className="relative">
+            {isUserLoading || isProfileLoading ? (
+              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+            ) : (
+              <User className={cn("h-5 w-5", user ? "text-primary" : "text-muted-foreground")} />
+            )}
           </Button>
         </div>
       </header>

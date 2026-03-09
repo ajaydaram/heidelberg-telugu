@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "LordSDay": {
@@ -37,11 +38,11 @@
         },
         "lordSDayId": {
           "type": "string",
-          "description": "Reference to the LordSDay this question and answer pair belongs to. (Relationship: LordSDay 1:N CatechismQuestionAnswer)"
+          "description": "Reference to the LordSDay this question and answer pair belongs to."
         },
         "questionNumber": {
           "type": "number",
-          "description": "The global sequential number of the question within the entire catechism (e.g., 1 to 129). This also implies order within a Lord's Day."
+          "description": "The global sequential number of the question within the entire catechism."
         },
         "questionTextTelugu": {
           "type": "string",
@@ -59,6 +60,29 @@
         "questionTextTelugu",
         "answerTextTelugu"
       ]
+    },
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Stores user-specific app settings and progress.",
+      "properties": {
+        "completedDays": {
+          "type": "array",
+          "items": { "type": "number" },
+          "description": "List of Lord's Day numbers completed by the user."
+        },
+        "favorites": {
+          "type": "array",
+          "items": { "type": "number" },
+          "description": "List of question IDs favorited by the user."
+        },
+        "theme": {
+          "type": "string",
+          "enum": ["light", "dark"],
+          "description": "User's preferred UI theme."
+        }
+      }
     }
   },
   "auth": {
@@ -76,36 +100,25 @@
           "schema": {
             "$ref": "#/backend/entities/LordSDay"
           },
-          "description": "Top-level collection for each 'Lord's Day' of the Heidelberg Catechism. Each document represents a single Lord's Day and contains its number and Telugu title. Documents in this collection are publicly readable.",
+          "description": "Public read-only content for Lord's Days.",
           "params": [
-            {
-              "name": "lordSDayId",
-              "description": "The unique identifier for a specific Lord's Day."
-            }
+            { "name": "lordSDayId", "description": "ID of the Lord's Day." }
           ]
         }
       },
       {
-        "path": "/lords_days/{lordSDayId}/catechism_qas/{qaId}",
+        "path": "/users/{userId}",
         "definition": {
-          "entityName": "CatechismQuestionAnswer",
+          "entityName": "UserProfile",
           "schema": {
-            "$ref": "#/backend/entities/CatechismQuestionAnswer"
+            "$ref": "#/backend/entities/UserProfile"
           },
-          "description": "Subcollection under each 'Lord's Day' containing the questions and answers for that day. Each document represents a single question and answer pair, including its global question number, Telugu question text, and Telugu answer text. It also includes the 'lordSDayId' as a denormalized reference to its parent Lord's Day, providing a direct link within the document. Documents in this subcollection are publicly readable.",
+          "description": "Private user profile data including progress and favorites.",
           "params": [
-            {
-              "name": "lordSDayId",
-              "description": "The unique identifier for the parent Lord's Day."
-            },
-            {
-              "name": "qaId",
-              "description": "The unique identifier for a specific Catechism Question and Answer pair."
-            }
+            { "name": "userId", "description": "The unique Firebase Auth UID of the user." }
           ]
         }
       }
-    ],
-    "reasoning": "The recommended Firestore structure is designed for a static, read-only application, prioritizing simplicity, efficient data retrieval, and explicit hierarchy. The core content (Lord's Days and Catechism Questions/Answers) is publicly accessible, meaning authorization rules are straightforward, and complex denormalization for authorization is not required.\n\n**Authorization Independence:** In this specific context, where all content is publicly readable and static, the concept of 'Authorization Independence' primarily translates to ensuring that security rules do not rely on `get()` calls for parent documents to determine access. Since all data will be `allow read: if true;`, there are no hierarchical authorization dependencies to manage. If, in the future, administrative write access were introduced, an `/admin_users/{uid}` collection would be used for DBAC (Database Access Control) to allow writes, keeping write authorization independent of the content's structure.\n\n**QAPs (Rules are not Filters):** This structure naturally supports Query-Able Paths (QAPs). \n1.  The `/lords_days` collection allows for efficient listing of all 'Lord's Day' titles (for the 'Lord's Day List View'). Security rules will simply allow all reads (`match /lords_days/{lordSDayId} { allow read: if true; }`).\n2.  The `/lords_days/{lordSDayId}/catechism_qas` subcollection allows for efficient retrieval of all questions and answers for a specific 'Lord's Day' (for the 'Catechism Detail View'). Security rules will similarly allow all reads (`match /lords_days/{lordSDayId}/catechism_qas/{qaId} { allow read: if true; }`).\n\n**Structural Segregation & Access Modeling:** All data shares the same security posture (public read-only), so there's no need to segregate public from private data. The structure uses hierarchical paths (`/lords_days/{lordSDayId}/catechism_qas/{qaId}`) to represent the natural parent-child relationship between a 'Lord's Day' and its corresponding questions and answers. This makes the data intuitive to navigate and query. The `lordSDayId` field is included in the `CatechismQuestionAnswer` document, as per the schema, even though its parent's ID is implicit in the path. This serves as a strong foreign key reference within the document itself, potentially aiding in data integrity or cross-collection queries if the `catechism_qas` ever needed to be queried independently of its parent path in a different context (though not strictly necessary for this app's current requirements)."
+    ]
   }
 }
