@@ -1,4 +1,3 @@
-
 "use client"
 
 import * as React from "react"
@@ -8,7 +7,7 @@ import { DocumentViewer } from "@/components/document-viewer"
 import { CatechismIntro } from "@/components/catechism-intro"
 import { SearchDialog } from "@/components/search-dialog"
 import { Button } from "@/components/ui/button"
-import { Menu, BookOpen, X, Moon, Sun, User, Loader2, Library } from "lucide-react"
+import { Menu, BookOpen, X, Moon, Sun, User, Loader2, Library, Monitor } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useUser } from "@/firebase"
@@ -20,21 +19,31 @@ export function CatechismDashboard() {
   const [selectedDocId, setSelectedDocId] = React.useState("")
   const [isReadingMode, setIsReadingMode] = React.useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
-  const [isDarkMode, setIsDarkMode] = React.useState(false)
+  const [themeMode, setThemeMode] = React.useState<'light' | 'dark' | 'e-ink'>('light')
 
   React.useEffect(() => {
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme === 'dark') {
-      setIsDarkMode(true)
-      document.documentElement.classList.add('dark')
+    const savedTheme = localStorage.getItem('theme') as any
+    if (savedTheme) {
+      setThemeMode(savedTheme)
+      applyTheme(savedTheme)
     }
   }, [])
 
-  const toggleTheme = () => {
-    const next = !isDarkMode
-    setIsDarkMode(next)
-    document.documentElement.classList.toggle('dark')
-    localStorage.setItem('theme', next ? 'dark' : 'light')
+  const applyTheme = (mode: 'light' | 'dark' | 'e-ink') => {
+    document.documentElement.classList.remove('dark', 'e-ink')
+    if (mode === 'dark') document.documentElement.classList.add('dark')
+    if (mode === 'e-ink') document.documentElement.classList.add('e-ink')
+  }
+
+  const cycleTheme = () => {
+    let next: 'light' | 'dark' | 'e-ink'
+    if (themeMode === 'light') next = 'dark'
+    else if (themeMode === 'dark') next = 'e-ink'
+    else next = 'light'
+    
+    setThemeMode(next)
+    applyTheme(next)
+    localStorage.setItem('theme', next)
   }
 
   const handleSelectDoc = (id: string) => {
@@ -59,12 +68,17 @@ export function CatechismDashboard() {
         </div>
         
         <div className="flex items-center gap-2">
-          <SearchDialog onResultClick={() => {}} />
-          <Button variant="ghost" size="icon" onClick={() => setIsReadingMode(!isReadingMode)} className={cn(isReadingMode && "bg-primary/10 text-primary")}>
+          <SearchDialog onResultClick={(dayNum) => {
+            handleSelectDoc("heidelberg")
+            // Note: In a real app we'd scroll to the specific item
+          }} />
+          <Button variant="ghost" size="icon" onClick={() => setIsReadingMode(!isReadingMode)} title="Reading Mode" className={cn(isReadingMode && "bg-primary/10 text-primary")}>
             <BookOpen className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon" onClick={toggleTheme}>
-            {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          <Button variant="ghost" size="icon" onClick={cycleTheme} title="Cycle Theme (Light/Dark/E-Ink)">
+            {themeMode === 'light' && <Sun className="h-5 w-5" />}
+            {themeMode === 'dark' && <Moon className="h-5 w-5" />}
+            {themeMode === 'e-ink' && <Monitor className="h-5 w-5" />}
           </Button>
           <div className="w-px h-6 bg-border mx-1" />
           <Button variant="ghost" size="icon">
@@ -85,7 +99,7 @@ export function CatechismDashboard() {
         {isMobileMenuOpen && <div className="fixed inset-0 bg-black/40 z-45 md:hidden" onClick={() => setIsMobileMenuOpen(false)} />}
 
         <main id="main-content" className="flex-1 overflow-y-auto bg-background">
-          <div className={cn("mx-auto max-w-4xl p-4 md:p-12", isReadingMode && "max-w-3xl")}>
+          <div className={cn("mx-auto max-w-4xl p-4 md:p-12 telugu-rendering", isReadingMode && "max-w-3xl")}>
             {!selectedDocId ? (
               <CatechismIntro isReadingMode={isReadingMode} onStart={() => handleSelectDoc("heidelberg")} />
             ) : (

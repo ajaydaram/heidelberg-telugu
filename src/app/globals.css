@@ -47,6 +47,27 @@
     --input: 212 30% 25%;
     --ring: 212 40% 55%;
   }
+
+  /* Boox / E-Ink Mode: Pure High Contrast */
+  .e-ink {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 95%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 20%;
+    --accent: 0 0% 80%;
+    --accent-foreground: 0 0% 0%;
+    --border: 0 0% 0%;
+    --input: 0 0% 0%;
+    --ring: 0 0% 0%;
+  }
 }
 
 @layer base {
@@ -61,21 +82,35 @@
   }
 }
 
-/* Telugu Specific Typography */
+/* E-Ink Specific Overrides */
+.e-ink * {
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transition: none !important;
+}
+
+.e-ink .shadow-sm, .e-ink .shadow-md, .e-ink .shadow-lg, .e-ink .shadow-xl {
+  box-shadow: none !important;
+  border: 1px solid #000 !important;
+}
+
+/* Telugu Specific Typography Fixes */
 .telugu-text {
-  font-family: 'Mandali', sans-serif;
-  line-height: 1.8; /* Strictly 1.8 for readability */
+  font-family: var(--font-mandali), sans-serif;
+  line-height: 1.85; /* Increased for character stacking like 'లార్డ్స్' */
   text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1, "liga" 1, "clig" 1, "calt" 1;
   -webkit-font-smoothing: antialiased;
   @apply text-foreground;
 }
 
 .telugu-heading {
-  font-family: 'Mandali', sans-serif; /* Mandali handles 'లార్డ్స్' better than Gidugu */
-  line-height: 1.6;
+  font-family: var(--font-gidugu), var(--font-mandali), sans-serif;
+  line-height: 1.4;
   letter-spacing: 0.02em;
-  font-weight: 700;
+  font-weight: 400; /* Gidugu is naturally display-weight */
   text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1, "liga" 1;
   -webkit-font-smoothing: antialiased;
   @apply text-primary;
 }
@@ -83,6 +118,6 @@
 /* Mobile specific font tweaks */
 @media (max-width: 768px) {
   .telugu-text {
-    line-height: 1.85;
+    line-height: 1.95;
   }
 }
