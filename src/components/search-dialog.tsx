@@ -19,11 +19,16 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
 
 interface SearchDialogProps {
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
   onResultClick: (docId: string, referenceId: string) => void
 }
 
-export function SearchDialog({ onResultClick }: SearchDialogProps) {
-  const [open, setOpen] = React.useState(false)
+export function SearchDialog({ open: controlledOpen, onOpenChange, onResultClick }: SearchDialogProps) {
+  const [internalOpen, setInternalOpen] = React.useState(false)
+  const open = controlledOpen ?? internalOpen
+  const setOpen = onOpenChange ?? setInternalOpen
+
   const [query, setQuery] = React.useState("")
   const [loading, setLoading] = React.useState(false)
   const [results, setResults] = React.useState<GlobalSearchOutput | null>(null)
@@ -45,9 +50,14 @@ export function SearchDialog({ onResultClick }: SearchDialogProps) {
   }
 
   const handleResultClick = (docTitle: string, refId: string) => {
-    // In a production app, we would map the docTitle back to docId
-    // For now, let's just log it and close the dialog
-    console.log(`Navigating to ${docTitle} reference ${refId}`)
+    // In a simple map for demo purposes
+    const docMap: Record<string, string> = {
+      "అపొస్తలుల విశ్వాస ప్రమాణము": "apostles-creed",
+      "నీసియ విశ్వాస ప్రమాణము": "nicene-creed",
+      "హీడెల్‌బర్గ్ కాటెకిజమ్": "heidelberg"
+    }
+    const docId = docMap[docTitle] || "heidelberg"
+    onResultClick(docId, refId)
     setOpen(false)
   }
 

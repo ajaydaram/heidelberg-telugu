@@ -1,10 +1,11 @@
+
 "use client"
 
 import * as React from "react"
 import { LIBRARY_DATA } from "@/app/lib/data/library-data"
 import { LibraryBrowser } from "@/components/library-browser"
 import { DocumentViewer } from "@/components/document-viewer"
-import { CatechismIntro } from "@/components/catechism-intro"
+import { LibraryPortal } from "@/components/library-portal"
 import { SearchDialog } from "@/components/search-dialog"
 import { Button } from "@/components/ui/button"
 import { Menu, BookOpen, X, Moon, Sun, User, Loader2, Library, Monitor } from "lucide-react"
@@ -20,6 +21,7 @@ export function CatechismDashboard() {
   const [isReadingMode, setIsReadingMode] = React.useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
   const [themeMode, setThemeMode] = React.useState<'light' | 'dark' | 'e-ink'>('light')
+  const [isSearchOpen, setIsSearchOpen] = React.useState(false)
 
   React.useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as any
@@ -68,10 +70,13 @@ export function CatechismDashboard() {
         </div>
         
         <div className="flex items-center gap-2">
-          <SearchDialog onResultClick={(dayNum) => {
-            handleSelectDoc("heidelberg")
-            // Note: In a real app we'd scroll to the specific item
-          }} />
+          <SearchDialog 
+            open={isSearchOpen}
+            onOpenChange={setIsSearchOpen}
+            onResultClick={(docId) => {
+              handleSelectDoc(docId)
+            }} 
+          />
           <Button variant="ghost" size="icon" onClick={() => setIsReadingMode(!isReadingMode)} title="Reading Mode" className={cn(isReadingMode && "bg-primary/10 text-primary")}>
             <BookOpen className="h-5 w-5" />
           </Button>
@@ -99,9 +104,9 @@ export function CatechismDashboard() {
         {isMobileMenuOpen && <div className="fixed inset-0 bg-black/40 z-45 md:hidden" onClick={() => setIsMobileMenuOpen(false)} />}
 
         <main id="main-content" className="flex-1 overflow-y-auto bg-background">
-          <div className={cn("mx-auto max-w-4xl p-4 md:p-12 telugu-rendering", isReadingMode && "max-w-3xl")}>
+          <div className={cn("mx-auto max-w-5xl p-4 md:p-12 telugu-rendering", isReadingMode && "max-w-3xl")}>
             {!selectedDocId ? (
-              <CatechismIntro isReadingMode={isReadingMode} onStart={() => handleSelectDoc("heidelberg")} />
+              <LibraryPortal onSelectDoc={handleSelectDoc} onOpenSearch={() => setIsSearchOpen(true)} />
             ) : (
               selectedDoc && <DocumentViewer document={selectedDoc} />
             )}
