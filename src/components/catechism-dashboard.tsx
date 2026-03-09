@@ -65,7 +65,7 @@ export function CatechismDashboard() {
           </Button>
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => setSelectedDocId("")}>
             <Library className="h-6 w-6 text-primary" />
-            <h1 className="text-xl md:text-2xl telugu-heading font-bold">జ్ఞాన నిధి</h1>
+            <h1 className="text-xl md:text-2xl telugu-heading font-bold">విశ్వాస సంగ్రహం</h1>
           </div>
         </div>
         
