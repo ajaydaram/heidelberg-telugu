@@ -49,8 +49,8 @@ export function DocumentViewer({ document }: DocumentViewerProps) {
                           <Button variant="ghost" size="icon" className="h-8 w-8"><Share2 className="h-4 w-4" /></Button>
                         </div>
                       </div>
-                      <div className="telugu-text text-xl pl-5 whitespace-pre-wrap leading-relaxed">
-                        <span className="font-bold opacity-70 block mb-2">జవాబు:</span>
+                      <div className="telugu-text text-xl md:text-2xl pl-5 whitespace-pre-wrap leading-relaxed">
+                        <span className="font-bold opacity-70 block mb-2 telugu-heading text-lg">జవాబు:</span>
                         {item.answer}
                       </div>
                     </div>
@@ -66,21 +66,24 @@ export function DocumentViewer({ document }: DocumentViewerProps) {
                           <Button variant="ghost" size="icon" className="h-8 w-8"><Share2 className="h-4 w-4" /></Button>
                         </div>
                       </div>
-                      <div className="telugu-text text-xl leading-relaxed text-foreground/90 bg-accent/5 p-6 rounded-xl border border-accent/10">
+                      <div className="telugu-text text-xl md:text-2xl leading-relaxed text-foreground/90 bg-accent/5 p-6 rounded-xl border border-accent/10">
                         {item.content}
                       </div>
                     </div>
                   )}
 
                   {item.scripture && item.scripture.length > 0 && (
-                    <div className="mt-4 pl-5">
-                      <p className="text-[10px] uppercase font-bold text-muted-foreground mb-2">లేఖన ఆధారాలు</p>
-                      <div className="flex flex-wrap gap-2">
-                        {item.scripture.map((ref, i) => (
-                          <Badge key={i} variant="secondary" className="text-xs font-normal opacity-70">
-                            {ref}
-                          </Badge>
-                        ))}
+                    <div className="mt-6 pl-5 space-y-4">
+                      <Separator className="opacity-50" />
+                      <div>
+                        <p className="text-[10px] uppercase font-bold text-muted-foreground mb-3 telugu-text tracking-widest">లేఖన ఆధారాలు (Scripture References)</p>
+                        <div className="flex flex-wrap gap-2">
+                          {item.scripture.map((ref, i) => (
+                            <Badge key={i} variant="secondary" className="text-sm font-normal py-1 px-3 bg-muted/50 telugu-text border border-primary/10">
+                              {ref}
+                            </Badge>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   )}
