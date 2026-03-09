@@ -40,6 +40,10 @@ export function DocumentViewer({ document }: DocumentViewerProps) {
         let explanation = "";
         if (term === "Substance") {
           explanation = "గ్రీకులో 'Homoousios' అంటే తండ్రి మరియు కుమారుడు ఒకే దైవిక సారము కలిగినవారని అర్థం.";
+        } else if (term === "Incomprehensible") {
+          explanation = "దేవుని మన పరిమితమైన బుద్ధితో పూర్తిగా గ్రహించలేము అని అర్థం.";
+        } else if (term === "Co-eternal") {
+          explanation = "ముగ్గురు వ్యక్తులు ఎల్లప్పుడూ ఒకే సమయంలో ఉనికిలో ఉన్నారు, ఒకరి తర్వాత ఒకరు రాలేదు.";
         }
 
         return (
@@ -67,7 +71,7 @@ export function DocumentViewer({ document }: DocumentViewerProps) {
         return <strong key={index} className="font-bold text-foreground">{content}</strong>;
       }
 
-      return <span key={index}>{part}</span>;
+      return <span key={index} className="whitespace-pre-wrap">{part}</span>;
     });
   };
 
