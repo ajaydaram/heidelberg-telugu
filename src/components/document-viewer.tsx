@@ -27,11 +27,24 @@ interface DocumentViewerProps {
 
 export function DocumentViewer({ document }: DocumentViewerProps) {
   
-  // Helper to parse content for glossary terms, bold tags, and footnotes
+  // Helper to scroll to a specific reference
+  const scrollToReference = (itemId: string, refNum: string) => {
+    const element = document.getElementById(`ref-${itemId}-${refNum}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Temporary highlight
+      element.classList.add('bg-primary/20', 'ring-2', 'ring-primary/50');
+      setTimeout(() => {
+        element.classList.remove('bg-primary/20', 'ring-2', 'ring-primary/50');
+      }, 2000);
+    }
+  };
+
+  // Helper to parse content for glossary terms, bold tags, and interactive footnotes
   const renderFormattedText = (text: string, itemId: string) => {
     if (!text) return null;
 
-    // Handle footnotes like [1], [2], etc.
+    // Split text into parts based on tags and [n] patterns
     const parts = text.split(/(<glossary term=".*?">.*?<\/glossary>|<b>.*?<\/b>|\[\d+\])/g);
 
     return parts.map((part, index) => {
@@ -69,14 +82,19 @@ export function DocumentViewer({ document }: DocumentViewerProps) {
         return <strong key={index} className="font-bold text-foreground">{content}</strong>;
       }
 
-      // Handle Footnotes [1]
+      // Handle Interactive Footnotes [1]
       const footnoteMatch = part.match(/^\[(\d+)\]$/);
       if (footnoteMatch) {
         const num = footnoteMatch[1];
         return (
-          <sup key={index} className="text-primary font-bold px-0.5 select-none cursor-pointer hover:bg-primary/10 rounded">
+          <button
+            key={index}
+            onClick={() => scrollToReference(itemId, num)}
+            className="inline-flex items-center justify-center w-6 h-6 -translate-y-2 text-[10px] font-bold text-primary hover:text-primary-foreground hover:bg-primary rounded-full transition-all mx-0.5 border border-primary/30 shadow-sm"
+            title={`రిఫరెన్స్ ${num} చూడండి`}
+          >
             {num}
-          </sup>
+          </button>
         );
       }
 
@@ -155,17 +173,28 @@ export function DocumentViewer({ document }: DocumentViewerProps) {
                       )}
 
                       {item.scripture && item.scripture.length > 0 && (
-                        <div className="mt-6 pl-5 space-y-4">
+                        <div className="mt-8 pl-5 space-y-4">
                           <Separator className="opacity-50" />
                           <div>
-                            <p className="text-[10px] uppercase font-bold text-muted-foreground mb-3 telugu-text tracking-widest">లేఖన ఆధారాలు</p>
-                            <div className="flex flex-wrap gap-2">
-                              {item.scripture.map((ref, i) => (
-                                <Badge key={i} variant="secondary" className="text-sm font-normal py-1 px-3 bg-muted/50 telugu-text border border-primary/10">
-                                  {ref}
-                                </Badge>
-                              ))}
-                            </div>
+                            <p className="text-[10px] uppercase font-bold text-muted-foreground mb-4 telugu-text tracking-widest opacity-70">లేఖన ఆధారాలు</p>
+                            <ul className="grid gap-3">
+                              {item.scripture.map((ref, i) => {
+                                // Try to extract reference number from start of string (e.g. "1. Romans")
+                                const refMatch = ref.match(/^(\d+)/);
+                                const refId = refMatch ? refMatch[1] : (i + 1).toString();
+                                
+                                return (
+                                  <li 
+                                    key={i} 
+                                    id={`ref-${item.id}-${refId}`}
+                                    className="telugu-text text-base md:text-lg text-muted-foreground flex gap-3 p-2 rounded-lg transition-all duration-500 hover:bg-muted/30"
+                                  >
+                                    <span className="font-bold text-primary shrink-0 opacity-70">[{refId}]</span>
+                                    <span className="leading-relaxed">{ref}</span>
+                                  </li>
+                                );
+                              })}
+                            </ul>
                           </div>
                         </div>
                       )}
