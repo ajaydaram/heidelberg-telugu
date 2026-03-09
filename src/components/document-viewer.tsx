@@ -6,14 +6,71 @@ import { LibraryDocument, LibraryItem } from "@/app/lib/data/library-data"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
-import { Bookmark, Share2 } from "lucide-react"
+import { Bookmark, Share2, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface DocumentViewerProps {
   document: LibraryDocument
 }
 
 export function DocumentViewer({ document }: DocumentViewerProps) {
+  
+  // Helper to parse content for glossary terms and basic HTML
+  const renderFormattedText = (text: string) => {
+    if (!text) return null;
+
+    // This is a simple regex-based parser for glossary terms like <glossary term="...">...</glossary>
+    // In a real app, you might use a markdown parser or a full HTML sanitizer
+    const parts = text.split(/(<glossary term=".*?">.*?<\/glossary>|<b>.*?<\/b>)/g);
+
+    return parts.map((part, index) => {
+      // Handle Glossary Tooltips
+      if (part.startsWith('<glossary')) {
+        const termMatch = part.match(/term="(.*?)"/);
+        const contentMatch = part.match(/>(.*?)<\/glossary>/);
+        const term = termMatch ? termMatch[1] : '';
+        const content = contentMatch ? contentMatch[1] : '';
+        
+        let explanation = "";
+        if (term === "Substance") {
+          explanation = "గ్రీకులో 'Homoousios' అంటే తండ్రి మరియు కుమారుడు ఒకే దైవిక సారము కలిగినవారని అర్థం.";
+        }
+
+        return (
+          <TooltipProvider key={index}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="text-primary border-b border-dotted border-primary cursor-help font-bold">
+                  {content}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent className="max-w-xs p-3 telugu-text text-sm bg-card border-primary/20">
+                <div className="flex gap-2 items-start">
+                  <Info className="h-4 w-4 text-primary shrink-0 mt-1" />
+                  <p>{explanation}</p>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        );
+      }
+
+      // Handle Bold Tags
+      if (part.startsWith('<b>')) {
+        const content = part.replace(/<\/?b>/g, '');
+        return <strong key={index} className="font-bold text-foreground">{content}</strong>;
+      }
+
+      return <span key={index}>{part}</span>;
+    });
+  };
+
   return (
     <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 pb-20">
       <header className="mb-12 text-center">
@@ -66,8 +123,8 @@ export function DocumentViewer({ document }: DocumentViewerProps) {
                           <Button variant="ghost" size="icon" className="h-8 w-8"><Share2 className="h-4 w-4" /></Button>
                         </div>
                       </div>
-                      <div className="telugu-text text-xl md:text-2xl leading-relaxed text-foreground/90 bg-accent/5 p-6 rounded-xl border border-accent/10">
-                        {item.content}
+                      <div className="telugu-text text-xl md:text-2xl leading-[1.8] text-foreground/90 bg-accent/5 p-6 md:p-8 rounded-2xl border border-accent/10 shadow-sm">
+                        {renderFormattedText(item.content || '')}
                       </div>
                     </div>
                   )}
