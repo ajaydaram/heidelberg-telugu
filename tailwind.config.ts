@@ -11,8 +11,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Mandali', 'Hind', 'sans-serif'],
-        headline: ['Gidugu', 'serif'],
+        body: ['var(--font-mandali)', 'sans-serif'],
+        headline: ['var(--font-gidugu)', 'var(--font-mandali)', 'serif'],
         code: ['monospace'],
       },
       colors: {

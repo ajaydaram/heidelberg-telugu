@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -96,8 +97,8 @@
 
 /* Telugu Specific Typography Fixes */
 .telugu-text {
-  font-family: var(--font-mandali), sans-serif;
-  line-height: 1.85; /* Increased for character stacking like 'లార్డ్స్' */
+  font-family: var(--font-mandali), "Noto Sans Telugu", sans-serif;
+  line-height: 1.95; /* Increased for character stacking like 'లార్డ్స్' */
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern" 1, "liga" 1, "clig" 1, "calt" 1;
   -webkit-font-smoothing: antialiased;
@@ -105,12 +106,12 @@
 }
 
 .telugu-heading {
-  font-family: var(--font-gidugu), var(--font-mandali), sans-serif;
-  line-height: 1.4;
+  font-family: var(--font-gidugu), var(--font-mandali), "Noto Sans Telugu", sans-serif;
+  line-height: 1.5;
   letter-spacing: 0.02em;
-  font-weight: 400; /* Gidugu is naturally display-weight */
+  font-weight: 400; 
   text-rendering: optimizeLegibility;
-  font-feature-settings: "kern" 1, "liga" 1;
+  font-feature-settings: "kern" 1, "liga" 1, "clig" 1, "calt" 1;
   -webkit-font-smoothing: antialiased;
   @apply text-primary;
 }
@@ -118,6 +119,6 @@
 /* Mobile specific font tweaks */
 @media (max-width: 768px) {
   .telugu-text {
-    line-height: 1.95;
+    line-height: 2.1;
   }
 }
