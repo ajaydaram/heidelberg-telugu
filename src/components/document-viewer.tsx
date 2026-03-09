@@ -25,7 +25,7 @@ interface DocumentViewerProps {
   document: LibraryDocument
 }
 
-export function DocumentViewer({ document }: DocumentViewerProps) {
+export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
   
   // Helper to scroll to a specific reference
   const scrollToReference = (itemId: string, refNum: string) => {
@@ -106,16 +106,16 @@ export function DocumentViewer({ document }: DocumentViewerProps) {
     <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 pb-20">
       <header className="mb-12 text-center">
         <Badge variant="outline" className="mb-4 px-4 py-1 text-primary border-primary/30 uppercase tracking-tighter">
-          {document.category} • {document.year} AD
+          {libDoc.category} • {libDoc.year} AD
         </Badge>
-        <h1 className="telugu-heading text-4xl md:text-6xl font-bold mb-4">{document.title_te}</h1>
-        <p className="text-xl text-muted-foreground italic">{document.title_en}</p>
+        <h1 className="telugu-heading text-4xl md:text-6xl font-bold mb-4">{libDoc.title_te}</h1>
+        <p className="text-xl text-muted-foreground italic">{libDoc.title_en}</p>
         <div className="mt-8 w-24 h-1 bg-accent mx-auto rounded-full" />
       </header>
 
       <div className="space-y-6">
-        <Accordion type="single" collapsible className="w-full space-y-4" defaultValue={document.sections[0]?.id}>
-          {document.sections.map((section) => (
+        <Accordion type="single" collapsible className="w-full space-y-4" defaultValue={libDoc.sections[0]?.id}>
+          {libDoc.sections.map((section) => (
             <AccordionItem 
               key={section.id} 
               value={section.id} 
@@ -125,7 +125,7 @@ export function DocumentViewer({ document }: DocumentViewerProps) {
                 <div className="flex flex-col items-start text-left">
                   <span className="telugu-heading text-2xl font-bold text-primary">{section.title}</span>
                   <span className="text-xs uppercase tracking-widest text-muted-foreground font-bold mt-1">
-                    {section.items.length} {document.type === 'catechism' ? 'ప్రశ్నలు' : 'విభాగాలు'}
+                    {section.items.length} {libDoc.type === 'catechism' ? 'ప్రశ్నలు' : 'విభాగాలు'}
                   </span>
                 </div>
               </AccordionTrigger>
@@ -133,7 +133,7 @@ export function DocumentViewer({ document }: DocumentViewerProps) {
                 <div className="space-y-12">
                   {section.items.map((item) => (
                     <div key={item.id} className="group relative">
-                      {document.type === 'catechism' ? (
+                      {libDoc.type === 'catechism' ? (
                         <div className="space-y-4">
                           <div className="flex justify-between items-start">
                             <h3 className="telugu-text text-2xl font-bold text-primary border-l-4 border-accent pl-4">
