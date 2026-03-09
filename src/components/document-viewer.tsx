@@ -11,9 +11,9 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import {
   Tooltip,
-  TooltipContent,
   TooltipProvider,
   TooltipTrigger,
+  TooltipContent,
 } from "@/components/ui/tooltip"
 import {
   Accordion,
@@ -54,7 +54,8 @@ export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
   const renderFormattedText = (text: string, itemId: string) => {
     if (!text) return null;
 
-    const parts = text.split(/(<glossary term=".*?">.*?<\/glossary>|<b>.*?<\/b>|\[\d+\])/g);
+    // Enhanced regex to match glossary, bold tags, and footnote numbers (single or comma separated)
+    const parts = text.split(/(<glossary term=".*?">.*?<\/glossary>|<b>.*?<\/b>|\[[\d,\s]+\])/g);
 
     return parts.map((part, index) => {
       if (part.startsWith('<glossary')) {
@@ -89,18 +90,25 @@ export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
         return <strong key={index} className="font-bold text-foreground">{content}</strong>;
       }
 
-      const footnoteMatch = part.match(/^\[(\d+)\]$/);
+      // Handle footnotes like [1] or [1, 2, 3]
+      const footnoteMatch = part.match(/^\[([\d,\s]+)\]$/);
       if (footnoteMatch) {
-        const num = footnoteMatch[1];
+        const rawNumbers = footnoteMatch[1];
+        const numbers = rawNumbers.split(',').map(n => n.trim());
+        
         return (
-          <button
-            key={index}
-            onClick={() => handleFootnoteClick(itemId, num)}
-            className="inline-flex items-center justify-center w-7 h-7 -translate-y-2 text-[11px] font-bold text-primary hover:text-primary-foreground hover:bg-primary rounded-full transition-all mx-0.5 border-2 border-primary/30 shadow-sm bg-background"
-            title={`రిఫరెన్స్ ${num} చూడండి`}
-          >
-            {num}
-          </button>
+          <span key={index} className="inline-flex gap-0.5">
+            {numbers.map((num, i) => (
+              <button
+                key={i}
+                onClick={() => handleFootnoteClick(itemId, num)}
+                className="inline-flex items-center justify-center w-7 h-7 -translate-y-2 text-[11px] font-bold text-primary hover:text-primary-foreground hover:bg-primary rounded-full transition-all border-2 border-primary/30 shadow-sm bg-background"
+                title={`రిఫరెన్స్ ${num} చూడండి`}
+              >
+                {num}
+              </button>
+            ))}
+          </span>
         );
       }
 
@@ -130,19 +138,6 @@ export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
         <p className="text-xl text-muted-foreground italic">{libDoc.title_en}</p>
         <div className="mt-8 w-24 h-1 bg-accent mx-auto rounded-full" />
       </header>
-
-      {/* Mobile Setting Toggle */}
-      <div className="md:hidden flex items-center justify-center gap-4 mb-8 bg-muted/30 p-4 rounded-2xl border-2">
-        <BookOpenCheck className="w-5 h-5 text-primary" />
-        <div className="flex items-center space-x-2">
-          <Switch 
-            id="show-all-refs-mobile" 
-            checked={showAllFootnotes} 
-            onCheckedChange={setShowAllFootnotes}
-          />
-          <Label htmlFor="show-all-refs-mobile" className="telugu-text text-sm font-bold">లేఖనాలను ఎల్లప్పుడూ చూపు</Label>
-        </div>
-      </div>
 
       <div className="space-y-6">
         <Accordion type="single" collapsible className="w-full space-y-4" defaultValue={libDoc.sections[0]?.id}>
@@ -203,8 +198,8 @@ export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
                         </div>
                       )}
 
-                      {/* Bible Verses Display */}
-                      {(showAllFootnotes || (item.scripture && item.scripture.length > 0)) && (
+                      {/* Bible Verses Display - Controlled by showAllFootnotes toggle */}
+                      {(item.scripture && item.scripture.length > 0) && (
                         <div className={cn(
                           "mt-8 pl-5 space-y-4 transition-all duration-500",
                           !showAllFootnotes && "hidden"
@@ -215,23 +210,15 @@ export function DocumentViewer({ document: libDoc }: DocumentViewerProps) {
                               <BookOpenCheck className="w-3 h-3" /> లేఖన ఆధారాలు (Bible Verses)
                             </p>
                             <ul className="grid gap-4">
-                              {item.scripture?.map((ref, i) => {
-                                const refMatch = ref.match(/^(\d+)/);
-                                const refId = refMatch ? refMatch[1] : (i + 1).toString();
-                                
-                                return (
-                                  <li 
-                                    key={i} 
-                                    id={`ref-${item.id}-${refId}`}
-                                    className="telugu-text text-base md:text-lg text-foreground/80 flex gap-3 p-4 rounded-xl transition-all duration-500 border border-border/50 bg-muted/20 hover:border-primary/30"
-                                  >
-                                    <span className="font-bold text-primary shrink-0 opacity-70 bg-primary/10 w-8 h-8 rounded-full flex items-center justify-center text-xs">
-                                      {refId}
-                                    </span>
-                                    <span className="leading-relaxed">{ref}</span>
-                                  </li>
-                                );
-                              })}
+                              {item.scripture.map((ref, i) => (
+                                <li 
+                                  key={i} 
+                                  id={`ref-${item.id}-${ref.split('.')[0].trim()}`}
+                                  className="telugu-text text-base md:text-lg text-foreground/80 flex gap-3 p-4 rounded-xl transition-all duration-500 border border-border/50 bg-muted/20 hover:border-primary/30"
+                                >
+                                  <span className="leading-relaxed font-body">{ref}</span>
+                                </li>
+                              ))}
                             </ul>
                           </div>
                         </div>
