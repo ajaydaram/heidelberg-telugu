@@ -1,4 +1,3 @@
-
 "use client"
 
 import * as React from "react"
@@ -8,11 +7,21 @@ import { CatechismViewer } from "@/components/catechism-viewer"
 import { CatechismIntro } from "@/components/catechism-intro"
 import { SearchDialog } from "@/components/search-dialog"
 import { Button } from "@/components/ui/button"
-import { Menu, BookOpen, X, CheckCircle2, Moon, Sun, User, Loader2 } from "lucide-react"
+import { Menu, BookOpen, X, CheckCircle2, Moon, Sun, User, Loader2, Database, CloudUpload } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useUser, useFirestore, useAuth, useDoc, setDocumentNonBlocking, initiateAnonymousSignIn } from "@/firebase"
 import { doc } from "firebase/firestore"
+import { seedCatechismData } from "@/lib/seed-utils"
+import { toast } from "@/hooks/use-toast"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export function CatechismDashboard() {
   const { user, isUserLoading } = useUser()
@@ -24,8 +33,8 @@ export function CatechismDashboard() {
   const [isReadingMode, setIsReadingMode] = React.useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
   const [isDarkMode, setIsDarkMode] = React.useState(false)
+  const [isSeeding, setIsSeeding] = React.useState(false)
 
-  // Memoize the user profile doc reference to avoid infinite loops
   const userProfileRef = React.useMemo(() => {
     if (!db || !user) return null
     return doc(db, "users", user.uid)
@@ -33,11 +42,9 @@ export function CatechismDashboard() {
 
   const { data: userProfile, isLoading: isProfileLoading } = useDoc(userProfileRef)
 
-  // Local state initialized from Firestore or localStorage fallback
   const [completedDays, setCompletedDays] = React.useState<number[]>([])
   const [favorites, setFavorites] = React.useState<number[]>([])
 
-  // Load theme from localStorage only on mount
   React.useEffect(() => {
     const savedTheme = localStorage.getItem('theme')
     if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -46,14 +53,12 @@ export function CatechismDashboard() {
     }
   }, [])
 
-  // Auto sign-in if not authenticated
   React.useEffect(() => {
     if (!isUserLoading && !user && auth) {
       initiateAnonymousSignIn(auth)
     }
   }, [user, isUserLoading, auth])
 
-  // Sync Firestore data to local state when it loads
   React.useEffect(() => {
     if (userProfile) {
       if (userProfile.completedDays) setCompletedDays(userProfile.completedDays)
@@ -77,10 +82,30 @@ export function CatechismDashboard() {
     }
   }
 
+  const handleSeedData = async () => {
+    if (!db) return;
+    setIsSeeding(true);
+    try {
+      await seedCatechismData(db);
+      toast({
+        title: "డేటా విజయవంతంగా సింక్ చేయబడింది",
+        description: "Firestore Studio లో ఇప్పుడు మీరు పాఠాలను చూడవచ్చు.",
+      });
+    } catch (error) {
+      console.error("Seeding failed", error);
+      toast({
+        variant: "destructive",
+        title: "సింక్ విఫలమైంది",
+        description: "దయచేసి నెట్‌వర్క్ చెక్ చేయండి.",
+      });
+    } finally {
+      setIsSeeding(false);
+    }
+  }
+
   const toggleComplete = (num: number) => {
     const next = completedDays.includes(num) ? completedDays.filter(d => d !== num) : [...completedDays, num]
     setCompletedDays(next)
-    
     if (userProfileRef) {
       setDocumentNonBlocking(userProfileRef, { completedDays: next }, { merge: true })
     }
@@ -89,7 +114,6 @@ export function CatechismDashboard() {
   const toggleFavorite = (questionId: number) => {
     const next = favorites.includes(questionId) ? favorites.filter(id => id !== questionId) : [...favorites, questionId]
     setFavorites(next)
-    
     if (userProfileRef) {
       setDocumentNonBlocking(userProfileRef, { favorites: next }, { merge: true })
     }
@@ -143,13 +167,29 @@ export function CatechismDashboard() {
           
           <div className="w-px h-6 bg-border mx-1" />
           
-          <Button variant="ghost" size="icon" className="relative">
-            {isUserLoading || isProfileLoading ? (
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-            ) : (
-              <User className={cn("h-5 w-5", user ? "text-primary" : "text-muted-foreground")} />
-            )}
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="relative">
+                {isUserLoading || isProfileLoading || isSeeding ? (
+                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                ) : (
+                  <User className={cn("h-5 w-5", user ? "text-primary" : "text-muted-foreground")} />
+                )}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel className="telugu-text">వినియోగదారు ప్రొఫైల్</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleSeedData} disabled={isSeeding} className="telugu-text cursor-pointer">
+                <CloudUpload className="mr-2 h-4 w-4" />
+                క్లౌడ్‌కు డేటా సింక్ చేయండి
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="telugu-text opacity-50">
+                UID: {user?.uid.substring(0, 8)}...
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </header>
 
