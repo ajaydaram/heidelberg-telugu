@@ -1,122 +1,88 @@
 
 {
   "entities": {
-    "LordSDay": {
+    "DocumentMetadata": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "LordSDay",
+      "title": "DocumentMetadata",
       "type": "object",
-      "description": "Represents one of the 52 Lord's Days in the Heidelberg Catechism.",
+      "description": "Metadata for a creed, confession, or catechism.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the LordSDay entity."
+        "id": { "type": "string" },
+        "title_te": { "type": "string", "description": "Telugu title" },
+        "title_en": { "type": "string", "description": "English title" },
+        "year": { "type": "number" },
+        "category": { 
+          "type": "string", 
+          "enum": ["Ecumenical", "Reformed", "Baptist", "Lutheran", "Other"] 
         },
-        "dayNumber": {
-          "type": "number",
-          "description": "The sequential number of the Lord's Day (1-52)."
-        },
-        "titleTelugu": {
-          "type": "string",
-          "description": "The title of the Lord's Day in Telugu."
+        "type": { 
+          "type": "string", 
+          "enum": ["catechism", "confession"] 
         }
       },
-      "required": [
-        "id",
-        "dayNumber",
-        "titleTelugu"
-      ]
+      "required": ["id", "title_te", "category", "type"]
     },
-    "CatechismQuestionAnswer": {
+    "DocumentContent": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "CatechismQuestionAnswer",
+      "title": "DocumentContent",
       "type": "object",
-      "description": "Represents a single question and its corresponding answer from the Heidelberg Catechism.",
+      "description": "The actual content of a document, organized by sections.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the CatechismQuestionAnswer entity."
-        },
-        "lordSDayId": {
-          "type": "string",
-          "description": "Reference to the LordSDay this question and answer pair belongs to."
-        },
-        "questionNumber": {
-          "type": "number",
-          "description": "The global sequential number of the question within the entire catechism."
-        },
-        "questionTextTelugu": {
-          "type": "string",
-          "description": "The full text of the question in Telugu."
-        },
-        "answerTextTelugu": {
-          "type": "string",
-          "description": "The full text of the answer in Telugu."
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": { "type": "string" },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "number": { "type": "number" },
+                    "title": { "type": "string" },
+                    "question": { "type": "string" },
+                    "answer": { "type": "string" },
+                    "content": { "type": "string" },
+                    "scripture": { "type": "array", "items": { "type": "string" } }
+                  }
+                }
+              }
+            }
+          }
         }
-      },
-      "required": [
-        "id",
-        "lordSDayId",
-        "questionNumber",
-        "questionTextTelugu",
-        "answerTextTelugu"
-      ]
+      }
     },
     "UserProfile": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "UserProfile",
       "type": "object",
-      "description": "Stores user-specific app settings and progress.",
       "properties": {
-        "completedDays": {
-          "type": "array",
-          "items": { "type": "number" },
-          "description": "List of Lord's Day numbers completed by the user."
-        },
-        "favorites": {
-          "type": "array",
-          "items": { "type": "number" },
-          "description": "List of question IDs favorited by the user."
-        },
-        "theme": {
-          "type": "string",
-          "enum": ["light", "dark"],
-          "description": "User's preferred UI theme."
-        }
+        "favorites": { "type": "array", "items": { "type": "string" } },
+        "completedSections": { "type": "array", "items": { "type": "string" } },
+        "theme": { "type": "string", "enum": ["light", "dark"] }
       }
     }
   },
   "auth": {
-    "providers": [
-      "password",
-      "anonymous"
-    ]
+    "providers": ["anonymous"]
   },
   "firestore": {
     "structure": [
       {
-        "path": "/lords_days/{lordSDayId}",
+        "path": "/documents/{docId}",
         "definition": {
-          "entityName": "LordSDay",
-          "schema": {
-            "$ref": "#/backend/entities/LordSDay"
-          },
-          "description": "Public read-only content for Lord's Days.",
-          "params": [
-            { "name": "lordSDayId", "description": "ID of the Lord's Day." }
-          ]
+          "entityName": "DocumentMetadata",
+          "schema": { "$ref": "#/backend/entities/DocumentMetadata" },
+          "description": "Public creeds and catechisms."
         }
       },
       {
         "path": "/users/{userId}",
         "definition": {
           "entityName": "UserProfile",
-          "schema": {
-            "$ref": "#/backend/entities/UserProfile"
-          },
-          "description": "Private user profile data including progress and favorites.",
-          "params": [
-            { "name": "userId", "description": "The unique Firebase Auth UID of the user." }
-          ]
+          "schema": { "$ref": "#/backend/entities/UserProfile" },
+          "description": "User progress and settings."
         }
       }
     ]

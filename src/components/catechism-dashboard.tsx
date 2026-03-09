@@ -1,237 +1,96 @@
+
 "use client"
 
 import * as React from "react"
-import { CATECHISM_DATA } from "@/app/lib/data/catechism-data"
-import { LordsDayList } from "@/components/lords-day-list"
-import { CatechismViewer } from "@/components/catechism-viewer"
+import { LIBRARY_DATA } from "@/app/lib/data/library-data"
+import { LibraryBrowser } from "@/components/library-browser"
+import { DocumentViewer } from "@/components/document-viewer"
 import { CatechismIntro } from "@/components/catechism-intro"
 import { SearchDialog } from "@/components/search-dialog"
 import { Button } from "@/components/ui/button"
-import { Menu, BookOpen, X, CheckCircle2, Moon, Sun, User, Loader2, Database, CloudUpload } from "lucide-react"
+import { Menu, BookOpen, X, Moon, Sun, User, Loader2, Library } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { useUser, useFirestore, useAuth, useDoc, setDocumentNonBlocking, initiateAnonymousSignIn } from "@/firebase"
-import { doc } from "firebase/firestore"
-import { seedCatechismData } from "@/lib/seed-utils"
-import { toast } from "@/hooks/use-toast"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { useUser } from "@/firebase"
 
 export function CatechismDashboard() {
   const { user, isUserLoading } = useUser()
-  const auth = useAuth()
-  const db = useFirestore()
   const isMobile = useIsMobile()
 
-  const [selectedDayNumber, setSelectedDayNumber] = React.useState(0)
+  const [selectedDocId, setSelectedDocId] = React.useState("")
   const [isReadingMode, setIsReadingMode] = React.useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
   const [isDarkMode, setIsDarkMode] = React.useState(false)
-  const [isSeeding, setIsSeeding] = React.useState(false)
-
-  const userProfileRef = React.useMemo(() => {
-    if (!db || !user) return null
-    return doc(db, "users", user.uid)
-  }, [db, user])
-
-  const { data: userProfile, isLoading: isProfileLoading } = useDoc(userProfileRef)
-
-  const [completedDays, setCompletedDays] = React.useState<number[]>([])
-  const [favorites, setFavorites] = React.useState<number[]>([])
 
   React.useEffect(() => {
     const savedTheme = localStorage.getItem('theme')
-    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    if (savedTheme === 'dark') {
       setIsDarkMode(true)
       document.documentElement.classList.add('dark')
     }
   }, [])
 
-  React.useEffect(() => {
-    if (!isUserLoading && !user && auth) {
-      initiateAnonymousSignIn(auth)
-    }
-  }, [user, isUserLoading, auth])
-
-  React.useEffect(() => {
-    if (userProfile) {
-      if (userProfile.completedDays) setCompletedDays(userProfile.completedDays)
-      if (userProfile.favorites) setFavorites(userProfile.favorites)
-    }
-  }, [userProfile])
-
   const toggleTheme = () => {
     const next = !isDarkMode
     setIsDarkMode(next)
-    if (next) {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('theme', 'dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-      localStorage.setItem('theme', 'light')
-    }
-    
-    if (userProfileRef) {
-      setDocumentNonBlocking(userProfileRef, { theme: next ? 'dark' : 'light' }, { merge: true })
-    }
+    document.documentElement.classList.toggle('dark')
+    localStorage.setItem('theme', next ? 'dark' : 'light')
   }
 
-  const handleSeedData = async () => {
-    if (!db) return;
-    setIsSeeding(true);
-    try {
-      await seedCatechismData(db);
-      toast({
-        title: "డేటా విజయవంతంగా సింక్ చేయబడింది",
-        description: "Firestore Studio లో ఇప్పుడు మీరు పాఠాలను చూడవచ్చు.",
-      });
-    } catch (error) {
-      console.error("Seeding failed", error);
-      toast({
-        variant: "destructive",
-        title: "సింక్ విఫలమైంది",
-        description: "దయచేసి నెట్‌వర్క్ చెక్ చేయండి.",
-      });
-    } finally {
-      setIsSeeding(false);
-    }
-  }
-
-  const toggleComplete = (num: number) => {
-    const next = completedDays.includes(num) ? completedDays.filter(d => d !== num) : [...completedDays, num]
-    setCompletedDays(next)
-    if (userProfileRef) {
-      setDocumentNonBlocking(userProfileRef, { completedDays: next }, { merge: true })
-    }
-  }
-
-  const toggleFavorite = (questionId: number) => {
-    const next = favorites.includes(questionId) ? favorites.filter(id => id !== questionId) : [...favorites, questionId]
-    setFavorites(next)
-    if (userProfileRef) {
-      setDocumentNonBlocking(userProfileRef, { favorites: next }, { merge: true })
-    }
-  }
-
-  const handleSelectDay = (num: number) => {
-    setSelectedDayNumber(num)
+  const handleSelectDoc = (id: string) => {
+    setSelectedDocId(id)
     setIsMobileMenuOpen(false)
-    const contentArea = document.getElementById('main-content')
-    if (contentArea) contentArea.scrollTo({ top: 0, behavior: 'smooth' })
+    document.getElementById('main-content')?.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  const selectedDay = CATECHISM_DATA.find(d => d.number === selectedDayNumber)
+  const selectedDoc = LIBRARY_DATA.find(d => d.id === selectedDocId)
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-background text-foreground">
-      <header className="flex items-center justify-between px-4 md:px-6 py-3 border-b bg-card shadow-sm z-40 shrink-0">
+    <div className="flex flex-col h-screen overflow-hidden bg-background">
+      <header className="flex items-center justify-between px-4 py-3 border-b bg-card z-40 shrink-0 shadow-sm">
         <div className="flex items-center gap-2">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="md:hidden" 
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
+          <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
-          <h1 className="text-xl md:text-2xl telugu-heading font-bold cursor-pointer" onClick={() => handleSelectDay(0)}>జ్ఞాన బోధ</h1>
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => setSelectedDocId("")}>
+            <Library className="h-6 w-6 text-primary" />
+            <h1 className="text-xl md:text-2xl telugu-heading font-bold">జ్ఞాన నిధి</h1>
+          </div>
         </div>
         
-        <div className="flex items-center gap-1 md:gap-2">
-          <div className="hidden sm:flex items-center gap-2 mr-2 px-3 py-1 bg-primary/5 rounded-full border border-primary/10">
-            <CheckCircle2 className="h-4 w-4 text-primary" />
-            <span className="text-xs font-bold text-primary">{completedDays.length}/52</span>
-          </div>
-          
-          <SearchDialog onResultClick={(dayNum) => handleSelectDay(dayNum)} />
-
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => setIsReadingMode(!isReadingMode)} 
-            title="Toggle Reading Mode"
-            className={cn(isReadingMode && "text-primary bg-primary/10")}
-          >
+        <div className="flex items-center gap-2">
+          <SearchDialog onResultClick={() => {}} />
+          <Button variant="ghost" size="icon" onClick={() => setIsReadingMode(!isReadingMode)} className={cn(isReadingMode && "bg-primary/10 text-primary")}>
             <BookOpen className="h-5 w-5" />
           </Button>
-          
-          <Button variant="ghost" size="icon" onClick={toggleTheme} title="Toggle Theme">
+          <Button variant="ghost" size="icon" onClick={toggleTheme}>
             {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
-          
           <div className="w-px h-6 bg-border mx-1" />
-          
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative">
-                {isUserLoading || isProfileLoading || isSeeding ? (
-                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-                ) : (
-                  <User className={cn("h-5 w-5", user ? "text-primary" : "text-muted-foreground")} />
-                )}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel className="telugu-text">వినియోగదారు ప్రొఫైల్</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleSeedData} disabled={isSeeding} className="telugu-text cursor-pointer">
-                <CloudUpload className="mr-2 h-4 w-4" />
-                క్లౌడ్‌కు డేటా సింక్ చేయండి
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="telugu-text opacity-50">
-                UID: {user?.uid.substring(0, 8)}...
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button variant="ghost" size="icon">
+            {isUserLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <User className="h-5 w-5" />}
+          </Button>
         </div>
       </header>
 
       <div className="flex flex-1 overflow-hidden relative">
         <aside className={cn(
-          "fixed inset-y-0 left-0 w-[280px] md:w-80 border-r bg-card transition-transform duration-300 z-50 md:relative md:translate-x-0 shrink-0",
+          "fixed inset-y-0 left-0 w-80 border-r bg-card transition-transform duration-300 z-50 md:relative md:translate-x-0 shrink-0",
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full",
-          isReadingMode && !isMobile ? "md:hidden" : "md:block"
+          isReadingMode && "md:hidden"
         )}>
-          <LordsDayList 
-            data={CATECHISM_DATA} 
-            selectedNumber={selectedDayNumber} 
-            onSelect={handleSelectDay}
-            completedDays={completedDays}
-          />
+          <LibraryBrowser selectedDocId={selectedDocId} onSelect={handleSelectDoc} />
         </aside>
 
-        {isMobileMenuOpen && (
-          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-45 md:hidden" onClick={() => setIsMobileMenuOpen(false)} />
-        )}
+        {isMobileMenuOpen && <div className="fixed inset-0 bg-black/40 z-45 md:hidden" onClick={() => setIsMobileMenuOpen(false)} />}
 
-        <main id="main-content" className={cn(
-          "flex-1 overflow-y-auto transition-all duration-300",
-          isReadingMode ? "bg-card" : "bg-background"
-        )}>
-          <div className={cn(
-            "mx-auto w-full",
-            isReadingMode ? "max-w-3xl py-8 px-4 md:px-12" : "max-w-4xl p-4 md:p-8"
-          )}>
-            {selectedDayNumber === 0 ? (
-              <CatechismIntro isReadingMode={isReadingMode} onStart={() => handleSelectDay(1)} />
-            ) : selectedDay ? (
-              <CatechismViewer 
-                day={selectedDay} 
-                isReadingMode={isReadingMode} 
-                isCompleted={completedDays.includes(selectedDay.number)}
-                favorites={favorites}
-                onToggleComplete={() => toggleComplete(selectedDay.number)}
-                onToggleFavorite={toggleFavorite}
-                onNavigate={(dir) => handleSelectDay(dir === 'next' ? selectedDayNumber + 1 : selectedDayNumber - 1)}
-              />
-            ) : null}
+        <main id="main-content" className="flex-1 overflow-y-auto bg-background">
+          <div className={cn("mx-auto max-w-4xl p-4 md:p-12", isReadingMode && "max-w-3xl")}>
+            {!selectedDocId ? (
+              <CatechismIntro isReadingMode={isReadingMode} onStart={() => handleSelectDoc("heidelberg")} />
+            ) : (
+              selectedDoc && <DocumentViewer document={selectedDoc} />
+            )}
           </div>
         </main>
       </div>
