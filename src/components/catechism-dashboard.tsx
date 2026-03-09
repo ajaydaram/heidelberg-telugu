@@ -11,11 +11,12 @@ import { Button } from "@/components/ui/button"
 import { Menu, BookOpen, X, CheckCircle2, Moon, Sun, User, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { useUser, useFirestore, useDoc, setDocumentNonBlocking, initiateAnonymousSignIn } from "@/firebase"
+import { useUser, useFirestore, useAuth, useDoc, setDocumentNonBlocking, initiateAnonymousSignIn } from "@/firebase"
 import { doc } from "firebase/firestore"
 
 export function CatechismDashboard() {
   const { user, isUserLoading } = useUser()
+  const auth = useAuth()
   const db = useFirestore()
   const isMobile = useIsMobile()
 
@@ -43,12 +44,14 @@ export function CatechismDashboard() {
       setIsDarkMode(true)
       document.documentElement.classList.add('dark')
     }
-    
-    // Auto sign-in if not authenticated
-    if (!isUserLoading && !user) {
-      initiateAnonymousSignIn(require('firebase/auth').getAuth())
+  }, [])
+
+  // Auto sign-in if not authenticated
+  React.useEffect(() => {
+    if (!isUserLoading && !user && auth) {
+      initiateAnonymousSignIn(auth)
     }
-  }, [user, isUserLoading])
+  }, [user, isUserLoading, auth])
 
   // Sync Firestore data to local state when it loads
   React.useEffect(() => {
@@ -123,6 +126,16 @@ export function CatechismDashboard() {
           </div>
           
           <SearchDialog onResultClick={(dayNum) => handleSelectDay(dayNum)} />
+
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => setIsReadingMode(!isReadingMode)} 
+            title="Toggle Reading Mode"
+            className={cn(isReadingMode && "text-primary bg-primary/10")}
+          >
+            <BookOpen className="h-5 w-5" />
+          </Button>
           
           <Button variant="ghost" size="icon" onClick={toggleTheme} title="Toggle Theme">
             {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
