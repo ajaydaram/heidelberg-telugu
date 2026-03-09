@@ -21,12 +21,12 @@ const gidugu = Gidugu({
 });
 
 export const metadata: Metadata = {
-  title: 'జ్ఞాన నిధి - క్రైస్తవ విశ్వాస ప్రమాణాలు',
-  description: 'క్రైస్తవ విశ్వాస ప్రమాణాల గ్రంథాలయం - తెలుగు అనువాదం',
+  title: 'జ్ఞాన బోధ - హీడెల్‌బర్గ్ కాటెకిజమ్',
+  description: 'హీడెల్‌బర్గ్ కాటెకిజమ్ (Heidelberg Catechism) - తెలుగు అనువాదం',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'జ్ఞాన నిధి',
+    title: 'జ్ఞాన బోధ',
   },
 };
 
@@ -56,7 +56,6 @@ export default function RootLayout({
           <PWAInstallPrompt />
         </FirebaseClientProvider>
         
-        {/* Service Worker Registration */}
         <Script id="register-sw" strategy="afterInteractive">
           {`
             if ('serviceWorker' in navigator) {
