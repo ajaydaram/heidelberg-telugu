@@ -5,47 +5,48 @@
 ## 🚀 ఫీచర్లు (Features)
 
 - **సంపూర్ణ బోధనలు:** మొత్తం 52 ప్రభువు దినముల (Lord's Days) ప్రశ్నలు మరియు జవాబులు తెలుగులో.
-- **AI సెర్చ్:** జెంకిట్ (Genkit) ద్వారా పనిచేసే ఆర్టిఫిషియల్ ఇంటెలిజెన్స్ శోధన. మీరు తెలుగులో సహజమైన ప్రశ్నలు అడిగి సమాధానాలు వెతకవచ్చు.
-- **పురోగతి ట్రాకింగ్:** మీరు ఏ పాఠాలు పూర్తి చేశారో గుర్తుంచుకోవడానికి 'Mark as Read' సదుపాయం.
-- **లేఖన ఆధారాలు:** ప్రతి జవాబుకు సంబంధించిన బైబిలు రిఫరెన్సులు మరియు వాటిని సులభంగా చూసే క్లిక్-టు-స్క్రోల్ సదుపాయం.
-- **ఇష్టమైనవి (Favorites):** ముఖ్యమైన ప్రశ్నలను బుక్‌మార్క్ చేసుకునే సదుపాయం.
-- **షేరింగ్:** వాట్సాప్ లేదా ఇతర మాధ్యమాల ద్వారా ప్రశ్నలను స్నేహితులతో పంచుకోవచ్చు.
-- **డార్క్ మోడ్:** కళ్ళకు హాయిగా ఉండేలా డార్క్ మరియు లైట్ థీమ్స్.
-- **మొబైల్ ఫ్రెండ్లీ:** ఫోన్ మరియు డెస్క్‌టాప్ రెండింటిలోనూ అద్భుతంగా పనిచేస్తుంది.
+- **AI సెర్చ్:** జెంకిట్ (Genkit) ద్వారా పనిచేసే ఆర్టిఫిషియల్ ఇంటెలిజెన్స్ శోధన.
+- **పురోగతి ట్రాకింగ్:** మీరు ఏ పాఠాలు పూర్తి చేశారో గుర్తుంచుకోవడానికి 'Mark as Read' మరియు 'Continue Reading'.
+- **E-Ink Optimization:** Boox Go 10.3 వంటి డివైజ్‌ల కోసం ప్రత్యేకమైన హై-కాంట్రాస్ట్ థీమ్.
+- **ఆఫ్‌లైన్ సదుపాయం:** ఒకసారి లోడ్ అయిన తర్వాత ఇంటర్నెట్ లేకపోయినా చదువుకోవచ్చు (PWA).
 
 ## 🛠️ టెక్నాలజీ (Tech Stack)
 
 - **Framework:** Next.js 15 (App Router)
-- **UI:** React, Tailwind CSS, ShadCN UI
-- **AI:** Google Genkit (Gemini 2.5 Flash)
-- **Icons:** Lucide React
-- **Fonts:** Mandali (Body), Gidugu (Headings) - Google Fonts
+- **Backend:** Firebase (Authentication, App Hosting)
+- **UI:** Tailwind CSS, ShadCN UI, Lucide Icons
+- **Fonts:** Mandali (Body), Gidugu (Headings)
 
-## 📖 యాప్ నిర్మాణం
+## 📦 పబ్లిష్ చేసే విధానం (Deployment Guide)
 
-ఈ యాప్ మూడు ముఖ్య భాగాలుగా విభజించబడింది:
-1. **Guilt (దోషం):** మన పాపం మరియు దుస్థితి.
-2. **Grace (కృప):** క్రీస్తు ద్వారా మనకు లభించిన విమోచన.
-3. **Gratitude (కృతజ్ఞత):** రక్షించబడిన మనం దేవునికి ఎలా కృతజ్ఞతగా ఉండాలి.
+ఈ యాప్‌ను **Firebase App Hosting** ద్వారా పబ్లిష్ చేయడానికి ఈ స్టెప్స్ ఫాలో అవ్వండి:
 
-## 💻 అభివృద్ధి (Development)
+### 1. GitHub పుష్
+ముందుగా మీ కోడ్‌ను GitHubకు పుష్ చేయండి. రహస్య కీలు (`.env`) వెళ్లకుండా `.gitignore` ఇప్పటికే సెట్ చేయబడింది.
+```bash
+git add .
+git commit -m "Final version for publishing"
+git push origin main
+```
 
-ముందుగా ప్రాజెక్ట్ సెటప్ కోసం:
+### 2. Firebase App Hosting కనెక్ట్ చేయడం
+- Firebase Consoleలో **App Hosting** విభాగంలోకి వెళ్లి మీ GitHub రిపోజిటరీని కనెక్ట్ చేయండి.
+- బిల్డ్ సెట్టింగ్స్‌లో "Next.js" ఆటోమేటిక్‌గా గుర్తించబడుతుంది.
+
+### 3. Environment Variables సెట్ చేయడం (ముఖ్యమైనది)
+యాప్ లైవ్ అయ్యాక సరిగ్గా పనిచేయడానికి Firebase Consoleలో ఈ వేరియబుల్స్ జోడించండి:
+- `NEXT_PUBLIC_FIREBASE_API_KEY`
+- `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
+- `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
+- `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
+- `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
+- `NEXT_PUBLIC_FIREBASE_APP_ID`
+
+## 💻 లోకల్ డెవలప్‌మెంట్
 
 ```bash
 npm install
-```
-
-డెవలప్‌మెంట్ సర్వర్ రన్ చేయడానికి:
-
-```bash
 npm run dev
-```
-
-AI ఫీచర్ల కోసం Genkit డెవలప్‌మెంట్ టూల్‌ను రన్ చేయడానికి:
-
-```bash
-npm run genkit:dev
 ```
 
 ---
