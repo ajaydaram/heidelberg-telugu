@@ -1,8 +1,8 @@
+
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
-/.yarn
 
 # testing
 /coverage
@@ -22,10 +22,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
 
-# local env files
-# CRITICAL: Prevent credentials from leaking to GitHub
+# local env files - CRITICAL: Never commit these to GitHub
 .env
 .env.local
 .env.development.local
