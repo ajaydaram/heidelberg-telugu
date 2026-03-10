@@ -1,10 +1,9 @@
-
 /**
  * Firebase Client Configuration
  * 
- * Note: These values are read from environment variables for security.
- * In production (Firebase App Hosting), these are automatically populated.
- * In development, ensure you have a .env.local file (NOT pushed to GitHub).
+ * Securely access credentials through environment variables.
+ * These are populated from .env.local in development and 
+ * App Hosting configuration in production.
  */
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
