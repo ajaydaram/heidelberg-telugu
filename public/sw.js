@@ -1,41 +1,19 @@
-const CACHE_NAME = 'jnana-nidhi-v1';
-const ASSETS_TO_CACHE = [
+const CACHE_NAME = 'gnaanabodha-v1';
+const ASSETS = [
   '/',
   '/manifest.json',
-  'https://picsum.photos/seed/cross/192/192',
-  'https://picsum.photos/seed/cross/512/512'
+  'https://fonts.googleapis.com/css2?family=Mandali&family=Gidugu&display=swap'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
-  );
-  self.skipWaiting();
-});
-
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
+      return cache.addAll(ASSETS);
     })
   );
 });
 
 self.addEventListener('fetch', (event) => {
-  // Check if the request is for a Firestore sync or internal API - we don't cache those here
-  // Firestore has its own internal persistent cache mechanism.
-  if (event.request.url.includes('firestore.googleapis.com')) {
-    return;
-  }
-
   event.respondWith(
     caches.match(event.request).then((response) => {
       return response || fetch(event.request);

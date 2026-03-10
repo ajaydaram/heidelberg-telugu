@@ -22,7 +22,15 @@ const gidugu = Gidugu({
 
 export const metadata: Metadata = {
   title: 'జ్ఞాన బోధ - హీడెల్‌బర్గ్ కాటెకిజమ్',
-  description: 'హీడెల్‌బర్గ్ కాటెకిజమ్ (Heidelberg Catechism) - తెలుగు అనువాదం',
+  description: 'హీడెల్‌బర్గ్ కాటెకిజమ్ (Heidelberg Catechism) తెలుగు అనువాదం. జీవితంలోను, మరణంలోను మనకు ఉన్న ఏకైక ఆదరణ.',
+  keywords: ['Heidelberg Catechism', 'Telugu', 'Christian', 'Reformed', 'Bible', 'జ్ఞాన బోధ'],
+  authors: [{ name: 'Gnaana Bodha Team' }],
+  openGraph: {
+    title: 'జ్ఞాన బోధ - హీడెల్‌బర్గ్ కాటెకిజమ్',
+    description: 'హీడెల్‌బర్గ్ కాటెకిజమ్ తెలుగు అనువాదం',
+    type: 'website',
+    locale: 'te_IN',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -31,7 +39,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#334155',
+  themeColor: '#ffffff',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -49,7 +57,7 @@ export default function RootLayout({
         <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className="font-body antialiased selection:bg-accent selection:text-accent-foreground">
+      <body className="font-body antialiased selection:bg-accent selection:text-accent-foreground bg-background">
         <FirebaseClientProvider>
           {children}
           <Toaster />
@@ -62,10 +70,10 @@ export default function RootLayout({
               window.addEventListener('load', function() {
                 navigator.serviceWorker.register('/sw.js').then(
                   function(registration) {
-                    console.log('Service Worker registration successful with scope: ', registration.scope);
+                    console.log('Service Worker registered');
                   },
                   function(err) {
-                    console.log('Service Worker registration failed: ', err);
+                    console.log('Service Worker failed', err);
                   }
                 );
               });

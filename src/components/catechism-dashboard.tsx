@@ -101,8 +101,8 @@ export function CatechismDashboard() {
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => handleSelectDay(0)}>
-            <BookMarked className="h-6 w-6 text-primary" />
-            <h1 className="text-xl md:text-2xl telugu-heading font-bold">జ్ఞాన బోధ</h1>
+            <BookMarked className="h-6 w-6 text-primary/70" />
+            <h1 className="text-xl md:text-2xl telugu-heading font-bold opacity-80">జ్ఞాన బోధ</h1>
           </div>
         </div>
         
@@ -116,7 +116,7 @@ export function CatechismDashboard() {
             }} 
           />
           {lastReadDay && selectedDayNum === 0 && (
-            <Button variant="outline" size="sm" onClick={() => handleSelectDay(lastReadDay)} className="hidden md:flex gap-2 telugu-text border-primary/30">
+            <Button variant="outline" size="sm" onClick={() => handleSelectDay(lastReadDay)} className="hidden md:flex gap-2 telugu-text border-primary/20 bg-primary/5 text-primary">
               <PlayCircle className="h-4 w-4" /> కొనసాగించండి
             </Button>
           )}
@@ -130,7 +130,7 @@ export function CatechismDashboard() {
           </Button>
           <div className="w-px h-6 bg-border mx-1" />
           <Button variant="ghost" size="icon">
-            {isUserLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <User className="h-5 w-5" />}
+            {isUserLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <User className="h-5 w-5 opacity-60" />}
           </Button>
         </div>
       </header>
@@ -151,7 +151,7 @@ export function CatechismDashboard() {
 
         {isMobileMenuOpen && <div className="fixed inset-0 bg-black/40 z-45 md:hidden" onClick={() => setIsMobileMenuOpen(false)} />}
 
-        <main id="main-content" className="flex-1 overflow-y-auto bg-background">
+        <main id="main-content" className="flex-1 overflow-y-auto bg-background scroll-smooth">
           <div className={cn("mx-auto max-w-5xl p-4 md:p-12 telugu-rendering", isReadingMode && "max-w-3xl")}>
             {selectedDayNum === 0 ? (
               <CatechismIntro 
