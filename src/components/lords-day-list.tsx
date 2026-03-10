@@ -41,9 +41,9 @@ export function LordsDayList({ data, selectedNumber, onSelect, completedDays }: 
 
   return (
     <div className="flex flex-col h-full bg-card">
-      <div className="p-4 border-b flex items-center justify-between bg-muted/20">
-        <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground telugu-text">విషయ సూచిక</h2>
-        <div className="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+      <div className="p-4 border-b flex items-center justify-between bg-muted/10">
+        <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground telugu-text">విషయ సూచిక</h2>
+        <div className="text-xs font-bold text-primary border border-primary/20 bg-primary/5 px-2 py-0.5 rounded-full">
           {completedDays.length} / 52
         </div>
       </div>
@@ -53,11 +53,13 @@ export function LordsDayList({ data, selectedNumber, onSelect, completedDays }: 
           <button
             onClick={() => onSelect(0)}
             className={cn(
-              "w-full text-left px-4 py-4 rounded-xl transition-all duration-200 group flex items-center gap-3",
-              selectedNumber === 0 ? "bg-primary text-primary-foreground shadow-lg" : "hover:bg-accent"
+              "w-full text-left px-4 py-4 rounded-xl transition-all duration-200 group flex items-center gap-3 border-2",
+              selectedNumber === 0 
+                ? "bg-primary/5 border-primary text-primary shadow-sm" 
+                : "hover:bg-accent border-transparent"
             )}
           >
-            <BookMarked className={cn("w-5 h-5", selectedNumber === 0 ? "text-white" : "text-primary")} />
+            <BookMarked className={cn("w-5 h-5", selectedNumber === 0 ? "text-primary" : "text-primary/60")} />
             <span className="telugu-heading text-xl font-bold">యాప్ పరిచయం</span>
           </button>
 
@@ -82,7 +84,7 @@ export function LordsDayList({ data, selectedNumber, onSelect, completedDays }: 
                         className={cn(
                           "w-full text-left px-3 py-2.5 rounded-lg transition-all text-sm telugu-text relative group",
                           selectedNumber === day.number
-                            ? "bg-primary/10 text-primary font-bold"
+                            ? "bg-primary/10 text-primary font-bold border-l-2 border-primary -ml-[2px] rounded-l-none"
                             : "hover:bg-accent text-foreground/70"
                         )}
                       >

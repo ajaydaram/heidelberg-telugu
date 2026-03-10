@@ -26,7 +26,7 @@ export function CatechismIntro({ isReadingMode, onStart, lastReadDay, onResume }
           "telugu-heading font-bold text-primary",
           isReadingMode ? "text-5xl md:text-6xl" : "text-4xl md:text-5xl"
         )}>
-          హైడెల్బర్గ్ కేటకిజం: ఒక పరిచయం
+          హీడెల్‌బర్గ్ కాటెకిజమ్: ఒక పరిచయం
         </h2>
         <p className={cn(
           "telugu-text text-foreground/60 mt-2",
@@ -38,17 +38,17 @@ export function CatechismIntro({ isReadingMode, onStart, lastReadDay, onResume }
       </div>
 
       {lastReadDay && (
-        <div className="bg-primary/5 border-2 border-primary/20 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 animate-in zoom-in duration-300">
+        <div className="bg-background border-2 border-primary/20 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 animate-in zoom-in duration-300">
           <div className="flex items-center gap-4">
-            <div className="bg-primary text-primary-foreground p-3 rounded-xl">
-              <Play className="w-6 h-6 fill-current" />
+            <div className="bg-primary/5 text-primary p-3 rounded-xl border border-primary/20">
+              <Play className="w-6 h-6 fill-primary" />
             </div>
             <div>
               <h4 className="telugu-heading text-xl font-bold">మీరు ఇక్కడ ఆగిపోయారు</h4>
               <p className="telugu-text text-muted-foreground">ప్రభు దినము {lastReadDay}</p>
             </div>
           </div>
-          <Button onClick={onResume} size="lg" className="telugu-text w-full md:w-auto rounded-full gap-2">
+          <Button onClick={onResume} variant="outline" size="lg" className="telugu-text w-full md:w-auto rounded-full gap-2 border-primary text-primary hover:bg-primary/5">
             చదవడం కొనసాగించండి <ArrowRightCircle className="w-5 h-5" />
           </Button>
         </div>
@@ -57,7 +57,7 @@ export function CatechismIntro({ isReadingMode, onStart, lastReadDay, onResume }
       <div className="grid gap-8">
         <section className="bg-card border rounded-2xl p-6 md:p-8 shadow-sm">
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-primary/5 text-primary border border-primary/10 flex items-center justify-center">
               <Info className="w-6 h-6" />
             </div>
             <h3 className="telugu-heading text-2xl md:text-3xl font-bold">1. కేటకిజం అంటే ఏమిటి?</h3>
@@ -69,45 +69,45 @@ export function CatechismIntro({ isReadingMode, onStart, lastReadDay, onResume }
 
         <section className="bg-card border rounded-2xl p-6 md:p-8 shadow-sm">
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-secondary text-secondary-foreground flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-secondary/20 text-secondary-foreground border border-secondary/30 flex items-center justify-center">
               <LayoutGrid className="w-6 h-6" />
             </div>
             <h3 className="telugu-heading text-2xl md:text-3xl font-bold">2. దీని నిర్మాణం: మూడు 'G'లు</h3>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="p-6 bg-muted/30 rounded-xl border border-border/50 hover:border-primary/30 transition-colors group">
+            <div className="p-6 bg-muted/20 rounded-xl border border-border/50 hover:border-primary/30 transition-colors group">
               <h4 className="telugu-heading text-2xl font-bold text-primary mb-3">1. Guilt (దోషం)</h4>
               <p className="telugu-text text-lg">మన పాపం ఎంత భయంకరమైనదో, మనకు రక్షకుడు ఎంత అవసరమో ఇది చూపిస్తుంది.</p>
             </div>
-            <div className="p-6 bg-muted/30 rounded-xl border border-border/50 hover:border-primary/30 transition-colors group">
+            <div className="p-6 bg-muted/20 rounded-xl border border-border/50 hover:border-primary/30 transition-colors group">
               <h4 className="telugu-heading text-2xl font-bold text-primary mb-3">2. Grace (కృప)</h4>
               <p className="telugu-text text-lg">క్రీస్తు మనల్ని ఎలా రక్షించాడో, మనం ఏమి నమ్మాలో వివరిస్తుంది.</p>
             </div>
-            <div className="p-6 bg-muted/30 rounded-xl border border-border/50 hover:border-primary/30 transition-colors group">
+            <div className="p-6 bg-muted/20 rounded-xl border border-border/50 hover:border-primary/30 transition-colors group">
               <h4 className="telugu-heading text-2xl font-bold text-primary mb-3">3. Gratitude (కృతజ్ఞత)</h4>
               <p className="telugu-text text-lg">రక్షించబడిన మనం దేవునికి ఎలా కృతజ్ఞత తెలుపుకోవాలి?</p>
             </div>
           </div>
         </section>
 
-        <section className="bg-primary text-primary-foreground rounded-2xl p-8 shadow-lg relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-4 opacity-10">
-            <Heart className="w-24 h-24" />
+        <section className="bg-primary/5 text-foreground rounded-2xl p-8 border border-primary/20 shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-4 opacity-5">
+            <Heart className="w-24 h-24 text-primary" />
           </div>
-          <h3 className="telugu-heading text-2xl md:text-3xl font-bold mb-6 border-b border-primary-foreground/20 pb-4">ప్రధాన ప్రశ్న (The Theme)</h3>
+          <h3 className="telugu-heading text-2xl md:text-3xl font-bold mb-6 border-b border-primary/10 pb-4 text-primary">ప్రధాన ప్రశ్న (The Theme)</h3>
           <div className="space-y-6">
-            <p className="telugu-text text-xl md:text-2xl font-bold italic">
+            <p className="telugu-text text-xl md:text-2xl font-bold italic text-foreground/90">
               "జీవితంలోను, మరణంలోను నీకు ఉన్న ఏకైక ఆదరణ (Comfort) ఏమిటి?"
             </p>
-            <p className="telugu-text text-lg md:text-xl leading-relaxed opacity-90">
+            <p className="telugu-text text-lg md:text-xl leading-relaxed opacity-80">
               జవాబు: నేను నా సొంతవాడను కాను, కానీ నా నమ్మకమైన రక్షకుడైన యేసుక్రీస్తుకు చెందినవాడను.
             </p>
           </div>
         </section>
 
         <div className="text-center py-8">
-          <Button size="lg" onClick={onStart} className="telugu-text text-2xl h-16 px-12 rounded-full shadow-2xl animate-pulse hover:animate-none">
-            మొదటి పాఠం నుండి ప్రారంభించండి <ArrowRightCircle className="ml-3 h-6 w-6" />
+          <Button size="lg" onClick={onStart} className="telugu-text text-2xl h-16 px-12 rounded-full shadow-lg gap-3">
+            మొదటి పాఠం నుండి ప్రారంభించండి <ArrowRightCircle className="h-6 w-6" />
           </Button>
         </div>
       </div>

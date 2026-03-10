@@ -10,7 +10,7 @@
     --card-foreground: 212 40% 10%;
     --popover: 0 0% 100%;
     --popover-foreground: 212 40% 10%;
-    --primary: 212 40% 55%;
+    --primary: 212 40% 35%;
     --primary-foreground: 0 0% 100%;
     --secondary: 190 60% 90%;
     --secondary-foreground: 212 40% 25%;
@@ -57,11 +57,11 @@
     --popover-foreground: 0 0% 0%;
     --primary: 0 0% 0%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 90%;
+    --secondary: 0 0% 95%;
     --secondary-foreground: 0 0% 0%;
-    --muted: 0 0% 85%;
+    --muted: 0 0% 90%;
     --muted-foreground: 0 0% 0%;
-    --accent: 0 0% 80%;
+    --accent: 0 0% 85%;
     --accent-foreground: 0 0% 0%;
     --border: 0 0% 0%;
     --input: 0 0% 0%;
@@ -98,18 +98,11 @@
   font-family: var(--font-mandali), "Noto Sans Telugu", sans-serif;
   line-height: 1.95;
   text-rendering: optimizeLegibility;
-  font-feature-settings: "kern" 1, "liga" 1, "clig" 1, "calt" 1;
-  font-variant-ligatures: traditional-ligatures;
-  -webkit-font-smoothing: antialiased;
 }
 
 .telugu-heading {
   font-family: var(--font-gidugu), var(--font-mandali), "Noto Sans Telugu", sans-serif;
   line-height: 1.5;
-  letter-spacing: 0.02em;
-  font-weight: 400; 
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
 }
 
 @media (max-width: 768px) {
