@@ -5,14 +5,13 @@
 ## 🛡️ సెక్యూరిటీ స్టేటస్ (Security Status)
 మీ API కీలు ఇప్పుడు సురక్షితంగా ఉన్నాయి. మనం ఎన్విరాన్మెంట్ వేరియూబుల్స్ (`.env.local`) ఉపయోగిస్తున్నాము మరియు అవి GitHubకు వెళ్లకుండా `.gitignore` సెట్ చేయబడింది.
 
-### **ఒకవేళ మీరు మళ్ళీ కీ మార్చాల్సి వస్తే:**
-1. `.env.local` ఫైల్‌లో మార్చండి.
-2. Firebase Console (App Hosting) లో కూడా 'Environment Variables' అప్‌డేట్ చేయండి.
+### **ముఖ్య గమనిక:**
+ఒకవేళ మీరు పొరపాటున కీలను GitHubకు పుష్ చేస్తే, వెంటనే Google Cloud Consoleలో కీని **Rotate** చేయండి. పాత కీలను ఎప్పుడూ వాడకండి.
 
 ## 🚀 పబ్లిష్ చేయడం ఎలా (Deployment)
 1. మీ కోడ్‌ను GitHubకు పుష్ చేయండి: `git push origin main`.
 2. Firebase Consoleలో 'App Hosting' ద్వారా కనెక్ట్ చేయండి.
-3. Firebase Dashboardలో `NEXT_PUBLIC_FIREBASE_API_KEY` మరియు `NEXT_PUBLIC_FIREBASE_PROJECT_ID` వేరియబుల్స్ సెట్ చేయడం మర్చిపోకండి.
+3. Firebase Dashboardలోని 'Environment Variables' సెట్టింగ్స్‌లో మీ API కీలను జోడించండి.
 
 ## 🛠️ టెక్నాలజీ (Tech Stack)
 - **Framework:** Next.js 15 (App Router)
