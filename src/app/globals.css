@@ -57,10 +57,10 @@
     --popover-foreground: 0 0% 0%;
     --primary: 0 0% 0%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 95%;
+    --secondary: 0 0% 90%;
     --secondary-foreground: 0 0% 0%;
-    --muted: 0 0% 90%;
-    --muted-foreground: 0 0% 20%;
+    --muted: 0 0% 85%;
+    --muted-foreground: 0 0% 0%;
     --accent: 0 0% 80%;
     --accent-foreground: 0 0% 0%;
     --border: 0 0% 0%;
@@ -81,16 +81,18 @@
   }
 }
 
+/* E-Ink Optimization */
 .e-ink * {
   box-shadow: none !important;
   text-shadow: none !important;
   transition: none !important;
+  color: #000 !important;
+  border-color: #000 !important;
 }
 
-.e-ink .shadow-sm, .e-ink .shadow-md, .e-ink .shadow-lg, .e-ink .shadow-xl {
-  box-shadow: none !important;
-  border: 1px solid #000 !important;
-}
+.e-ink .bg-primary { background-color: #000 !important; color: #fff !important; }
+.e-ink .text-muted-foreground { color: #000 !important; opacity: 0.8; }
+.e-ink .border-dashed { border-style: solid !important; border-width: 2px !important; }
 
 .telugu-text {
   font-family: var(--font-mandali), "Noto Sans Telugu", sans-serif;
@@ -99,7 +101,6 @@
   font-feature-settings: "kern" 1, "liga" 1, "clig" 1, "calt" 1;
   font-variant-ligatures: traditional-ligatures;
   -webkit-font-smoothing: antialiased;
-  @apply text-foreground;
 }
 
 .telugu-heading {
@@ -108,10 +109,7 @@
   letter-spacing: 0.02em;
   font-weight: 400; 
   text-rendering: optimizeLegibility;
-  font-feature-settings: "kern" 1, "liga" 1, "clig" 1, "calt" 1;
-  font-variant-ligatures: traditional-ligatures;
   -webkit-font-smoothing: antialiased;
-  @apply text-primary;
 }
 
 @media (max-width: 768px) {

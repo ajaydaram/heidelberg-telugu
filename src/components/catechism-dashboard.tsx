@@ -7,7 +7,7 @@ import { CatechismIntro } from "@/components/catechism-intro"
 import { CatechismViewer } from "@/components/catechism-viewer"
 import { SearchDialog } from "@/components/search-dialog"
 import { Button } from "@/components/ui/button"
-import { Menu, BookOpen, X, Moon, Sun, User, Loader2, BookMarked, Monitor } from "lucide-react"
+import { Menu, BookOpen, X, Moon, Sun, User, Loader2, BookMarked, Monitor, PlayCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useUser } from "@/firebase"
@@ -16,7 +16,6 @@ export function CatechismDashboard() {
   const { user, isUserLoading } = useUser()
   const isMobile = useIsMobile()
 
-  // 0 is Intro, 1-52 are Lord's Days
   const [selectedDayNum, setSelectedDayNum] = React.useState(0)
   const [isReadingMode, setIsReadingMode] = React.useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
@@ -24,6 +23,7 @@ export function CatechismDashboard() {
   const [isSearchOpen, setIsSearchOpen] = React.useState(false)
   const [completedDays, setCompletedDays] = React.useState<number[]>([])
   const [favorites, setFavorites] = React.useState<number[]>([])
+  const [lastReadDay, setLastReadDay] = React.useState<number | null>(null)
 
   React.useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as any
@@ -37,6 +37,9 @@ export function CatechismDashboard() {
     
     const savedFavorites = localStorage.getItem('favorites')
     if (savedFavorites) setFavorites(JSON.parse(savedFavorites))
+
+    const savedLastRead = localStorage.getItem('lastReadDay')
+    if (savedLastRead) setLastReadDay(parseInt(savedLastRead))
   }, [])
 
   const applyTheme = (mode: 'light' | 'dark' | 'e-ink') => {
@@ -59,6 +62,10 @@ export function CatechismDashboard() {
   const handleSelectDay = (num: number) => {
     setSelectedDayNum(num)
     setIsMobileMenuOpen(false)
+    if (num > 0) {
+      localStorage.setItem('lastReadDay', num.toString())
+      setLastReadDay(num)
+    }
     document.getElementById('main-content')?.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
@@ -104,15 +111,19 @@ export function CatechismDashboard() {
             open={isSearchOpen}
             onOpenChange={setIsSearchOpen}
             onResultClick={(docId, refId) => {
-              // Convert refId like "q1" to day number or just find it
               const entry = CATECHISM_DATA.flatMap(d => d.entries).find(e => `q${e.id}` === refId)
               if (entry) handleSelectDay(entry.lordsDay)
             }} 
           />
+          {lastReadDay && selectedDayNum === 0 && (
+            <Button variant="outline" size="sm" onClick={() => handleSelectDay(lastReadDay)} className="hidden md:flex gap-2 telugu-text border-primary/30">
+              <PlayCircle className="h-4 w-4" /> కొనసాగించండి
+            </Button>
+          )}
           <Button variant="ghost" size="icon" onClick={() => setIsReadingMode(!isReadingMode)} title="Reading Mode" className={cn(isReadingMode && "bg-primary/10 text-primary")}>
             <BookOpen className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon" onClick={cycleTheme} title="Cycle Theme (Light/Dark/E-Ink)">
+          <Button variant="ghost" size="icon" onClick={cycleTheme} title="Cycle Theme">
             {themeMode === 'light' && <Sun className="h-5 w-5" />}
             {themeMode === 'dark' && <Moon className="h-5 w-5" />}
             {themeMode === 'e-ink' && <Monitor className="h-5 w-5" />}
@@ -145,7 +156,9 @@ export function CatechismDashboard() {
             {selectedDayNum === 0 ? (
               <CatechismIntro 
                 isReadingMode={isReadingMode} 
-                onStart={() => handleSelectDay(1)} 
+                onStart={() => handleSelectDay(1)}
+                lastReadDay={lastReadDay}
+                onResume={() => lastReadDay && handleSelectDay(lastReadDay)}
               />
             ) : (
               currentDayData && (
