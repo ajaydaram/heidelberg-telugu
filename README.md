@@ -20,24 +20,5 @@
 - **AI Integration:** Google Genkit (Gemini 2.5 Flash)
 - **Font:** Mandali & Gidugu (Google Fonts)
 
-## 🛠️ సెటప్ మరియు పబ్లిష్ (Deployment)
-
-ఈ యాప్ **Firebase App Hosting** ద్వారా విజయవంతంగా పబ్లిష్ చేయబడింది. భవిష్యత్తులో మార్పులు చేయడానికి లేదా లోకల్‌గా రన్ చేయడానికి ఈ క్రింది స్టెప్స్ ఫాలో అవ్వండి:
-
-### Environment Variables
-యాప్ సరిగ్గా బిల్డ్ అవ్వడానికి Firebase App Hosting డాష్‌బోర్డ్‌లో ఈ క్రింది వేరియబుల్స్ సెట్ చేయాలి:
-
-| Key | Description |
-| :--- | :--- |
-| `NEXT_PUBLIC_FIREBASE_API_KEY` | మీ Firebase API Key |
-| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | `intermediate-telugu.firebaseapp.com` |
-| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | `intermediate-telugu` |
-| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | `intermediate-telugu.firebasestorage.app` |
-| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | మీ ప్రాజెక్ట్ సెండర్ ఐడి |
-| `NEXT_PUBLIC_FIREBASE_APP_ID` | మీ ప్రాజెక్ట్ యాప్ ఐడి |
-
-## 🛡️ భద్రత (Security)
-భద్రతా కారణాల దృష్ట్యా, సెన్సిటివ్ API కీలు నేరుగా కోడ్‌లో లేవు. అవి కేవలం `Environment Variables` ద్వారా మాత్రమే యాక్సెస్ చేయబడతాయి. `.env` ఫైళ్లు గిట్ ట్రాకింగ్ నుండి తొలగించబడ్డాయి.
-
 ---
 Developed with ❤️ for the Telugu Christian Community.

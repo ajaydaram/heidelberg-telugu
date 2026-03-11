@@ -30,6 +30,9 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# private setup notes
+LOCAL_SETUP.md
+
 # vercel
 .vercel
 
