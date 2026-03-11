@@ -1,46 +1,41 @@
 
-# జ్ఞాన బోధ (Heidelberg Catechism Telugu)
+# 📖 జ్ఞాన బోధ (Heidelberg Catechism Telugu)
 
-హీడెల్‌బర్గ్ కాటెకిజమ్ (Heidelberg Catechism) యొక్క తెలుగు అనువాదం మరియు వివరణాత్మక అధ్యయన యాప్.
+హీడెల్‌బర్గ్ కాటెకిజమ్ (Heidelberg Catechism) యొక్క తెలుగు అనువాదం మరియు వివరణాత్మక అధ్యయన యాప్. ఇది క్రైస్తవ విశ్వాస పునాదులను సులభంగా అర్థం చేసుకోవడానికి రూపొందించబడిన ఒక ఆధునిక డిజిటల్ ప్లాట్‌ఫారమ్.
 
-## 🛡️ సెక్యూరిటీ గమనిక (Security Note)
-మీ API కీలు ఇప్పుడు సురక్షితంగా ఉన్నాయి. మనం ఎన్విరాన్మెంట్ వేరియబుల్స్ ఉపయోగిస్తున్నాము మరియు అవి GitHubకు వెళ్లకుండా `.gitignore` సెట్ చేయబడింది. 
+## ✨ ముఖ్య ఫీచర్లు (Key Features)
 
-**ముఖ్య గమనిక:** ఎప్పుడూ కూడా `.env.local` ఫైల్‌ను కమిట్ చేయకండి.
+- **పూర్తి తెలుగు అనువాదం:** 52 ప్రభు దినములు (Lord's Days) మరియు 129 ప్రశ్నలు-జవాబులు.
+- **లేఖన ఆధారాలు:** ప్రతి జవాబుకు తగిన బైబిలు రిఫరెన్సులు.
+- **విభిన్న మోడ్స్:** చదువుకోవడానికి వీలుగా Light, Dark, మరియు కంటికి హాయినిచ్చే E-Ink మోడ్స్.
+- **PWA సపోర్ట్:** యాప్‌ను మీ ఫోన్ లేదా కంప్యూటర్‌లో ఇన్‌స్టాల్ చేసుకుని ఆఫ్‌లైన్‌లో కూడా వాడుకోవచ్చు.
+- **AI సెర్చ్:** మీరు అడిగే ప్రశ్నలకు కాటెకిజం నుండి సరైన సమాధానాలను వెతికి ఇచ్చే AI సదుపాయం.
 
-## 🚀 పబ్లిష్ చేసే విధానం (Deployment Steps)
+## 🚀 సాంకేతిక వివరాలు (Tech Stack)
 
-యాప్‌ను Firebase App Hosting ద్వారా లైవ్ చేయడానికి ఈ స్టెప్స్ ఫాలో అవ్వండి:
+- **Framework:** Next.js 15 (App Router)
+- **Styling:** Tailwind CSS & ShadCN UI
+- **Backend:** Firebase (Firestore & Auth)
+- **AI:** Google Genkit (Gemini 2.5 Flash)
 
-### 1. కోడ్‌ను పుష్ చేయండి
-టెర్మినల్‌లో ఇవి రన్ చేయండి:
-```bash
-git add .
-git commit -m "Deploy: finalize secure environment config"
-git push origin main
-```
+## 🛠️ సెటప్ మరియు పబ్లిష్ (Deployment)
 
-### 2. Firebase App Hosting సెటప్
-1. [Firebase Console](https://console.firebase.google.com/) లో మీ ప్రాజెక్ట్‌ను ఎంచుకోండి.
-2. **App Hosting** కి వెళ్లి **"Get Started"** క్లిక్ చేయండి.
-3. మీ GitHub రిపోజిటరీని కనెక్ట్ చేసి, `main` బ్రాంచ్‌ను ఎంచుకోండి.
+ఈ యాప్ **Firebase App Hosting** ద్వారా విజయవంతంగా లైవ్ చేయబడింది.
 
-### 3. Environment Variables (అత్యంత ముఖ్యం)
-సెటప్ చేసేటప్పుడు (మీరు స్క్రీన్‌షాట్‌లో చూపిస్తున్న చోట) లేదా సెటప్ అయిన తర్వాత **Settings > Environment Variables** లో ఈ క్రింది కీలను తప్పకుండా యాడ్ చేయండి:
+### Environment Variables
+యాప్ సరిగ్గా పనిచేయడానికి Firebase App Hosting డాష్‌బోర్డ్‌లో ఈ క్రింది వేరియబుల్స్ సెట్ చేయాలి:
 
-| Key | Value (మీ Firebase Config నుండి) |
+| Key | Description |
 | :--- | :--- |
-| `NEXT_PUBLIC_FIREBASE_API_KEY` | (మీ కొత్త API కీ) |
-| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | `studio-5468980590-60a46.firebaseapp.com` |
-| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | `studio-5468980590-60a46` |
-| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | `studio-5468980590-60a46.firebasestorage.app` |
-| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | (మీ కాన్ఫిగ్ లోని నంబర్) |
-| `NEXT_PUBLIC_FIREBASE_APP_ID` | (మీ యాప్ ID) |
+| `NEXT_PUBLIC_FIREBASE_API_KEY` | మీ Firebase API Key |
+| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | `intermediate-telugu.firebaseapp.com` |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | `intermediate-telugu` |
+| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | `intermediate-telugu.firebasestorage.app` |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | (Firebase Config నుండి) |
+| `NEXT_PUBLIC_FIREBASE_APP_ID` | (Firebase Config నుండి) |
 
-**గమనిక:** స్క్రీన్‌షాట్‌లో మీరు చూపిస్తున్న ప్రాజెక్ట్ ID `studio-5468980590-60a46`. కాబట్టి పైన ఇచ్చిన విలువలను సరిచూసుకోండి.
+## 🛡️ భద్రత (Security)
+భద్రతా కారణాల దృష్ట్యా, API కీలు నేరుగా కోడ్‌లో లేవు. అవి కేవలం `Environment Variables` ద్వారా మాత్రమే యాక్సెస్ చేయబడతాయి. గిట్ హిస్టరీ నుండి పాత కీలు తొలగించబడ్డాయి.
 
-## 🛠️ టెక్నాలజీ (Tech Stack)
-- **Framework:** Next.js 15
-- **Backend:** Firebase
-- **Styling:** Tailwind CSS, ShadCN UI
-- **AI:** Google Genkit
+---
+Developed with ❤️ for the Telugu Christian Community.
